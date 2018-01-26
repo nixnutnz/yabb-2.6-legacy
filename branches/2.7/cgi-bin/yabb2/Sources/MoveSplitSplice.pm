@@ -510,7 +510,8 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
             $utdcurthread[0] =
 qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
-            if ( eval { require Variables::Movedthreads; 1 } ) {
+            if ( -e "$vardir/Movedthreads.pm" ) {
+                require Variables::Movedthreads;
                 $moved_file{$curthreadid} = $newthreadid;
                 delete $moved_file{$newthreadid};
                 save_moved_file();
@@ -1045,8 +1046,8 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             my ( $attid, undef, undef, undef, undef, undef, undef,
                 $attachmentname, $downloadscount )
               = split /[|]/xsm;
-            if (   ( $attid != $curthreadid && $attid != $newthreadid )
-                || ( $attid == $curthreadid && $attachments != 1 ) )
+            if (  $attid && ( ( $attid != $curthreadid && $attid != $newthreadid )
+                || ( $attid == $curthreadid && $attachments != 1 ) ) )
             {
                 push @newattachments, $_;
             }

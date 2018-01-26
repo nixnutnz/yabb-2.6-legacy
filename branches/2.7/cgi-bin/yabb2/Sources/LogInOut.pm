@@ -103,7 +103,7 @@ sub login2 {
     # for case insensitive systems. Can cause weird issues otherwise
     my $caseright = 0;
     our (%memberlist);
-    manage_memberlist('load');
+    require Variables::Memberlist;
     while ( my ( $curmemb, $value ) = each %memberlist ) {
         if ( $username eq $curmemb ) { $caseright = 1; last; }
     }

@@ -1917,4 +1917,6 @@ $iFrameSupport =
   q~Sorry, to see the latest news, you must use a browser that supports iframes~;
 $rna = q~Remote Server not available.~;
 
+$admin_txt{'UTC'} = q~(UTC)~;
+
 1;

@@ -1182,30 +1182,59 @@ sub edit_paths2 {
 
 ########## Directories ##########
 
-\$boardurl = '$boardurl';                       # URL of your board's folder (without trailing '/')
-\$boarddir = '$boarddir';                       # The server path to the board's folder (usually can be left as '.')
-\$boardsdir = '$boardsdir';                     # Directory with board data files
-\$datadir = '$datadir';                         # Directory with messages
-\$memberdir = '$memberdir';                     # Directory with member files
-\$sourcedir = '$sourcedir';                     # Directory with YaBB source files
-\$admindir = '$admindir';                       # Directory with YaBB admin source files
-\$vardir = '$vardir';                           # Directory with variable files
-\$langdir = '$langdir';                         # Directory with Language files and folders
-\$helpfile = '$helpfile';                       # Directory with Help files and folders
-\$templatesdir = '$templatesdir';               # Directory with template files and folders
-\$htmldir = '$htmldir';                         # Base Path for all public-html files and folders
-\$facesdir = '$facesdir';                       # Base Path for all avatar files
-\$uploaddir = '$uploaddir';                     # Base Path for all attachment files
-\$pmuploaddir = '$pmuploaddir';                 # Base Path for pm attachment files
-\$modimgdir = '$modimgdir';                     # Base Path for all mod images
+\$boardurl = '$boardurl';
+# URL of your board's folder (without trailing '/')
+\$boarddir = '$boarddir';
+# The server path to the board's folder (usually can be left as '.')
+\$boardsdir = '$boardsdir';
+# Directory with board data files
+\$datadir = '$datadir';
+# Directory with messages
+\$memberdir = '$memberdir';
+# Directory with member files
+\$sourcedir = '$sourcedir';
+# Directory with YaBB source files
+\$admindir = '$admindir';
+# Directory with YaBB admin source files
+\$vardir = '$vardir';
+# Directory with variable files
+\$langdir = '$langdir';
+# Directory with Language files and folders
+\$helpfile = '$helpfile';
+# Directory with Help files and folders
+\$templatesdir = '$templatesdir';
+# Directory with template files and folders
+\$htmldir = '$htmldir';
+# Base Path for all public-html files and folders
+\$facesdir = '$facesdir';
+# Base Path for all avatar files
+\$uploaddir = '$uploaddir';
+# Base Path for all attachment files
+\$pmuploaddir = '$pmuploaddir';
+# Base Path for pm attachment files
+\$modimgdir = '$modimgdir';
+# Base Path for all mod images
 
 ########## URLs ##########
 
-\$yyhtml_root = '$yyhtml_root';                 # Base URL for all html/css files and folders
-\$facesurl = '$facesurl';                       # Base URL for all avatar files
-\$uploadurl = '$uploadurl';                     # Base URL for all attachment files
-\$pmuploadurl = '$pmuploadurl';                 # Base URL for pm attachment files
-\$modimgurl = '$modimgurl';                     # Base URL for all mod images
+\$yyhtml_root = '$yyhtml_root';
+# Base URL for all html/css files and folders
+\$facesurl = '$facesurl';
+# Base URL for all avatar files
+\$uploadurl = '$uploadurl'; 
+# Base URL for all attachment files
+\$pmuploadurl = '$pmuploadurl';
+# Base URL for pm attachment files
+\$modimgurl = '$modimgurl';
+# Base URL for all mod images
+
+if (\$ENV{'HTTPS'}) {
+    \$boardurl =~ s\/http:\/https:\/ixsm;
+    \$yyhtml_root =~ s\/http:\/https:\/ixsm;
+    \$facesurl =~ s\/http:\/https:\/ixsm;
+    \$pmuploadurl =~ s\/http:\/https:\/ixsm;
+    \$modimgurl =~ s\/http:\/https:\/ixsm;
+}
 
 1;
 EOF

@@ -563,18 +563,20 @@ sub delete_boards {
     my @oldcontrols = keys %control;
     foreach my $board (@x) {
         our ($BOARDDATA);
-        fopen( 'BOARDDATA', '<', "$boardsdir/$board.txt" )
-          or croak "$croak{'open'} BOARDDATA";
-        my @messages = <$BOARDDATA>;
-        fclose('BOARDDATA') or croak "$croak{'close'} BOARDDATA";
-        foreach my $curmessage (@messages) {
-            my ( $id, undef ) = split /[|]/xsm, $curmessage, 2;
-            unlink "$datadir/$id.txt";
-            unlink "$datadir/$id.mail";
-            unlink "$datadir/$id.ctb";
-            unlink "$datadir/$id.data";
-            unlink "$datadir/$id.poll";
-            unlink "$datadir/$id.polled";
+        if ( -e "$boardsdir/$board.txt" ) {
+            fopen( 'BOARDDATA', '<', "$boardsdir/$board.txt" )
+              or croak "$croak{'open'} BOARDDATA";
+            my @messages = <$BOARDDATA>;
+            fclose('BOARDDATA') or croak "$croak{'close'} BOARDDATA";
+            foreach my $curmessage (@messages) {
+                my ( $id, undef ) = split /[|]/xsm, $curmessage, 2;
+                unlink "$datadir/$id.txt";
+                unlink "$datadir/$id.mail";
+                unlink "$datadir/$id.ctb";
+                unlink "$datadir/$id.data";
+                unlink "$datadir/$id.poll";
+                unlink "$datadir/$id.polled";
+            }
         }
 
         delete $control{$board};
@@ -595,7 +597,7 @@ sub delete_boards {
                 undef, $amcurrentboard, undef,
                 undef, $amfn,           undef
             ) = split /[|]/xsm, $buffer[$aa];
-            if ( $amcurrentboard eq $board ) {
+            if ( $amcurrentboard && $amcurrentboard eq $board ) {
                 $buffer[$aa] = q{};
                 unlink "$upload_dir/$amfn";
             }

@@ -29,7 +29,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language/settings/paths ##
-our ( %croak, $adminbin, $maxdisplay, $boardsdir, $datadir, $scripturl, );
+our ( %croak, $adminbin, $maxdisplay, $boardsdir, $datadir, $scripturl, $vardir );
 ## system ##
 our (
     $binboard,      $currentboard, $iamadmin, $iamfmod,
@@ -123,7 +123,8 @@ sub remove_thread {
             }
         }
     };
-    if ( eval { require Variables::Movedthreads; 1 } ) {
+    if ( -e "$vardir/Movedthreads.pm" ) {
+        require Variables::Movedthreads;
         if ( !$moved_file{$thread} ) {
             moved_loop($thread);
             if ($save_moved) { save_moved_file(); }

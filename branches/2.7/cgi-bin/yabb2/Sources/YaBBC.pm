@@ -760,8 +760,6 @@ s/<\/tr>((?:(?!<tr>|<\/tr>|<td>|<\/td>|<table>|<\/table>).)*)<\/table>/<\/tr><\/
 }
 
 sub do_ubbc_to {
-
-    # Does UBBC to $_[0] using do_ubbc and keeps $message the same
     my ( $mess, undef, $displayname ) = @_;
     $mess = do_ubbc( $mess, q{}, $displayname );
     return $mess;

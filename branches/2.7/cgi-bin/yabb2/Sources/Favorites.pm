@@ -86,8 +86,7 @@ sub favorites {
     load_censor_list();
 
     my %attachments;
-    my $att_length = -s "$vardir/attachments.db";
-    if ( ( -s "$vardir/attachments.db" ) > 5 ) {
+    if ( -e "$vardir/attachments.db" && ( -s "$vardir/attachments.db" ) > 5 ) {
         our ($ATM);
         fopen( 'ATM', '<', "$vardir/attachments.db" )
           or croak "$croak{'open'} ATM";
@@ -249,7 +248,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
 
     $currentboard ||= q{};
     my $formstart =
-qq~<form name="multiremfav" action="$scripturl?action=multiremfav" method="post" style="display: inline">~;
+qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multiremfav" method="post" style="display: inline">~;
     $INFO{'start'} ||= q{};
     my $formend =
       qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;

@@ -110,112 +110,116 @@ sub main_menu {
 
     my $tabhtml_l = q~                        <li><span|><a href=~;
     my $tabhtml_r = qq~</span></li>\n~;
-    $tab{'home'} =
+    if ($scripturl) {
+        $tab{'home'} =
 qq~$tabhtml_l"$scripturl" title="$img_txt{'103'}">$img_txt{'103'}</a>$tabhtml_r~;
-    $tab{'help'} =
+        $tab{'help'} =
 qq~$tabhtml_l"$scripturl?action=help" title="$img_txt{'119'}" class="help">$img_txt{'119'}</a>$tabhtml_r~;
 
-    if (   $maxsearchdisplay
-        && $maxsearchdisplay > -1
-        && $advsearchaccess
-        && $advsearchaccess eq 'granted' )
-    {
-        $tab{'search'} =
+        if (   $maxsearchdisplay
+            && $maxsearchdisplay > -1
+            && $advsearchaccess
+            && $advsearchaccess eq 'granted' )
+        {
+            $tab{'search'} =
 qq~$tabhtml_l"$scripturl?action=search" title="$img_txt{'182'}">$img_txt{'182'}</a>$tabhtml_r~;
-    }
-    $show_eventbutton ||= 0;
-    if ( $show_eventbutton == 2 || ( !$iamguest && $show_eventbutton == 1 ) ) {
-        $tab{'eventcal'} =
+        }
+        $show_eventbutton ||= 0;
+        if ( $show_eventbutton == 2
+            || ( !$iamguest && $show_eventbutton == 1 ) )
+        {
+            $tab{'eventcal'} =
 qq~$tabhtml_l"$scripturl?action=eventcal;calshow=1" title="$img_txt{'eventcal'}">$img_txt{'eventcal'}</a>$tabhtml_r~;
-    }
-    $birthday_button_show ||= 0;
-    if ( $birthday_button_show == 2
-        || ( !$iamguest && $birthday_button_show == 1 ) )
-    {
-        $tab{'birthdaylist'} =
+        }
+        $birthday_button_show ||= 0;
+        if ( $birthday_button_show == 2
+            || ( !$iamguest && $birthday_button_show == 1 ) )
+        {
+            $tab{'birthdaylist'} =
 qq~$tabhtml_l"$scripturl?action=birthdaylist" title="$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a>$tabhtml_r~;
-    }
-    if (   !$ml_allowed
-        || ( $ml_allowed == 1 && !$iamguest )
-        || ( $ml_allowed == 2 && $staff )
-        || ( $ml_allowed == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $ml_allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
-    {
-        $tab{'ml'} =
+        }
+        if (   !$ml_allowed
+            || ( $ml_allowed == 1 && !$iamguest )
+            || ( $ml_allowed == 2 && $staff )
+            || ( $ml_allowed == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $ml_allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
+        {
+            $tab{'ml'} =
 qq~$tabhtml_l"$scripturl?action=ml" title="$img_txt{'331'}">$img_txt{'331'}</a>$tabhtml_r~;
-    }
-    if ($iamadmin) {
-        if   ($do_scramble_id) { $user = cloak($username); }
-        else                   { $user = $username; }
-        $tab{'admin'} =
-qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
-    }
-    if ($iamgmod) {
-        get_gmod();
-        if ($allow_gmod_admin) {
+        }
+        if ($iamadmin) {
             if   ($do_scramble_id) { $user = cloak($username); }
             else                   { $user = $username; }
             $tab{'admin'} =
 qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
         }
-    }
-    $sessionvalid ||= 0;
-    if ( $sessionvalid == 0 && !$iamguest && !$INFO{'set'} ) {
-        my $sesredir = q{};
-        if (   $testenv
-            && $action ne 'revalidatesession'
-            && $action ne 'revalidatesession2' )
-        {
-            $sesredir = $testenv;
-            $sesredir =~ s/\=/\~/gxsm;
-            $sesredir =~ s/;/x3B/gxsm;
-            $sesredir = qq~;sesredir=$sesredir~;
+        if ($iamgmod) {
+            get_gmod();
+            if ($allow_gmod_admin) {
+                if   ($do_scramble_id) { $user = cloak($username); }
+                else                   { $user = $username; }
+                $tab{'admin'} =
+qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
+            }
         }
-        $tab{'revalidatesession'} =
+        $sessionvalid ||= 0;
+        if ( $sessionvalid == 0 && !$iamguest && !$INFO{'set'} ) {
+            my $sesredir = q{};
+            if (   $testenv
+                && $action ne 'revalidatesession'
+                && $action ne 'revalidatesession2' )
+            {
+                $sesredir = $testenv;
+                $sesredir =~ s/\=/\~/gxsm;
+                $sesredir =~ s/;/x3B/gxsm;
+                $sesredir = qq~;sesredir=$sesredir~;
+            }
+            $tab{'revalidatesession'} =
 qq~$tabhtml_l"$scripturl?action=revalidatesession$sesredir" title="$img_txt{'34a'}">$img_txt{'34a'}</a>$tabhtml_r~;
-    }
-    if ($iamguest) {
-        my $sesredir = q{};
-        if ($testenv) {
-            $sesredir = $testenv;
-            $sesredir =~ s/\=/\~/gxsm;
-            $sesredir =~ s/;/x3B/gxsm;
-            $sesredir = qq~;sesredir=$sesredir~;
         }
-        my $logredir = "$scripturl?action=login$sesredir";
-        if ($loginform) {
-            $logredir =
+        if ($iamguest) {
+            my $sesredir = q{};
+            if ($testenv) {
+                $sesredir = $testenv;
+                $sesredir =~ s/\=/\~/gxsm;
+                $sesredir =~ s/;/x3B/gxsm;
+                $sesredir = qq~;sesredir=$sesredir~;
+            }
+            my $logredir = "$scripturl?action=login$sesredir";
+            if ($loginform) {
+                $logredir =
 "javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();";
-        }
-        $tab{'login'} =
+            }
+            $tab{'login'} =
 qq~$tabhtml_l"$logredir" title="$img_txt{'34'}">$img_txt{'34'}</a>$tabhtml_r~;
-        if ($regtype) {
-            $tab{'register'} =
+            if ($regtype) {
+                $tab{'register'} =
 qq~$tabhtml_l"$scripturl?action=register" title="$img_txt{'97'}">$img_txt{'97'}</a>$tabhtml_r~;
-        }
-        if ( $enable_guest_pm && $pm_level > 0 && $enable_bm_level > 0 ) {
-            $tab{'guestpm'} =
+            }
+            if ( $enable_guest_pm && $pm_level > 0 && $enable_bm_level > 0 ) {
+                $tab{'guestpm'} =
 qq~$tabhtml_l"$scripturl?action=guestpm" title="$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a>$tabhtml_r~;
+            }
         }
-    }
-    else {
-        $tab{'mycenter'} =
+        else {
+            $tab{'mycenter'} =
 qq~$tabhtml_l"$scripturl?action=mycenter" title="$img_txt{'mycenter'}">$img_txt{'mycenter'}</a>$tabhtml_r~;
-        $tab{'logout'} =
+            $tab{'logout'} =
 qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}</a>$tabhtml_r~;
-    }
+        }
 
-    if ($accept_permafull) {
-        my @gsttabs = qw( home register help search );
+        if ($accept_permafull) {
+            my @gsttabs = qw( home register help search );
 
-        my $scriptperm = qq~$perm_domain/$symlink/~;
-        foreach my $gtab ( keys %tab ) {
-            for (@gsttabs) {
-                if ( $gtab eq $_ ) {
-                    if ( $_ eq 'home' ) {
-                        $tab{$gtab} =~ s/$scripturl/$scriptperm/xsm;
+            my $scriptperm = qq~$perm_domain/$symlink/~;
+            foreach my $gtab ( keys %tab ) {
+                for (@gsttabs) {
+                    if ( $gtab eq $_ ) {
+                        if ( $_ eq 'home' ) {
+                            $tab{$gtab} =~ s/$scripturl/$scriptperm/xsm;
+                        }
+                        $tab{$gtab} =~ s/$scripturl[?]action\=/$scriptperm/xsm;
                     }
-                    $tab{$gtab} =~ s/$scripturl[?]action\=/$scriptperm/xsm;
                 }
             }
         }

@@ -257,7 +257,7 @@ sub ml_by_letter {
 
 sub ml_top {
     my %top_list = ();
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     while ( my ( $membername, $value ) = each %memberinf ) {
         my ( $memrealname, undef, undef, $mempsts ) = @{$value};
         $mempsts     ||= 0;
@@ -287,7 +287,7 @@ sub ml_top {
 
 sub ml_position {
     my %top_members = ();
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
 
     my %nopostorder;
     foreach my $i ( 0 .. $#nopostorder ) {
@@ -568,7 +568,7 @@ sub build_index {
           . qq~><img src="$index_togl{'index_togl'}" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
-            if ( $usermemberpage && $usermemberpage == 1 || $iamguest ) {
+            if ( ( $usermemberpage && $usermemberpage == 1 ) || $iamguest ) {
                 $pagetxtindexst = q~<span ~ . $pgindex_class . q~>~;
                 if ( !$iamguest ) {
                     $letter     ||= q{};
@@ -841,7 +841,7 @@ sub find_members {
     my $lookfor = qq~^$searchstr\$~;
     $lookfor =~ s/[*]+/.*?/gxsm;
 
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     my %memberfind = ();
     while ( my ( $membername, $value ) = each %memberinf ) {
         my ( $memrealname, $mememail, undef ) = @{$value};

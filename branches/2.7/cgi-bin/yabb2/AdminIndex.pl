@@ -47,7 +47,7 @@ our (
     $accept_permafull, $debug,          $extendedprofiles, $lastbackup,
     $maintenance,      $maxadminlog,    $mbname,           $perm_domain,
     $referersecurity,  $rememberbackup, $sessions,         $symlink,
-    $yymycharset
+    $default_tz,       $enabletz,       $dynamic_clock,
 );
 ## system ##
 our (
@@ -60,6 +60,7 @@ our (
     $yymain,           $yysetlocation,    $yytitle,
     %director,         %gmod_access,      %INFO,
     %mod_list,         $yyiis,            $year,
+    $timeselected,
 );
 ## template ##
 our ( $admin_template, $header, $leftmenu, $leftmenubottom, $leftmenutop,
@@ -401,30 +402,67 @@ qq~<a href="$boardurl/$yyexec.$yyext?action=mycenter" target="_blank">$admin_txt
         my $realname = ${ $uid . $username }{'realname'} || 'Administrator';
         $topmenu_five =~ s/USER/$realname/xsm;
     }
-
-    if ( $maintenance && $action ne 'detailedversion' ) {
-        $yyadmin_alert .=
-qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
-    }
-    if ( $iamadmin && $rememberbackup && $action ne 'detailedversion' ) {
-        if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
-            require Sources::DateTime;
+    my $yytime = q{};
+    my $yyjavascripta = q{};
+    if ( $action ne 'detailedversion' ) {
+        if ( $maintenance ) {
             $yyadmin_alert .=
+qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
+        }
+        if ( $iamadmin && $rememberbackup && $action ne 'detailedversion' ) {
+            if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
+                require Sources::DateTime;
+                $yyadmin_alert .=
 qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'617'} ~
               . timeformat($lastbackup)
               . q~</b></span>~;
+            }
         }
+        $yytime = timeformat( $date, 1 );
+        my $zone = q{};
+        if (   ( $default_tz eq 'UTC' )
+            || ( ${ $uid . $username }{'user_tz'} eq 'UTC' )
+            || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
+        {
+            $zone = qq~ $admin_txt{'UTC'} ~;
+        }
+        my $toffs = 0;
+        if ($enabletz) {
+            $toffs = toffs($date);
+        }
+        my $mytimeselected = $timeselected;
+        if (
+            $mytimeselected != 7
+            && ( $dynamic_clock
+                || ${ $uid . $username }{'dynamic_clock'} )
+          )
+        {
+            my ( $aa, $bb );
+            if ( $yytime =~ /(.*?)\d+:\d+((\w+)|:\d+)?/xsm ) {
+                ( $aa, $bb ) = ( $1, $3 );
+            }
+            $aa =~ s/<.+?>//gxsm;
+            if ( $mytimeselected == 6 ) { $bb = q{ }; }
+            $yytime =
+qq~&nbsp;<script type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
+            $yyjavascripta .= q~
+        var OurTime = ~
+          . sprintf( '%d', ( $date + $toffs ) )
+          . qq~000;\n        var YaBBTime = new Date();\n        var TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
+        }
+        $yytime .= $zone;
     }
 
     $yyadmin_alert ||= q{};
     $yytitle = qq~$mbname $admin_txt{'208'}: $yytitle~;
     $header =~ s/\Q{yabb title}\E/$yytitle/gxsm;
     $header =~ s/\Q{yabb style}\E/$adminstyle/gxsm;
-    $header =~ s/\Q{yabb charset}\E/$yymycharset/gxsm;
     $header =~ s/\Q{yabb javascript}\E/$yyjavascript/gxsm;
+    $header =~ s/\Q{yabb javascripta}\E/$yyjavascripta/gxsm;
 
     $leftmenutop =~ s/\Q{yabb images}\E/$adminimages/gxsm;
     $leftmenutop =~ s/\Q{yabb maintenance}\E/$yyadmin_alert/gxsm;
+    $leftmenutop =~ s/\Q{yabb time}\E/$yytime/gxsm;
     $topnav =~ s/\Q{yabb topmenu_one}\E/$topmenu_one/xsm;
     $topnav =~ s/\Q{yabb topmenu_two}\E/$topmenu_two/xsm;
     $topnav =~ s/\Q{yabb topmenu_tree}\E/$topmenu_tree/xsm;

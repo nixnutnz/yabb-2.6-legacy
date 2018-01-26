@@ -29,7 +29,7 @@ $yabb_dnloads = 'http://www.yabbforum.com/?page_id=32';
 $header = qq~<!DOCTYPE html>
 <html lang='en-US'>
 <head>
-    <meta charset="$yymycharset">
+    <meta charset="utf-8" />
     <title>{yabb title}</title>
     {yabb style}
     <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
@@ -78,6 +78,7 @@ $header = qq~<!DOCTYPE html>
                 toggleList(bars[i]);
         }
     }
+    {yabb javascripta}
     {yabb javascript}
     </script>
 </head>~;
@@ -85,7 +86,9 @@ $header = qq~<!DOCTYPE html>
 $leftmenutop = qq~
 <body>
     <img src="{yabb images}/$adminlogo" id="adminlogo" alt="Yet Another Bulletin Board" />
-    <div id="menu">{yabb maintenance}~;
+        <div id="menu">
+            <div id="yabbclock">{yabb time}</div>
+            {yabb maintenance}~;
 
 $leftmenubottom = qq~
     </div>

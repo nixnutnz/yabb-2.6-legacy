@@ -48,7 +48,7 @@ our (
     $uid,             $username, $yymain,          $yynavigation,
     $yytitle,         %board,    %cat,             %catcol,
     %catinfo,         %FORM,     %gmod_access2,    %INFO,
-    %memberinf,       %subboard, %yy_cookies,      @categoryorder,
+    %subboard,        %yy_cookies,      @categoryorder,
 );
 ## templates ##
 our (
@@ -452,8 +452,7 @@ sub plush_search2 {
                 my $pswiammod   = sub_pswiammod( $bdmods, $bdmodgroups );
                 my $cookiename  = "$cookiepassword$curboard$username";
                 my $crypass     = ${ $uid . $curboard }{'brdpassw'};
-                if (
-                       !$iamadmin
+                if (   !$iamadmin
                     && !$iamgmod
                     && !$pswiammod
                     && (  !$yy_cookies{$cookiename}
@@ -773,7 +772,8 @@ sub pmsearch {
     elsif ( $searchtype eq 'aspartial' ) { $searchtype = 4; }
     elsif ( $searchtype eq 'user' ) {
         $searchtype = 5;
-        manage_memberinfo('load');
+        our %memberinf;
+        require Variables::Memberinfo;
         foreach my $i ( keys %memberinf ) {
             if ( ${ $memberinf{$i} }[0] eq $search ) { $usern = $i; }
         }
@@ -851,8 +851,7 @@ sub pmsearch {
         chomp @scanthreads;
 
         ## reverse through messages
-        if ($enable_ubbc) { enable_yabbc(); }
-      POSTCHECK: foreach my $msgnum ( reverse 0 .. $#scanthreads ) {
+        foreach my $msgnum ( reverse 0 .. $#scanthreads ) {
             my (
                 $messageid,  $mfromuser,    $mtouser, $mccuser,
                 $mbccuser,   $msub,         $mdate,   $savedmessage,
@@ -863,7 +862,7 @@ sub pmsearch {
             ## if either max to display or outside of filter, next
             if ( $numfound && $numfound >= $display && $mdate <= $oldestfound )
             {
-                next POSTCHECK;
+                next;
             }
 
             $msub         = to_chars($msub);
@@ -871,19 +870,18 @@ sub pmsearch {
             $savedmessage = wrap($savedmessage);
             {
                 no strict qw(refs);
-                my $displayname = ${ $uid . $mfromuser }{'realname'};
                 if ( $enable_ubbc && $savedmessage !~ /#nosmileys/xsm ) {
+                    enable_yabbc();
+                    my $displayname = ${ $uid . $mfromuser }{'realname'};
                     $savedmessage = do_ubbc( $savedmessage, q{}, $displayname );
                 }
                 $savedmessage = wrap2($savedmessage);
             }
 
+            $userfound = 0;
             if ( $searchtype == 5 ) {
-                $userfound = 0;
-                foreach (@search) {
-                    if ( $mfromuser eq $_ || $mtouser eq $_ ) {
-                        $userfound = 1;
-                    }
+                if ( $mfromuser eq $search || $mtouser eq $search ) {
+                    $userfound = 1;
                 }
             }
             elsif ( $searchtype == 2 || $searchtype == 4 ) {
@@ -919,7 +917,7 @@ sub pmsearch {
             }
             ## blank? try next = else => build list from found mess/sub
             if ( !$msgfound && !$subfound && !$userfound ) {
-                next POSTCHECK;
+                next;
             }
 
             $data{$mdate} = [

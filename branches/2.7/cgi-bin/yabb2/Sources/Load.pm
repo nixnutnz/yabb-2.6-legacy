@@ -54,7 +54,7 @@ our (
     $iamfmod,          $iamgmod,       $iamguest,        $iammod,
     $language,         $menusep,       $my_blank_avatar, $password,
     $pathval,          $session_id,    $sessionvalid,    $staff,
-    $topicstarter,     $uid,           $use_menu_type,   $user_ip,
+    $uid,              $use_menu_type,   $user_ip,
     $username,         $yyexec,        $yyext,           $yysetlocation,
     %cat,              %FORM,          %format,          %format_unbold,
     %gmod_access2,     %img,           %ims,             %INFO,
@@ -64,7 +64,7 @@ our (
     @censored,         @other_cookies, $user
 );
 ## local ##
-our ( @allboards, $yyim, $yyuname, %thread_arrayref );
+our ( @allboards, $yyim, $yyuname, %thread_arrayref, $qlcount );
 
 ## our Mod Hook ##
 
@@ -288,8 +288,7 @@ sub load_usersettings {
                 if ( $sessionvalid == 1 ) {
                     ${ $uid . $username }{'session'} = $cursession;
                 }
-                my @age = calc_age( $username, 'calc' );
-                our $age = $age[4];
+                our $age = get_age($username);
 
                 # Set the order how Topic summaries are displayed
                 if ( !$adminscreen && $ttsureverse ) {
@@ -815,7 +814,6 @@ qq~<span style="color: $memstat[3];">${ $uid . $usr }{'realname'}</span>~;
     elsif ($iamguest) {
         no strict qw(refs);
         if ( $memstat[3] ) {
-            if ($profile_int) { $userlink = qq~<a href="$scripturl?action=link_profileview" style="color:$memstat[3];">$userlink</a>~;}
             $link{$usr} =
 qq~<span style="color:$memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
             $format{$usr} =
@@ -862,23 +860,18 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$userlink
             ( $viewnum, undef ) = split /\//xsm, $viewnum;
         }
 
-        # No need to open the message file so many times.
-        # Opening it once is enough to do the access checks.
-        if ( !$topicstarter ) {
-            if ( -e "$datadir/$viewnum.txt" ) {
-                if ( !ref $thread_arrayref{$viewnum} ) {
-                    our ($TOPSTART);
-                    fopen( 'TOPSTART', '<', "$datadir/$viewnum.txt" )
-                      or croak "$croak{'open'} TOPSTART";
-                    @{ $thread_arrayref{$viewnum} } = <$TOPSTART>;
-                    fclose('TOPSTART') or croak "$croak{'close'} TOPSTART";
-                }
-                ( undef, undef, undef, undef, $topicstarter, undef ) =
-                  split /[|]/xsm, ${ $thread_arrayref{$viewnum} }[0], 6;
+        if ( -e "$datadir/$viewnum.txt" ) {
+            if ( !ref $thread_arrayref{$viewnum} ) {
+                our ($TOPSTART);
+                fopen( 'TOPSTART', '<', "$datadir/$viewnum.txt" )
+                  or croak "$croak{'open'} TOPSTART";
+                @{ $thread_arrayref{$viewnum} } = <$TOPSTART>;
+                fclose('TOPSTART') or croak "$croak{'close'} TOPSTART";
             }
+            my ( undef, undef, undef, undef, $topicstarter, undef ) =
+              split /[|]/xsm, ${ $thread_arrayref{$viewnum} }[0], 6;
+            if ( $topicstarter && $usr eq $topicstarter ) { $topicstart{$usr} = 'Topic Starter'; }
         }
-
-        if ( $usr eq $topicstarter ) { $topicstart{$usr} = 'Topic Starter'; }
     }
     my (%memberaddgroup);
     {
@@ -947,8 +940,8 @@ sub quick_links {
     }
     my $quicklinks = q{};
     my (@memstats);
-    my $qlcount = 0;
     if ($usertools) {
+        no warnings qw(uninitialized);
         $qlcount++;
         my $modcol = is_moderator_b($usr);
         if ( $modcol == 1 ) {

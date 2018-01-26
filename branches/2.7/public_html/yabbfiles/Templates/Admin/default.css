@@ -722,5 +722,10 @@ table.border td { border: #a7b8cc thin solid; }
 #header a { color:#2d2d2d; }
 
 #header .highlight a { color: #3b5998; }
+
+#yabbclock {
+    color: #eee;
+    padding-left:1em;
+}
 /* Mod Hook Start*/
 /* Mod Hook End*/

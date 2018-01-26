@@ -2047,7 +2047,7 @@ qq~<div class="small attbox"><a href="$pmuploadurl/$pm_attachfile" target="_blan
                           )
                         : qq~<a href="$pmuploadurl/$pm_attachfile" target="_blank">~
                       )
-                      . qq~<img src="$pmuploadurl/$pm_attachfile" name="attach_img_resize" alt="$pm_attachfile" title="$pm_attachfile" style="display:none" /></a></div>\n~;
+                      . qq~<img src="$pmuploadurl/$pm_attachfile" id="attach_img_resize" alt="$pm_attachfile" title="$pm_attachfile" style="display:none" /></a></div>\n~;
                 }
                 else {
                     $pm_attachment .=

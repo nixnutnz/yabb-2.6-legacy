@@ -129,9 +129,9 @@ sub manageboardnotify {
     {
         if (%theboard) {
             my $printbrd = q{};
-            foreach ( sort keys %theboard ) {
+            foreach my $i ( sort keys %theboard ) {
                 $printbrd .=
-"\$theboard{'$_'} = [ '${$theboard{$_}}[0]', ${$theboard{$_}}[1], ${$theboard{$_}}[2] ];\n";
+"\$theboard{'$i'} = [ '${$theboard{$i}}[0]', ${$theboard{$i}}[1], ${$theboard{$i}}[2] ];\n";
             }
             $printbrd .= "\n1;\n";
             our ($BOARDNOTE);
@@ -281,9 +281,9 @@ sub managethreadnotify {
     {
         if (%thethread) {
             my $prnthread = q{};
-            foreach ( sort keys %thethread ) {
+            foreach my $i ( sort keys %thethread ) {
                 $prnthread .=
-"\$thethread{'$_'} = [ '${$thethread{$_}}[0]', ${$thethread{$_}}[1], ${$thethread{$_}}[2] ];\n";
+"\$thethread{'$i'} = [ '${$thethread{$i}}[0]', ${$thethread{$i}}[1], ${$thethread{$i}}[2] ];\n";
             }
             $prnthread .= "\n1;\n";
             our ($THREADNOTE);
@@ -635,6 +635,7 @@ sub notification_alert {
         if ( !-e "$datadir/$mythread.txt" ) {
             managethreadnotify( 'delete', $mythread, $username );
             if ( -e "$vardir/Movedthreads.pm" ) {
+                require Variables::Movedthreads;
                 next
                   if !exists $moved_file{$mythread} || !$moved_file{$mythread};
                 my $newthread;

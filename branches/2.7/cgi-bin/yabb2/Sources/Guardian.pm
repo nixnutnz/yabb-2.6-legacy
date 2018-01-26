@@ -52,6 +52,8 @@ our (
     $user_ip, $username, %director, %FORM,    %INFO,
 );
 
+## our Mod Hook ##
+
 my $not_from = $webmaster_email;
 my $not_to   = $webmaster_email;
 my ( $not_subject, $not_body, $abuse_time, );
@@ -69,7 +71,7 @@ sub guard {
     my $whitelisted = 0;
     foreach my $i (@white_list) {
         chomp $i;
-        if (
+        if ( $i ne q{} &&
             (
                    $proxy0 =~ m/$i/xsm
                 || $proxy1 =~ m/$i/xsm
@@ -77,7 +79,6 @@ sub guard {
                 || $proxy3 =~ m/$i/xsm
                 || $username eq $i
             )
-            && $i ne q{}
           )
         {
             $whitelisted = 1;
@@ -125,14 +126,14 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
 
     # Basic Value Setup
     my $remote = get_ip();
-    my (@remotes);
     if ( index $remote, q{, } ) {
-        @remotes = split /,\s*/xsm, $remote;
-        if (   $remotes[0] ne 'unknown'
+        my @remotes = split /,\s*/xsm, $remote;
+        if (
+            $remotes[0]
+            && $remotes[0] ne 'unknown'
             && $remotes[0] ne 'empty'
             && $remotes[0] ne '127.0.0.1'
-            && $remotes[0] ne '::1'
-            && $remotes[0] ne q{} )
+            && $remotes[0] ne '::1' )
         {
             $remote = $remotes[0];
         }
@@ -148,7 +149,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
         my $streferer = lc get_referer();
         foreach my $i (@refererlist) {
             chomp $i;
-            if ( $streferer =~ m/$i/xsm && $i ne q{} ) {
+            if ( $i ne q{} && $streferer =~ m/$i/xsm ) {
                 load_language('Guardian');
                 $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                 if ($referer_notify) {
@@ -193,7 +194,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
         my $agent = lc get_user_agent();
         foreach my $i (@harvesterlist) {
             chomp $i;
-            if ( $agent =~ m/$i/xsm && $i ne q{} ) {
+            if ( $i ne q{} && $agent =~ m/$i/xsm ) {
                 if ($harvester_notify) {
                     load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
@@ -289,7 +290,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
                 chomp $testkey;
                 $temp_query =~ s/$testkey//gxsm;
             }
-            if ( $temp_query =~ m/$i/xsm && $i ne q{} ) {
+            if ( $i ne q{} && $temp_query =~ m/$i/xsm ) {
                 if ($string_notify) {
                     load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
@@ -693,10 +694,9 @@ sub update_htaccess {
     my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
     if ( -e '.htaccess' ) {
-        our ($HTA);
-        fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} .htaccess";
+        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} .htaccess";
         @htlines = <$HTA>;
-        fclose('HTA') or croak "$croak{'close'} .htaccess";
+        close $HTA or croak "$croak{'close'} .htaccess";
     }
 
 # header to determine only who has access to the main script, not the admin script
@@ -726,10 +726,9 @@ sub update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        our ($HTA);
-        fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
+        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        fclose('HTA') or croak "$croak{'close'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
     return;
 }

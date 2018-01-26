@@ -189,7 +189,7 @@ sub timeformat {
     my $mytimeselected = $timeselected;
     {
         no strict qw(refs);
-        if ( ${ $uid . $username }{'timeselect'} ) {
+        if ( $username && ${ $uid . $username }{'timeselect'} ) {
             $mytimeselected = ${ $uid . $username }{'timeselect'};
         }
     }
@@ -420,52 +420,65 @@ sub timeformatcal {
 }
 
 sub calc_age {
-    my ( $user, $act ) = @_;
+    my ( $user ) = @_;
 
     my $toffs = toffs($date);
     my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];
     $year += 1900;
     my ( $umonth, $uday, $uyear );
-    my $age    = q{};
-    my $isbday = q{};
-    {
-        no strict qw(refs);
-        if ( ${ $uid . $user }{'bday'} ) {
-            my ( $usermonth, $userday, $useryear ) =
-              split /\//xsm, ${ $uid . $user }{'bday'};
+    no strict qw(refs);
+    if ( ${ $uid . $user }{'bday'} ) {
+        my ( $usermonth, $userday, $useryear ) =
+          split /\//xsm, ${ $uid . $user }{'bday'};
+        if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) { return; }
+        $umonth = $usermonth;
+        $uday   = $userday;
+        $uyear  = $useryear;
+    }
+    return ( $umonth, $uday, $uyear );
+}
 
-            if ( $act eq 'calc' ) {
-                if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) {
-                    $age = ${ $uid . $user }{'bday'};
-                }
-                else {
-                    $age = $year - $useryear;
-                    if ( $usermonth > $mon_num
-                        || ( $usermonth == $mon_num && $userday > $mday ) )
-                    {
-                        --$age;
-                    }
-                }
-            }
-            if ( $act eq 'parse' ) {
-                if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) { return; }
-                $umonth = $usermonth;
-                $uday   = $userday;
-                $uyear  = $useryear;
-            }
-            if ( $act eq 'isbday' ) {
-                if ( $usermonth == $mon_num && $userday == $mday ) {
-                    $isbday = 'yes';
-                }
-            }
+sub get_age {
+    my ( $user ) = @_;
+    my $toffs = toffs($date);
+    my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];
+    $year += 1900;
+    my $age = q{};
+    no strict qw(refs);
+    if ( ${ $uid . $user }{'bday'} ) {
+        my ( $usermonth, $userday, $useryear ) =
+          split /\//xsm, ${ $uid . $user }{'bday'};
+        if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) {
+            $age = ${ $uid . $user }{'bday'};
         }
         else {
-            $age    = q{};
-            $isbday = q{};
+            $age = $year - $useryear;
+            if ( $usermonth > $mon_num
+                || ( $usermonth == $mon_num && $userday > $mday ) )
+            {
+                --$age;
+            }
         }
     }
-    my @bday = ( $umonth, $uday, $uyear, $isbday, $age );
-    return @bday;
+    return $age;
+}
+
+sub get_bday {
+    my ( $user ) = @_;
+
+    my $toffs = toffs($date);
+    my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];
+    $year += 1900;
+    my $isbday = q{};
+    no strict qw(refs);
+    if ( ${ $uid . $user }{'bday'} ) {
+        my ( $usermonth, $userday, $useryear ) =
+          split /\//xsm, ${ $uid . $user }{'bday'};
+        if ( $usermonth == $mon_num && $userday == $mday ) {
+            $isbday = 'yes';
+        }
+    }
+    return $isbday;
 }
 
 sub number_format {

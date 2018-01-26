@@ -85,7 +85,7 @@ var contexthash = new Hash($contextlst);
     function showcontexthelp(conimage, contitle) {
         var conkey, contextimage, contexthelp = '';
         conkey = conimage.replace(/(.*)\\/(.*?)\\.(gif|png)/, "\$2");
-        if(conkey) contextimage = '<span class="ubbcbutton ubbcbuttonback"><img src="' + conimage + '" alt=" ' + contitle + '" \/><\/span>';
+        if(conkey) contextimage = '<span class="ubbcbutton2 ubbcbuttonback"><img src="' + conimage + '" alt=" ' + contitle + '" \/><\/span>';
         else conkey = conimage;
         contexthelp = contexthash.getItem(conkey);
         if(contexthelp === '') return true;

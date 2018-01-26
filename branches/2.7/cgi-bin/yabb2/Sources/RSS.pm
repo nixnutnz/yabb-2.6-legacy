@@ -73,7 +73,7 @@ my ($cachedate);
 # Read from a single board
 sub rss_board {
     my $board = $INFO{'board'};
-    if ($board) {
+    if ( $board && ${ $board{$board} }[0] !~ m/[ht|f]tps?\:\/\//xsm ) {
         my $topics = $INFO{'topics'} || $rss_limit || 10;
         if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
@@ -185,36 +185,29 @@ sub rss_board {
             $i++;    # Increment
         }
 
-        my $brdname = ${ $board{$boardname} }[0];
+        my $brdname = ${ $board{$board} }[0];
         $brdname = to_chars($brdname);
         $yytitle = $brdname;
         $mydesc  = q{};
 
         rss_template();
     }
-    else { rss_recent(); }
+    else { 
+        our $yysetlocation = "$scripturl?action=RSSrecent";
+        redirectexit();
+    }
     return;
 }
 
 sub rss_recent {
-    ### Arguments:
-    # catselect: use a specific category instead of the whole forum (optional)
-    # topics: Number of topics to show. Defaults to 10.
-    ###
-
-    # Settings
     my $topics = $INFO{'topics'} || $rss_limit || 10;
     if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
     $yytitle = "$topics $maintxt{'214b'}";
-
-    # If this is just a single category, handle it.
     if ( $INFO{'catselect'} ) {
         @categoryorder = ( $INFO{'catselect'} );
     }
 
-    # Find the latest $topics post times in all boards that we have access to
-    # and add them to a giant array
     my ( $threadlist, $boardnme ) = get_rss_threadlist($topics);
     my @threadlist = @{$threadlist};
     my %boardname  = %{$boardnme};
@@ -571,11 +564,11 @@ sub get_rss_mins {
     my ( $curnum, $msub, $category ) = @_;
     my $mins = q~       <item>
                 <title>~ . rss_description_trim($msub) . q~</title>
-                <link>~
-      . rss_description_trim("$scripturl?num=$curnum") . q~</link>
+                <link>~;
+    $mins .=  rss_description_trim("$scripturl?num=$curnum") . q~</link>
                 <category>~ . rss_description_trim($category) . q~</category>
-                <guid>~
-      . rss_description_trim("$scripturl?num=$curnum") . q~</guid>
+                <guid>~;
+    $mins .= rss_description_trim("$scripturl?num=$curnum") . q~</guid>
 ~;
     if ( $accept_permalink || $accept_permafull ) {
         my $permdate = permtimer($curnum);

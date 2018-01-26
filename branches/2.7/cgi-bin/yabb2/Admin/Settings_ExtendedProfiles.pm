@@ -683,7 +683,6 @@ sub ext_admin_edit2 {
         'text_multi'   => \&get_opts_text_multi,
         'select'       => \&get_opts_select,
         'radiobuttons' => \&get_opts_radiobuttons,
-        'checkbox'     => \&get_opts_checkbox,
         'spacer'       => \&get_opts_spacer,
         'image'        => \&get_opts_image,
     );

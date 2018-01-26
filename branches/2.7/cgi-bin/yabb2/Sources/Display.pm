@@ -276,6 +276,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
     load_censor_list();
 
     # Determine category
+    if ( !$currentboard ) { fatal_error( 'no_topic_found', $viewnum ); }
     my $curcat = ${ $uid . $currentboard }{'cat'};
 
     # Figure out the name of the category
@@ -317,7 +318,8 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
             $yysetlocation = "$scripturl?num=$newnum";
             redirectexit();
         }
-        if ( eval { require Variables::Movedthreads; 1 } ) {
+        if ( -e "$vardir/Movedthreads.pm" ) {
+            require Variables::Movedthreads;
             while ( exists $moved_file{$newnum} ) {
                 $newnum = $moved_file{$newnum};
                 next if exists $moved_file{$newnum};
@@ -398,6 +400,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
     if ( ( !$iamguest || $enable_guestposting )
         && access_check( $currentboard, 2 ) eq 'granted' )
     {
+        $vircurrentboard ||= q{};
         my $tmplink = (
             $enable_quickreply && $enable_quickjump
             ? 'javascript:document.postmodify.message.focus();'
@@ -474,23 +477,25 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
     my $dropdisplaynum = 10;
     my $startpage      = 0;
     my $max            = $mreplies + 1;
-    my $start          = 0;
+    my $do_rev = 0; 
+    if ( !$iamguest && $ttsreverse && $ttsureverse && $userthreadpage ) {
+        $do_rev = 1;
+    }
+    my $start = !$do_rev ? 0 : $mreplies;
     if ( $INFO{'start'} ) {
-
-        if ( $INFO{'start'} =~ /all/xsm && $showpageall != 0 ) {
+        if ( $INFO{'start'} =~ /all/xsm && $showpageall ) {
             $maxmessagedisplay = $max;
             $all               = 1;
             $allselected       = q~ selected="selected"~;
-            $start             = !$ttsreverse ? 0 : $mreplies;
+            $start             = !$do_rev ? 0 : $mreplies;
         }
         else {
             $start =
-              $INFO{'start'} !~ /\d/xsm
-              ? ( !$ttsreverse ? 0 : $mreplies )
+              $INFO{'start'} =~ /\D/xsm
+              ? ( !$do_rev ? 0 : $mreplies )
               : $INFO{'start'};
         }
     }
-    if ( $start =~ /\D/xsm ) { $start = 0; }
     $start = $start > $mreplies ? $mreplies : $start;
     $start =
       !$ttsreverse
@@ -521,7 +526,7 @@ qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$displa
     my $pageindexjs = q{};
 
     if ( ( $pagenumb && $pagenumb > 1 ) || $all ) {
-        if ( ( $userthreadpage && $userthreadpage == 1 ) || $iamguest ) {
+        if ( $userthreadpage || $iamguest ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
             if ( !$iamguest ) {
                 $pagetxtindexst .=
@@ -556,7 +561,7 @@ qq~<img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display
                     $tmpa++;
                 }
             }
-            if ( $endpage < $max - ($maxmessagedisplay) ) {
+            if ( $endpage < ( $max - $maxmessagedisplay ) ) {
                 $pageindexadd =
 qq~<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
             }
@@ -1069,7 +1074,7 @@ qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlna
                               )
                             : qq~<a href="$scripturl?action=downloadfile;file=$urlname" target="_blank">~
                           )
-                          . qq~<img src="$uploadurl/$i" name="attach_img_resize" alt="$i" title="$i" style="display:none" /></a></div>\n~;
+                          . qq~<img src="$uploadurl/$i" id="attach_img_resize" alt="$i" title="$i" style="display:none" /></a></div>\n~;
                     }
                     else {
                         $attachment .=
@@ -1102,7 +1107,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $i 
             && $mlm
             && $mlmb
             && ( !$tllastmodflag
-                || ( $mdate + ( $tllastmodtime * 60 ) ) < $mlm )
+                || ( $mdte + ( $tllastmodtime * 60 ) ) < $mlm )
           )
         {
             if ($mlmb) {
@@ -1247,8 +1252,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 && $showuserage
                 && ( !$showage || !${ $uid . $musername }{'hideage'} ) )
             {
-                my @age = calc_age( $musername, 'calc' );
-                my $age = $age[4] || q{};
+                my $age = get_age( $musername );
                 $template_age = qq~$display_txt{'age'}: $age<br />~;
             }
             my $dr_regdate = q{};
@@ -1397,9 +1401,9 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
         my $counterwords =
           $counter != 0 ? "$display_txt{'146'} #$counter - " : q{};
 
-        my $messdate = timeformat($mdate);
+        my $messdate = timeformat($mdte);
         if ($counterwords) {
-            $messdate = timeformat( $mdate, 0, 0, 0, 1 );
+            $messdate = timeformat( $mdte, 0, 0, 0, 1 );
         }
 
         # Print the post and user info for the poster.
@@ -1459,7 +1463,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                     $vircurrentboard ||= q{};
                     ( $outblock, $template_quote ) =
                       get_quote( $musername, $postmessage, $outblock, $counter,
-                        $viewnum, $mdate );
+                        $viewnum, $mdte );
                 }
             }
             my $timeset = 86400;
@@ -1472,7 +1476,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                     || (
                         $username eq $musername
                         && (  !$tlnomodflag
-                            || $date < $mdate + ( $tlnomodtime * $timeset ) )
+                            || $date < $mdte + ( $tlnomodtime * $timeset ) )
                     )
                 )
               )
@@ -1509,7 +1513,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
                     || (
                         $username eq $musername
                         && (  !$tlnodelflag
-                            || $date < $mdate + ( $tlnodeltime * 3600 * 24 ) )
+                            || $date < $mdte + ( $tlnodeltime * 3600 * 24 ) )
                     )
                 )
               )
@@ -2147,10 +2151,9 @@ sub next_prev {
     if ($countnosticky) { push @threadlist, @nostickythreadlist; }
 
     my $is = 0;
-    my ( $mnum, $mdate );
     my $datecount = 0;
     foreach my $i ( 0 .. $#threadlist ) {
-        ( $mnum, undef, undef, undef, $mdate, undef ) =
+        my ( $mnum, undef, undef, undef, $mdate, undef ) =
           split /[|]/xsm, $threadlist[$i], 6;
         if ( $mnum == $name ) {
             if ( $i > 0 ) {

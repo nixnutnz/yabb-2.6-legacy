@@ -208,7 +208,7 @@ sub print_im {
                     $pm_showattach .=
 qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pm_attachfile ( ~
                       . int( $filesize / 1024 )
-                      . qq~ KB)<br /><img src="$pmuploadurl/$pm_attachfile" name="attach_img_resize" alt="$pm_attachfile" title="$pm_attachfile" style="display:none;" /></div>\n~;
+                      . qq~ KB)<br /><img src="$pmuploadurl/$pm_attachfile" id="attach_img_resize" alt="$pm_attachfile" title="$pm_attachfile" style="display:none;" /></div>\n~;
                 }
                 else {
                     $pm_attachment .=
@@ -513,13 +513,13 @@ sub print_post {
     my $startedon = timeformat( $dte, 1 );
     $messagetitle = to_chars($messagetitle);
     ( $messagetitle, undef ) = split_splice_move( $messagetitle, 0 );
-    my $page_title = $post ? $maintxt{'668a'} : $maintxt{'668'};
+    my $page_title = $maintxt{'668a'};
 
     ### Lets output all that info. ###
 
     load_language('FA');
     my $printthread = q{};
-    if (@{ $thread_arrayref{$num} }[$post - 1] ) {
+    if ( @{ $thread_arrayref{$num} }[$post - 1] ) {
             my (
                 $threadtitle, $threadposter, undef, $threaddate,
                 undef,        undef,         undef, undef,
@@ -590,7 +590,7 @@ sub print_post {
                         $showattach .=
 qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | $attach_count{$_} $download_txt )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
+                          . qq~ KB | $attach_count{$_} $download_txt )<br /><img src="$uploadurl/$_" id="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
                     }
                     else {
                         $attachment .=
@@ -775,7 +775,7 @@ sub print_thread {
                         $showattach .=
 qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | $attach_count{$_} $download_txt )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
+                          . qq~ KB | $attach_count{$_} $download_txt )<br /><img src="$uploadurl/$_" id="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
                     }
                     else {
                         $attachment .=

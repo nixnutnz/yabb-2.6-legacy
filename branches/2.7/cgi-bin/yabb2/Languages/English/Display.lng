@@ -100,8 +100,6 @@ q~Hi there Guest,<br><br>It looks like you are enjoying reading our forum, so wh
     '725f'            => q~Ban IP~,
 );
 
-%zodiac_txt = (                                #YaBB Zodiac
-    'sign' => q~Zodiac sign~,
-);
+%zodiac_txt = ( 'sign' => q~Zodiac sign~, );
 
 1;

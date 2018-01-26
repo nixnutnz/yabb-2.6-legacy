@@ -226,6 +226,7 @@ sub main_help {
     my $help_body = $body_header;
     $help_body =~ s/\Q{yabb section_anchor}\E/$section_name/gxsm;
     $help_body =~ s/\Q{yabb section_name}\E/$section_nam/gxsm;
+    $help_body =~ s/\Q{yabb boardname}\E/$brd_id/gxsm;
 
     my $i = 1;
     {
@@ -246,6 +247,7 @@ sub main_help {
             my $section_sub    = ${"section_sub$i"};
             $section_sub =~ s/_/ /gxsm;
             $section_anchor =~ s/\Q{yabb myboardname}\E/$brd_id/gxsm;
+            $section_anchor =~ s/\Q{yabb_boardname}\E/$mbname/gxsm;
             $section_anchor =~ s/[ ]/_/gxsm;
             $help_body =~ s/\Q{yabb section_anchor}\E/$section_anchor/gxsm;
             $help_body =~ s/\Q{yabb section_sub}\E/$section_sub/gxsm;
@@ -325,11 +327,13 @@ sub do_contents {
     my $brd_id    = $mbname;
     $brd_id =~ s/[ ]/_/gxsm;
     $section_name =~ s/\Q{yabb myboardname}\E/$brd_id/gxsm;
+
     my $section_nam = $section_name;
     $section_nam =~ s/_/ /gxsm;
     $tempparse =~ s/\Q{yabb section_anchor}\E/$section_name/gxsm;
     $tempparse =~ s/\Q{yabb section_name}\E/$section_nam/gxsm;
     $tempparse =~ s/\Q{top_img}\E/$top_img/gxsm;
+    $tempparse =~ s/\Q{yabb boardname}\E/$mbname/gxsm;
     my $contents = $tempparse;
 
     $contents .= q~<ul class="help_ul">~;
@@ -346,16 +350,19 @@ sub do_contents {
                 next;
             }
 
-            my $section_anchor = ${"section_sub$i"};
-            ${"section_sub$i"} =~ s/_/ /gxsm;
+            my $section_anchor = ${ "section_sub$i" };
+            ${ "section_sub$i" } =~ s/_/ /gxsm;
+            $section_anchor =~ s/\Q{yabb_boardname}\E/$mbname/gxsm;
+            ${ "section_sub$i" } =~ s/\Q{yabb_boardname}\E/$mbname/gxsm;
 
+            $section_anchor =~ s/\s/_/gxsm;
             $tempparse = $content_item;
             $tempparse =~ s/\Q{yabb anchor}\E/$section_anchor/gxsm;
             $tempparse =~ s/\Q{yabb myboardname}\E/$brd_id/gxsm;
             $tempparse =~ s/\Q{yabb content}\E/${ "section_sub$i" }/gxsm;
 
             $contents .= $tempparse;
-            ${"section_sub$i"} = q{};
+            ${ "section_sub$i" } = q{};
             $i++;
         }
     }

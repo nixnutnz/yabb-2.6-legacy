@@ -280,7 +280,7 @@ qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$usern
     }
     my @mailgroups = split /\,\s/xsm, $FORM{'field1'};
     our %memberinf;
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     my $i = 0;
     my ( $emailsubject, $emailtext );
     foreach my $user ( keys %memberinf ) {
@@ -399,7 +399,7 @@ sub mailing_members {
 
     my %top_members = ();
     our %memberinf;
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     while ( my ( $membername, $value ) = each %memberinf ) {
         my ( $memberrealname, undef, $memposition, $memposts ) = @{$value};
         $memposts ||= 0;

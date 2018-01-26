@@ -878,7 +878,28 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
           or croak "$croak{'open'} $templatesdir/$folderindir: $OS_ERROR";
         my @template_dir = readdir DIR;
         closedir DIR;
+        my %newcheck = ();
         @template_dir = sort @template_dir;
+        my $nvercheck = 1;
+        if ( $folderindir ne 'default' && -e "$templatesdir/$folderindir/checksum.txt" ) {
+            %newcheck = ();
+            our ($CHK);
+            fopen( 'CHK', '<', "$templatesdir/$folderindir/checksum.txt" )
+              or croak "$croak{'open'} tchecksum";
+            my @checksum = <$CHK>;
+            fclose('CHK') or croak "$croak{'close'} checksum";
+            chomp @checksum;
+            foreach my $i (@checksum) {
+               my ( $key, $check ) = split /[|]/xsm, $i;
+               my @keys = split /\//xsm, $key;
+               $newcheck{ $keys[-1] } = $check;
+            }
+            $nvercheck = 0;
+            }
+        elsif ( $folderindir eq 'default' && -e "$vardir/checksum.txt" ) {
+            %newcheck = %checksum;
+            $nvercheck = 0;
+        }
         foreach my $filein_dir (@template_dir) {
             chomp $filein_dir;
             if ( $filein_dir =~ m/[.]template\Z/xsm ) {
@@ -908,8 +929,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 $date = scalar localtime $age;
                 if (
                     (
-                        $vercheck == 0 && ( $checksum{$filein_dir}
-                            && $linec ne $checksum{$filein_dir} )
+                        $vercheck == 0 && ( $newcheck{$filein_dir}
+                            && $linec ne $newcheck{$filein_dir} )
                     )
                     || ( $vercheck == 1 && $age > $ver_age )
                   )
@@ -944,7 +965,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 my $age =
                   ( stat("$templatesdir/$folderindir/$filein_dir")->mtime );
                 $date = scalar localtime $age;
-                if (   ( $vercheck == 0 && $linec ne $checksum{$filein_dir} )
+                if (   ( $vercheck == 0 && $newcheck{$filein_dir} && $linec ne $newcheck{$filein_dir} )
                     || ( $vercheck == 1 && $age > $ver_age ) )
                 {
                     $chkmatch =
@@ -989,7 +1010,7 @@ s/<!--\s YaBB\s (.*?)\s \$Revision\:\s (.*?)\s \$\s -->/YaBB $1 Build $2/igxsm;
                         if (
                             (
                                    $vercheck == 0
-                                && $linec ne $checksum{"$folderindir.html"}
+                                && $newcheck{"$folderindir.html"} && $linec ne $newcheck{"$folderindir.html"}
                             )
                             || ( $vercheck == 1 && $age > $ver_age )
                           )

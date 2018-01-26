@@ -109,7 +109,7 @@ sub recent_posts {
                         $tusername, $ticon, $tstate
                     ) = split /[|]/xsm, $buffer[$i];
                     chomp $tstate;
-                    if ( $tstate !~ /h/sm || $iamadmin || $iamgmod ) {
+                    if ( $tstate !~ /h/xsm || $iamadmin || $iamgmod ) {
                         my $mtime = $tdate;
                         $data[$numfound] =
 "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
@@ -353,9 +353,6 @@ sub recent_topics {
             fopen( 'REC_BDTXT', '<', "$boardsdir/$curboard.txt" )
               or croak "$croak{'open'} $curboard.txt";
             my @buffer = <$REC_BDTXT>;
-            if ( !$display ) {
-                $display = scalar @buffer;
-            }
             fclose('REC_BDTXT') or croak "$croak{'close'} $curboard.txt";
             if ( !$display ) {
                 $display = scalar @buffer;

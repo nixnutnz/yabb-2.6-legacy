@@ -50,12 +50,13 @@ our (
 sub boardtotals {
     my ( $job, @updateboards ) = @_;
     if ( !@updateboards ) { @updateboards = @allboards; }
+    no strict qw(refs);
     my (@boardvars);
-    if ( $updateboards[0] ) {
-        no strict qw(refs);
+    if ($updateboards[0]) {
         chomp @updateboards;
         our %totals;
         require "$boardsdir/forum.totals";
+        no warnings qw(uninitialized);
         my @brd_tags =
           qw(threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);
         if ( $job eq 'load' ) {
@@ -426,7 +427,7 @@ sub membership_count_total {
     fclose('MEMTTL') or croak "$croak{'close'} MEMTTL";
 
     if ($wantarray) {
-        manage_memberinfo('load');
+        require Variables::Memberinfo;
         my @inf            = @{ $memberinf{$latestmember} };
         my $latestrealname = $inf[0];
         undef %memberinf;
@@ -674,7 +675,7 @@ sub rearrange_sticky {
 sub job_update {
     my ($updatethread) = @_;
     no strict qw(refs);
-    if ( !${$updatethread}{'board'} )
+    if ( !${ $updatethread }{'board'} )
     {    ## load if the variable is not already filled
         message_totals( 'load', $updatethread );
     }
@@ -684,12 +685,12 @@ sub job_update {
 sub job_load {
     my ($updatethread) = @_;
     no strict qw(refs);
-    if ( ${$updatethread}{'board'} ) {
+    if ( ${ $updatethread }{'board'} ) {
         return;
     }    ## skip load if the variable is already filled
     if ( -e "$datadir/$updatethread.ctb" ) {
         require "$datadir/$updatethread.ctb";
-        @repliers = split /,/xsm, ${$updatethread}{'repliers'};
+        @repliers = split /,/xsm, ${ $updatethread }{'repliers'};
         return @repliers;
     }
     return;
@@ -739,14 +740,14 @@ sub do_updatebrds {
 
 sub get_curmemb {
     my ( $usr, $memaction, $mychk ) = @_;
-    my $return = q{};
-    manage_memberinfo('load');
+    my $ret = q{};
+    require Variables::Memberinfo;
     while ( my ( $curmemb, $value ) = each %memberinf ) {
         my ( $curname, $curmail, $curposition, $curpostcnt ) = @{$value};
         if ( $memaction eq 'check_exist' ) {
             if ( lc $usr eq lc $curmemb && ( !$mychk || $mychk == 0 ) ) {
                 undef %memberinf;
-                $return = $curmemb;
+                $ret = $curmemb;
             }
             elsif ($curmail
                 && lc $usr eq lc $curmail
@@ -754,11 +755,11 @@ sub get_curmemb {
                 && $mychk == 2 )
             {
                 undef %memberinf;
-                $return = $curmail;
+                $ret = $curmail;
             }
             elsif ( lc $usr eq lc $curname && $mychk && $mychk == 1 ) {
                 undef %memberinf;
-                $return = $curname;
+                $ret = $curname;
             }
         }
         elsif (
@@ -769,10 +770,10 @@ sub get_curmemb {
           )
         {
             undef %memberinf;
-            $return = $curmemb;
+            $ret = $curmemb;
         }
     }
-    return $return;
+    return $ret;
 }
 
 sub print_vars {

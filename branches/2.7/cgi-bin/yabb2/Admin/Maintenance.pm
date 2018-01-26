@@ -273,7 +273,8 @@ sub rebuild_messageindex {
     # then look backwards to delete the other entries in
     # the Moved-Info-row if their files were deleted
     our %moved_file;
-    if ( eval { require Variables::Movedthreads } ) {
+    if ( -e "$vardir/Movedthreads.pm" ) {
+        require Variables::Movedthreads;
         my $save_moved;
         local *moved_loop = sub {
             my $th = shift;

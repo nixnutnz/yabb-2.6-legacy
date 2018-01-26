@@ -957,8 +957,7 @@ sub multi_del {    # deletes single- or multi-Posts
             chomp $messages[$count];
             @message = split /[|]/xsm, $messages[$count];
             $musername = $message[4];
-            my $deltime = $message[3];
-            check_delperm( $musername, $deltime );
+            check_delperm( $musername, $message[3] );
 
             if ( $message[12] ) {    # _remove_ post attachments
                 require Admin::Attachments;
@@ -1098,7 +1097,7 @@ sub get_grp_after {
     my ( $currentbrd, $musr, $thread, $messages ) = @_;
     my @messages  = @{$messages};
     my $grp_after = q{};
-    no strict q(refs);
+    no strict qw(refs);
     if (   !${ $uid . $currentbrd }{'zero'}
         && $musr ne 'Guest'
         && $message[6] ne 'no_postcount' )
@@ -1179,8 +1178,7 @@ sub get_fixtime {
         if (
             (
                 ${ $uid . $currbrd }{'modtopic'} == 0
-                || $date <
-                $mdate + ( ${ $uid . $currbrd }{'modtopic'} * $timeset )
+                || $date < $mdate + ( ${ $uid . $currbrd }{'modtopic'} * $timeset )
             )
           )
         {

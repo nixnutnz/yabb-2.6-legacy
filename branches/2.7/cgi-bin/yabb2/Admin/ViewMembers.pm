@@ -36,7 +36,7 @@ our (
     %link,      %ml_txt,    %pidtxt,   %selchksel, @alpha,
 );
 ## paths ##
-our ( $adminurl, $imagesdir, $scripturl, $yyhtml_root, );
+our ( $adminurl, $defaultimagesdir, $scripturl, $yyhtml_root, );
 ## settings ##
 our (
     $barmax,        $barmaxdepend, $barmaxnumb,  $defaultml,
@@ -50,6 +50,8 @@ our (
     $yytitle,     %FORM,     %gmod_access, %INFO,
     %memberinf,
 );
+
+my $imagesdir = $defaultimagesdir;
 
 load_language('Admin');
 load_language('MemberList');
@@ -182,7 +184,7 @@ sub viewmlbyletter {
     $letter = decode_utf8( $INFO{'letter'} );
     $letter ||= q{};
     my $j = 0;
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     my ( %namehash, @to_show );
     foreach my $i ( keys %memberinf ) {
         my @inf = @{ $memberinf{$i} };
@@ -264,7 +266,7 @@ sub viewmlbyletter {
 sub viewmltop {
     my %top_list = ();
 
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     while ( my ( $membername, $value ) = each %memberinf ) {
         my ( $memrealname, undef, undef, $memposts ) = @{$value};
         $memposts ||= 0;
@@ -299,7 +301,7 @@ sub viewmltop {
 
 sub viewmlposition {
     my %top_members = ();
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     while ( my ( $membername, $value ) = each %memberinf ) {
         my ( $memberrealname, undef, $memposition, $memposts ) = @{$value};
         $memposts ||= 0;
@@ -1018,8 +1020,7 @@ $gmodsubmit
 
 sub ml_lastpost {
     my %top_members = ();
-
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     {
         no strict qw(refs);
         foreach my $i ( keys %memberinf ) {
@@ -1145,7 +1146,7 @@ sub viewfindmembers {
     my $look_for = qq~^$searchstr\$~;
     $look_for =~ s/[*]+/.*?/gxsm;
 
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     my %memberfind = ();
     while ( my ( $membername, $value ) = each %memberinf ) {
         my ( $memrealname, $mememail, undef ) = @{$value};

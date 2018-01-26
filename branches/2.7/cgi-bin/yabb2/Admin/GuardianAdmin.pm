@@ -55,6 +55,8 @@ our (
 our ( $action_area, $date, $language, $yymain, $yysetlocation, $yytitle, %FORM,
     %INFO, );
 
+## our Mod Hook ##
+
 load_language('Admin');
 load_language('Guardian');
 my $adminimages = "$yyhtml_root/Templates/Admin/default";
@@ -421,10 +423,9 @@ sub gr_update_htaccess {
     my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
     if ( -e '.htaccess' ) {
-        our ($HTA);
-        fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
+        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
         @htlines = <$HTA>;
-        fclose('HTA') or croak "$croak{'close'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
 
 # header to determine only who has access to the main script, not the admin script
@@ -456,10 +457,9 @@ sub gr_update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        our ($HTA);
-        fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
+        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        fclose('HTA') or croak "$croak{'close'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
         return;
     }
     elsif ( $act eq 'add' ) {

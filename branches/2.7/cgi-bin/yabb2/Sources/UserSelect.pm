@@ -15,7 +15,6 @@
 use strict;
 no strict qw(refs);
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode_utf8 encode_utf8);
@@ -255,8 +254,8 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                 load_user($recentname);
             }
             if ( ${ $uid . $recentname }{'realname'} ) {
-                $memberinf{$recentname} =
-qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
+                $memberinf{$recentname}[0] = ${ $uid . $recentname }{'realname'};
+                $memberinf{$recentname}[1] = ${ $uid . $recentname }{'email'};
             }
         }
     }
@@ -353,6 +352,7 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
         )
       )
     {
+        no warnings qw(uninitialized);
         foreach my $membername (
             sort { lc ${ $memberinf{$a} }[0] cmp lc ${ $memberinf{$b} }[0] }
             keys %memberinf

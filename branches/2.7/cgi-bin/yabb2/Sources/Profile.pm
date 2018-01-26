@@ -394,6 +394,9 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $my_show_ext_prof = ext_editprofile( $user, 'edit' ) || q{};
     }
 
+    if ( $birthday_on_reg > 1 ) {
+        $myrequirebd = qq~ <span class="small">$profile_txt{'563b'}</span>~;
+    }
     $show_profile .= qq~
 <form action="$scripturl?action=$script_action;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" autocomplete="off" name="creator" accept-charset="$yymycharset">
 $myprofile_edit~;
@@ -641,6 +644,11 @@ qq~$profile_txt{'editmyprofile'} ($user) &rsaquo; $profile_txt{'818'}~;
         $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $profiletitle~;
     }
+    else {
+        $profiletitle =
+          qq~$profile_txt{'79'} ($user) &rsaquo; $profile_txt{'818'}~;
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
     my ( $my_show_avatar, $my_allow_avatars ) = edit_avatar();
     my $my_addmemgroup = edit_memgroup();
@@ -760,7 +768,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
               keys %countrytime_txt;
             $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
             $user_tz_select .=
-              qq~<option value="UTC"${isselected($mytz eq 'UTC')}>UTC</option>\n~;
+qq~<option value="UTC"${isselected($mytz eq 'UTC')}>UTC</option>\n~;
             foreach my $i (@mycntry) {
                 $user_tz_select .=
 qq~<option value="$i"${isselected($mytz eq $i)}>$countrytime_txt{$i}</option>\n~;
@@ -813,6 +821,7 @@ qq~\n<option value="local"${isselected($mytz eq 'local')}>$profile_txt{'372a'}</
 qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="width_100">$signature</textarea><br />~;
     $show_profile .= $myprofile_options_b;
 
+    ${ $uid . $user }{'usertext'} ||= q{};
     $my_extprofile ||= q{};
     $show_profile =~ s/\Q{yabb usertext}\E/${ $uid . $user }{'usertext'}/xsm;
     $show_profile =~ s/\Q{yabb profiletitle}\E/$profiletitle/xsm;
@@ -2321,8 +2330,8 @@ sub getipban {
             $banlink[$ip] =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'905a'}$ip_ban[$ip]');">$profile_txt{'905'}</a> ]</span>~;
         }
-        elsif ( !${ $uid . $user }{'position'}
-            || ${ $uid . $user }{'position'} ne 'Administrator' )
+        elsif ( ( !${ $uid . $user }{'position'}
+            || ${ $uid . $user }{'position'} ne 'Administrator' ) && ( $iamadmin || $iamgmod ) )
         {
             $banlink[$ip] = qq~<span class="small">[ $profile_txt{'908'}: ~;
             my @timeban = qw( d w m p );
@@ -2414,8 +2423,7 @@ qq~ $profile_txt{'gender_edit_2'} $edit_gendercount $profile_txt{'dob_edit_4'}~;
 
 sub edit_bday {
     my $edit_agecount = 0;
-    my @bday = calc_age( $user, 'parse' );
-    my ( $umonth, $uday, $uyear, $isbday, $age ) = @bday;
+    my ( $umonth, $uday, $uyear ) = calc_age($user);
     $edit_agelimit ||= 0;
     my $disable_bday_fields = q{};
     my $edit_agetxt         = q{};
@@ -3827,10 +3835,8 @@ sub get_profile_gen {
 }
 
 sub get_profile_age {
-    my @age    = calc_age( $user, 'calc' );
-    my $age    = $age[4];                       # How old is he/she?
-    my @isbday = calc_age( $user, 'isbday' );
-    my $isbday = $isbday[3];                    # is it the bday?
+    my $age    = get_age($user);
+    my $isbday = get_bday($user);    # is it the bday?
     if ($isbday) {
         $isbday = qq~<img src="$imagesdir/$my_bdaycake" />~;
     }

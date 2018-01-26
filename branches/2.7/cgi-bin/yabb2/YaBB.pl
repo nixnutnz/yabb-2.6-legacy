@@ -163,7 +163,10 @@ if ( $ENV{REQUEST_METHOD} =~ /post/ixsm ) {
     if ( $cgi_query && $cgi_query->cgi_error() ) {
         fatal_error( 'denial_of_service', $cgi_query->cgi_error() );
     }
-    if ( decloak( $FORM{'formsession'} ) ne "$mbname$username" ) {
+    my $ckr = $mbname;
+    $ckr .= $username;
+
+    if ( $FORM{'formsession'} && decloak( $FORM{'formsession'} ) ne $ckr ) {
         if ( $action eq 'login2' && $username ne 'Guest' ) {
             fatal_error( 'logged_in_already', $username );
         }

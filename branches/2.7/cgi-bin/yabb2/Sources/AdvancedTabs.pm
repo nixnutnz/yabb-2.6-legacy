@@ -230,8 +230,8 @@ sub edit_tab {
                 || ( $tab_access < 3 && $iamgmod )
                 || $iamadmin )
             {
-                if ( $tmptab_url == 1 ) { $tab_url = $scripturl; }
-                elsif ( $tmptab_url == 2 ) {
+                if ( $tmptab_url eq '1' ) { $tab_url = $scripturl; }
+                elsif ( $tmptab_url eq '2' ) {
                     $tab_url = qq~$boardurl/AdminIndex.$yyaext~;
                 }
                 else { $tab_url = $tmptab_url; }

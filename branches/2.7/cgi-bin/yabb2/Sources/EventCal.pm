@@ -216,7 +216,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
       get_cal_sys( $mon, $year, $mday );
 
     if ( !$show_colorlinks ) {
-        manage_memberinfo('load');
+        require Variables::Memberinfo;
     }
 
     # Add Events and GoTo
@@ -692,12 +692,14 @@ sub get_cal_allow {
     else {
       no strict qw(refs);
       foreach my $element ( split /,/xsm, $cal_event_perms ) {
-            if ( $element eq ${ $uid . $username }{'position'} ) {
+            if ( ${ $uid . $username }{'position'} && $element eq ${ $uid . $username }{'position'} ) {
                 $allow_event_input = 1;
                 last;
             }
-            foreach my $i ( split /,/xsm, $memberaddgroup{$username} ) {
-                if ( $element eq $i ) { $allow_event_input = 1; last; }
+            if ($memberaddgroup{$username}) {
+                foreach my $i ( split /,/xsm, $memberaddgroup{$username} ) {
+                    if ( $element eq $i ) { $allow_event_input = 1; last; }
+                }
             }
         }
         if ( !$allow_event_input && $cal_event_mods ) {
@@ -1288,15 +1290,15 @@ sub get_cal_greet3 {
                 $greet = $var_cal{'bdayhide'};
             }
             $out3 .=
-qq~<div class="small">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet<hr class="hr2" /></div>~;
+qq~<div class="small calhr">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet<hr class="hr2" /></div>~;
         }
         elsif ( $ctype eq 'c' ) {
             $out3 .=
-qq~<div class="small">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent<hr class="hr2" /></div>~;
+qq~<div class="small calhr">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent<hr class="hr2" /></div>~;
         }
         else {
             $out3 .=
-qq~<div class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent<hr class="hr2" /></div>~;
+qq~<div class="small calhr">$cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent<hr class="hr2" /></div>~;
         }
     }
     else {

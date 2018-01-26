@@ -55,6 +55,7 @@ require Paths;
 my $yyext = 'pl';
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
+our $scripturl = "$boardurl/Dobackup.$yyext";
 
 my %pathconvert     = ();
 my $q               = CGI->new;
@@ -400,27 +401,28 @@ sub RecurseDirectory {
 
 # Simple subroutine to run through every entry in a directory and return a giant list of the files/subdirs.
     my ( $dir, $recursemode ) = @_;
-    my ( $item, @dirlist, @newcontents );
+    my ( @newcontents );
+    if ( -d $dir ) {
+        opendir RECURSEDIR, $dir;
+        my @dirlist = readdir RECURSEDIR;
+        closedir RECURSEDIR;
 
-    opendir RECURSEDIR, $dir;
-    @dirlist = readdir RECURSEDIR;
-    closedir RECURSEDIR;
-
-    foreach my $item (@dirlist) {
-        if (   $recursemode
-            && $item ne q{.}
-            && $item ne q{..}
-            && -d "$dir/$item" )
-        {
-            push @newcontents, RecurseDirectory( "$dir/$item", $recursemode );
-        }
-        elsif (
-            -f "$dir/$item"
-            && (  !$backupnewest
-                || $backupnewest > -M "$dir/$item" )
-          )
-        {
-            push @newcontents, "$dir/$item";
+        foreach my $item (@dirlist) {
+            if (   $recursemode
+                && $item ne q{.}
+                && $item ne q{..}
+                && -d "$dir/$item" )
+            {
+                push @newcontents, RecurseDirectory( "$dir/$item", $recursemode );
+            }
+            elsif (
+                -f "$dir/$item"
+                && (  !$backupnewest
+                    || $backupnewest > -M "$dir/$item" )
+              )
+            {
+                push @newcontents, "$dir/$item";
+            }
         }
     }
     return @newcontents;

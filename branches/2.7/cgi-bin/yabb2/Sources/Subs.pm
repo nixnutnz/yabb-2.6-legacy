@@ -1116,6 +1116,7 @@ sub fatal_error {
       ? ( $error_txt{ $x[0] } . ( $x[1] ? " $x[1]" : q{} ) )
       : isempty( $x[1], q{} );
 
+    my $showerror = $errormessage;
     my ( $filename, $line, $subroutine ) = get_caller();
     if (   ( $debug == 1 || ( $debug == 2 && $iamadmin ) )
         && ( $filename || $line || $subroutine ) )
@@ -1139,7 +1140,7 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     }
 
     $yymain .= $my_show_error;
-    $yymain =~ s/\Q{yabb errormessage}\E/$errormessage/xsm;
+    $yymain =~ s/\Q{yabb errormessage}\E/$showerror/xsm;
     $yymain =~ s/\Q{yabb spam_hits_left_count}\E/$spam_hits_left_count/gxsm;
     $yymain =~ s/\Q{yabb spamwrd}\E/$spam_wrd/gxsm;
     $yymain =~ s/\Q{yabb detention_left}\E/$detention_left/gxsm;
@@ -1147,7 +1148,7 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     $yymain =~ s/\Q{yabb preregspan}\E/$preregspan/gxsm;
     $yymain =~ s/\Q{yabb minlinkpost}\E/$minlinkpost/gxsm;
     $yymain =~ s/\Q{yabb minlinksig}\E/$minlinksig/gxsm;
-    $yytitle = "$maintxt{'error_description'}";
+    $yytitle = $maintxt{'error_description'};
 
     if ( $adminscreen && $action ne 'admincheck2' ) {
         admintemplate();
@@ -1156,7 +1157,7 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
         if ( $x[0] =~ /no_access|members_only|no_perm/xsm ) {
             $headerstatus = '403 Forbidden';
         }
-        elsif ( $x[0] =~ /cannot_open|no.+_found/xsm ) {
+        elsif ( $x[0] =~ /cannot_open|no.+_found|noextern|nofile/xsm ) {
             $headerstatus = '404 Not Found';
         }
         template();
@@ -1956,8 +1957,9 @@ sub split_splice_move {
         # Who moved the topic; destination board; destination id number
         $mover = decloak($mover);
         load_user($mover);
+        my $destb = ${ $board{$destboard} }[0];
         return (
-qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${ $uid . $mover }{'realname'}</i></b>~,
+qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$destb</b></i></a><b> $maintxt{'525'} <i>${ $uid . $mover }{'realname'}</i></b>~,
             $dest
         );
     }
@@ -2369,10 +2371,7 @@ sub write_log {
     $hostin =~ s/\s+/ /gxsm;
     $hostin =~ s/[^\x20-\x7E]//gxsm;
     $hostin =~ s/\x7C//gxsm;
-
-    fopen( 'LOG', '>', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
-    print {$LOG} (
-        "$field|$date|$user_ip|$hostin|$username|$currentboard|"
+    my $pr_log = "$field|$date|$user_ip|$hostin|$username|$currentboard|"
           . (
             ( !$action && $INFO{'num'} && $currentboard )
             ? 'display'
@@ -2383,9 +2382,9 @@ sub write_log {
                 ) ? 'admincenter' : $action
             )
           )
-          . "|$INFO{'username'}|$curnum\n",
-        @new_log
-    ) or croak "$croak{'print'} user.log";
+          . "|$INFO{'username'}|$curnum\n";
+    fopen( 'LOG', '>', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
+    print {$LOG} $pr_log, @new_log or croak "$croak{'print'} user.log";
     fclose('LOG') or croak "$croak{'close'} user.log";
 
     if ( !$action && $enableclicklog ) {
@@ -2462,9 +2461,12 @@ sub check_censor {
 
 sub referer_check {
     return if !$action;
-    my $referencedomain = substr $boardurl, 7, ( index $boardurl, q{/}, 7 ) - 7;
-    my $refererdomain = substr $ENV{HTTP_REFERER}, 7,
-      ( index $ENV{HTTP_REFERER}, q{/}, 7 ) - 7;
+    my $plit = q~://~;
+    my $referencedomain = ( split /$plit/xsm, $boardurl )[1];
+    $referencedomain = ( split /\//xsm, $referencedomain )[0];
+    $referencedomain =~ s/^www[.]//xsm;
+    my $refererdomain = ( split /$plit/xsm, $ENV{HTTP_REFERER} )[1];
+    $refererdomain = ( split /\//xsm, $refererdomain )[0];
     if (   $refererdomain !~ /$referencedomain/xsm
         && $ENV{QUERY_STRING}
         && length($refererdomain) > 0 )
@@ -2736,8 +2738,7 @@ sub check_existence {
 
 sub manage_memberlist {
     my ( $todo, $usr, $userrg ) = @_;
-    if (   $todo eq 'load'
-        || $todo eq 'update'
+    if (   $todo eq 'update'
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
@@ -2801,7 +2802,6 @@ sub manage_memberinfo {
     my @myargs = @_;
     my ( $todo, $usr, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
       @myargs;
-    my $update   = q{};
     my @adminlst = get_adminlst($todo);
 
     if ( $todo eq 'add' ) {
@@ -2831,16 +2831,13 @@ sub manage_memberinfo {
         @adminlst = update_adminlst( \@adminlst, $usr, $memposition );
     }
     elsif ( $todo eq 'delete' ) {
-        if ( $usr =~ /,/xsm ) {    # been sent a list to kill, not a single
-            my @oldusers = split /,/xsm, $usr;
-            foreach my $usr (@oldusers) {
-                delete $memberinf{$usr};
-            }
-        }
-        delete $memberinf{$usr};
-        foreach my $i (@adminlst) {
-            if ( $i eq $usr ) {
-                $i = q{};
+        my @oldusers = split /,/xsm, $usr;
+        foreach my $usr (@oldusers) {
+            delete $memberinf{$usr};
+            foreach my $i (@adminlst) {
+                if ( $i eq $usr ) {
+                    $i = q{};
+                }
             }
         }
     }
@@ -2849,6 +2846,7 @@ sub manage_memberinfo {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
+        my $update = q{};
         foreach my $i ( sort keys %memberinf ) {
             my $val = join q~','~, @{ $memberinf{$i} };
             $update .= qq~\$memberinf{'$i'} = \['$val'\];\n~;
@@ -3026,6 +3024,7 @@ sub guestlang_set {
     if ( !$guestaccess || !$enable_guestlanguage ) {
         $yysetlocation = qq~$scripturl?action=login~;
         redirectexit();
+        return;
     }
 
   # otherwise, grab the selected language from the form and redirect to load it.
@@ -3525,10 +3524,6 @@ sub upload_file {
         check_file( $fixname, $username, $file_directory, $fixfile, $fixext,
             $file_extensions );
 
-        $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
-        $fixname =~ s/[.](?!tar$)/_/gxsm;
-        $fixfile = qq~$fixname$fixext~;
-
         my ( $size, $buffer, $filesize, $file_buffer );
         while ( $size = read $file, $buffer, 512 ) {
             $filesize += $size;
@@ -3765,7 +3760,7 @@ sub get_userpmchk {
     }
     foreach my $curgroup ( split /\//xsm, ${ $uid . $checkboard }{'modgroups'} )
     {
-        if ( ${ $uid . $checkuser }{'position'} eq $curgroup ) {
+        if ( ${ $uid . $checkuser }{'position'} && ${ $uid . $checkuser }{'position'} eq $curgroup ) {
             $user_pm_level = 2;
             last;
         }
@@ -3897,7 +3892,7 @@ sub update_adminlst {
             && (
                 $memposition ne 'Administrator'
                 && ( $memposition ne 'Global Moderator'
-                    || !$gmod_access{'backup'} )
+                    || ( $memposition eq 'Global Moderator' && !$gmod_access{'backup'} ) )
             )
           )
         {

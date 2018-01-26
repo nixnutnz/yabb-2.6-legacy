@@ -104,6 +104,18 @@ if ( $rss_perm || $accept_permafull ) {
 our ( @categoryorder, %cat, %catinfo, %board, %subboard );
 get_forum_master();
 
+my $getpics = 0;
+my @brdpics = ();
+if ( -e "$boardsdir/brdpics.db" ) {
+    $getpics = 1;
+    our ($BRDPIC);
+    fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
+      or croak "$croak{'open'} brdpics";
+    @brdpics = <$BRDPIC>;
+    fclose('BRDPIC') or croak "$croak{'close'} brdpics";
+    chomp @brdpics;
+}
+
 sub board_index {
     my (
         $users,   $lspostid,   $lspostbd,   $lssub,      $lsposter,
@@ -1589,16 +1601,20 @@ sub redirect_externalshow {
     else {
         my $exboard = $INFO{'exboard'} || $curboard;
         my $excount = 0;
-        if ( $exboard && -e "$boardsdir/$exboard.exhits" ) {
-            our ($COUNT);
-            fopen( 'COUNT', '<', "$boardsdir/$exboard.exhits" )
-              or croak "$croak{'open'} exhits";
-            $excount = <$COUNT>;
-            fclose('COUNT') or croak "$croak{'close'} exhits";
+        if ($exboard) {
+            if ( !$board{$exboard} ) {
+                fatal_error( 'noextern', $exboard );
+            }
+            else {
+                our ($COUNT);
+                fopen( 'COUNT', '<', "$boardsdir/$exboard.exhits" )
+                  or croak "$croak{'open'} exhits";
+                $excount = <$COUNT>;
+                fclose('COUNT') or croak "$croak{'close'} exhits";
+                chomp $excount;
+            }
         }
-        chomp $excount;
-
-        if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' && $exboard )
+        if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' && $exboard && $board{$exboard} )
         {
             my $link = ${ $board{$exboard} }[0];
             if ($link) {
@@ -1697,12 +1713,6 @@ sub find_latest_data {
 sub getbrdpics {
     my ($curboard) = @_;
     my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
-    our ($BRDPIC);
-    fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
-      or croak "$croak{'open'} brdpics";
-    my @brdpics = <$BRDPIC>;
-    fclose('BRDPIC') or croak "$croak{'close'} brdpics";
-    chomp @brdpics;
     my @sublist = ();
 
     foreach my $i ( keys %subboard ) {
@@ -1711,6 +1721,7 @@ sub getbrdpics {
     foreach my $i (@sublist) {
         if ( $curboard eq $i ) {
             $bdpic = qq~$imagesdir/subboards.$bdpic_ext~;
+            last;
         }
     }
     foreach (@brdpics) {

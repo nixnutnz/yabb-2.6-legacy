@@ -41,6 +41,8 @@ our (
     %userprofile, $iamadmin, $iamgmod,  %gmod_access2,
 );
 
+## our Mod Hook ##
+
 load_language('Admin');
 
 sub error_log {
@@ -387,7 +389,7 @@ qq~ - <a href="$adminurl?action=ipban_err;ban=$memip;lev=p;return=errorlog" oncl
     $errip ||= q{};
     $errip =~ s/,\s\Z//xsm;
     $yymain .= qq~          <tr>
-                <td class="windowbg2" colspan="5"><div class="pad-more"><b>$errorlog{'26'}</b> $errmember<br />$errip</div></td>
+                <td class="windowbg2" colspan="5"><div class="pad-more" style="height:10em; overflow:auto"><b>$errorlog{'26'}</b> $errmember<br />$errip</div></td>
             </tr><tr>
                 <td class="windowbg right" colspan="4">&nbsp;~;
     if ( $errorcount > 0 ) {
@@ -408,7 +410,6 @@ q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="b
 </div>~;
 
     if ( $errorcount > 0 ) {
-
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
@@ -514,10 +515,9 @@ sub er_update_htaccess {
     my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
     if ( -e '.htaccess' ) {
-        our ($HTA);
-        fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
+        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
         @htlines = <$HTA>;
-        fclose('HTA') or croak "$croak{'close'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
 
 # header to determine only who has access to the main script, not the admin script
@@ -552,10 +552,9 @@ sub er_update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        our ($HTA);
-        fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
+        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        fclose('HTA') or croak "$croak{'close'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
     elsif ( $act eq 'add' ) {
         push @denies, @values;

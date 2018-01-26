@@ -128,7 +128,7 @@ AJS.setOpacity(this.overlay,0);
 AJS.getBody().insertBefore(this.overlay,AJS.getBody().firstChild);
 },initFrame:function(){
 if(!this.iframe){
-var d={"name":"GB_frame","class":"GB_frame","frameBorder":0};
+var d={"id":"GB_frame","class":"GB_frame","frameBorder":0};
 if(AJS.isIe()){
 d.src="javascript:false;document.write(\"\");";
 }

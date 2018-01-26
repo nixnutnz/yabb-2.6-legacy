@@ -168,8 +168,8 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'59'}</b></td>
         </tr><tr>
             <td class="windowbg2 right" width="80%">
-				<input type="text" name="upload_mod_dir" id="upload_mod_dir" value="$htmldir/YaBMod/temp" size="70" readonly="readonly" />
-				<input type="hidden" name="use_dir" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span>
+                <input type="text" name="upload_mod_dir" id="upload_mod_dir" value="$htmldir/YaBMod/temp" size="70" readonly="readonly" />
+                <input type="hidden" name="use_dir" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span>
             </td>
             <td class="windowbg2 center" width="20%">
                 <input type="submit" value="$maintxt{'900s'}" class="button" />
@@ -188,8 +188,8 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'60'}</b></td>
         </tr><tr>
             <td class="windowbg2 right" width="80%">
-				<input type="text" name="upload_mod_url" id="upload_mod_url" value="http://" size="70" />
-				<input type="hidden" name="use_url" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span>
+                <input type="text" name="upload_mod_url" id="upload_mod_url" value="http://" size="70" />
+                <input type="hidden" name="use_url" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span>
             </td>
             <td class="windowbg2 center" width="20%"><input type="submit" value="$maintxt{'900s'}" class="button" /></td>
         </tr>
@@ -1846,6 +1846,7 @@ sub clean_bak {
     foreach my $key (%lngs) {
         push @folders, "$langdir/$key";
     }
+    chomp @folders;
     foreach my $folder (@folders) {
         if ( -d $folder ) {
             opendir 'CNVDIR', $folder

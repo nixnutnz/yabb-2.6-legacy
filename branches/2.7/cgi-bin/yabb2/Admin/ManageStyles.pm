@@ -70,7 +70,7 @@ sub modify_style {
     my @styles = readdir TMPLDIR;
     closedir TMPLDIR;
 
-    my $forumcss = qq~<option value="" disabled="disabled">--</option>\n~;
+    my $forumcss = qq~<option value="">--</option>\n~;
     foreach my $file ( sort @styles ) {
         my ( $name, $ext ) = split /[.]/xsm, $file;
         my $selected = q{};
@@ -85,7 +85,7 @@ sub modify_style {
     opendir TMPLDIR, "$htmldir/Templates/Admin";
     my @astyles = readdir TMPLDIR;
     closedir TMPLDIR;
-    my $admincss = qq~<option value="" disabled="disabled">--</option>\n~;
+    my $admincss = qq~<option value="">--</option>\n~;
     foreach my $file ( sort @astyles ) {
         my ( $name, $ext ) = split /[.]/xsm, $file;
         my $selected = q{};
@@ -127,20 +127,20 @@ sub modify_style {
                 <div style="float: left; width: 30%; padding: 3px;"><b>$templ_txt{'1'}</b></div>
                 <div style="float: left; width: 69%;">
                     <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$yymycharset">
-                    <div class="small" style="float: left; width: 25%;"><label for="cssfile" style="font-weight:bold">$templ_txt{'forum'}:</label><br />
-                    <select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
-                        $forumcss
-                    </select>
-                    <br />
-                    </div>
+                        <div class="small" style="float: left; width: 25%;"><label for="cssfile" style="font-weight:bold">$templ_txt{'forum'}:</label><br />
+                            <select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
+                            $forumcss
+                            </select>
+                            <br />
+                        </div>
                     </form>
                     <form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yymycharset">
-                    <div class="small" style="float: left; width: 25%;"><label for="admcssfile" style="font-weight:bold">$templ_txt{'admincenter'}:</label><br />
-                    <select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
-                        $admincss
-                    </select>
-                    <br />
-                    </div>
+                        <div class="small" style="float: left; width: 25%;"><label for="admcssfile" style="font-weight:bold">$templ_txt{'admincenter'}:</label><br />
+                            <select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
+                            $admincss
+                            </select>
+                            <br />
+                        </div>
                     </form>
                 </div>
             </td>

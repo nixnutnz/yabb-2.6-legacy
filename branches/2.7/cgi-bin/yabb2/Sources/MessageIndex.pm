@@ -423,7 +423,7 @@ s/\Q{yabb favorite}\E/ ($favicon{$mnum} ? qq~$micon{'addfav'}~ : q{}) /egxsm;
         $tempbar =~ s/\Q{yabb pages}\E/$pages/gxsm;
         $tempbar =~ s/\Q{yabb starter}\E/$mname/gxsm;
         $tempbar =~
-          s/\Q{yabb starttime}\E/ timeformat( $mnum, 0 ,0 ,0 ,1 )/egxsm;
+s/\Q{yabb starttime}\E/ timeformat( $mnum, 0 ,0 ,0 ,1 )/egxsm;
         $tempbar =~ s/\Q{yabb replies}\E/ number_format($mreplies) /egxsm;
         $tempbar =~ s/\Q{yabb views}\E/ number_format($views) /egxsm;
         $tempbar =~
@@ -1293,7 +1293,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=c" rel="nofollow">$messageindex
         }
         elsif ( $tsort =~ /[ef]/xsm ) {
             if ( $tsort eq 'e' ) {
-                manage_memberinfo('load');
+                require Variables::Memberinfo;
                 $sort_starter =
 qq~<a href="$scripturl?board=$currentboard;tsort=f" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_up'}~;
                 @threadlist = reverse sort {
@@ -1303,7 +1303,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=f" rel="nofollow">$messageindex
                 undef %memberinf;
             }
             else {
-                manage_memberinfo('load');
+                require Variables::Memberinfo;
                 $sort_starter =
 qq~<a href="$scripturl?board=$currentboard;tsort=e" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_down'}~;
                 @threadlist = sort {
@@ -1417,9 +1417,10 @@ qq~<a href="$scripturl?board=$currentboard/$lastptn"><span class="small">$lastpn
 
 sub get_mess_page2 {
     my @args = @_;
-    my ( $messagelist, $pagenumb, $dropdisplaynum, $start, $maxindex, $lastptn,
-        $tstart, $pagedropindex1 )
-      = @args;
+    my (
+        $messagelist, $pagenumb, $dropdisplaynum, $start,
+        $maxindex,    $lastptn,  $tstart,         $pagedropindex1
+    ) = @args;
     my $indexpages   = q{};
     my $pageindex1   = q{};
     my $pageindex2   = q{};

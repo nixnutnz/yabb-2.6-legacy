@@ -86,7 +86,7 @@ $mycal_displayssi = qq~
     </colgroup>
     <tr>
        {yabb weekdays}
-    </tr>
+    </tr><tr>
       {yabb cal_out}
 </table>~;
 

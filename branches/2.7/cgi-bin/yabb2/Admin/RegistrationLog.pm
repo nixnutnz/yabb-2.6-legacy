@@ -693,7 +693,7 @@ sub approve_registration {
     my (@aprchnglist);
     my ( $foundmember, $foundpassword );
     foreach my $i (@aprlist) {
-        my ( undef, undef, $regmember, $regpassword ) = split /[|]/xsm;
+        my ( undef, undef, $regmember, $regpassword ) = split /[|]/xsm, $i;
         if ( $regmember ne $apruser ) {
             push @aprchnglist, $i;
         }

@@ -1572,8 +1572,6 @@ qq~$guest_name<br />(<a href="mailto:$guest_email">$guest_email</a>)~;
                     @usernameto = get_user_to( \%messlst );
                 }
                 $mc_content_to_out = join q{, }, @usernameto;
-
-                # [outbox / storage out]
             }
             elsif ( $action eq 'imdraft' ) {
                 my @usernameto = get_draft_to( \%messlst );
@@ -1688,7 +1686,6 @@ qq~<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$mes
                         $actions_menu = bm_action( \%messlst, $sepa );
                         ## broadcast messages can only be quoted on!
                     }
-
                 }
             }
             elsif ( $action eq 'im' && $view_bmess ) {
@@ -2580,8 +2577,7 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
         && $showuserage
         && ( !$showage || !${ $uid . $usr }{'hideage'} ) )
     {
-        my @age = calc_age( $usr, 'calc' );
-        my $age = $age[4] || q{};
+        my $age = get_age($username);
         $template_age = qq~$profile_txt{'420'}: $age<br />~;
     }
     my ( $template_regdate, $dr_regdate );

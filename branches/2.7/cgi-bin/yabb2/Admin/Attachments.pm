@@ -1175,7 +1175,7 @@ sub remove_attachments
             undef,       undef, $afilename, undef
         ) = split /[|]/xsm, $attachments[$i];
         my $del = 0;
-        if ( exists ${$threadhashref}{$athreadnum} ) {
+        if ($athreadnum &&  exists ${$threadhashref}{$athreadnum} ) {
             if ( defined ${$threadhashref}{$athreadnum} ) {
                 for ( split /[|]/xsm, ${$threadhashref}{$athreadnum} ) {
                     if ( $_ eq $afilename ) { $del = 1; last; }

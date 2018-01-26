@@ -141,7 +141,7 @@ sub birthdaylist {
     my @calmont =
       qw( null calmon_01 calmon_02 calmon_03 calmon_04 calmon_05 calmon_06 calmon_07 calmon_08 calmon_09 calmon_10 calmon_11 calmon_12 );
 
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     our (%calbday);
     if ( -e "$vardir/Eventcalbday.pm" ) {
         require Variables::Eventcalbday;

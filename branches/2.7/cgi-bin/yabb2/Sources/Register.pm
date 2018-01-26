@@ -97,6 +97,7 @@ our (
     $myregister_spamquest,   $myregister_table_a,     $myregister_table_b,
     $myregister_welcome,
 );
+
 ## our Mod Hook ##
 
 if ( !$iamguest

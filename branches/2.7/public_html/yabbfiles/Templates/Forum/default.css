@@ -500,6 +500,10 @@ table.fixed {
     text-align: left;
 }
 
+.calhr {
+ border-bottom: 1px solid #fff;
+}
+
 .bordercolor {
     background-color: #fff;
 }
@@ -1313,6 +1317,18 @@ span.ubbcbutton {
     vertical-align: top;
     display: inline-block;
     float:left;
+}
+
+span.ubbcbutton2 {
+    height: 22px;
+    width: 23px;
+    border: 0;
+    margin: 1px;
+    background-position: top right;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    vertical-align: top;
+    display: inline-block;
 }
 
 .ubbcbuttonback {

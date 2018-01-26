@@ -291,7 +291,7 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
         }
         $nscheck = q{};
         my $msubject = q{};
-        if ( $quotemsg ne q{} ) {
+        if ( $quotemsg && $quotemsg ne q{} ) {
             my (
                 $nsubject, $mnme, undef, $mdte,     $msername,
                 undef,     undef, undef, $mmessage, $mns
@@ -984,8 +984,7 @@ s/\Q{yabb post_polltxt_pieslicesplit}\E/$post_polltxt{'pieslicesplit'}/xsm;
                 && $showuserage
                 && ( !$showage || !${ $uid . $tmpmusername }{'hideage'} ) )
             {
-                my @age = calc_age( $tmpmusername, 'calc' );
-                my $age = $age[4];
+                my $age = get_age($tmpmusername);
                 $liveuser_age = qq~$display_txt{'age'}: $age<br />~;
             }
             my $dr_regdate = q{};
@@ -1983,7 +1982,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
     # If no thread specified, this is a new thread.
     # Find a valid random ID for it.
     my $newthreadid = q{};
-    if ( $threadid eq q{} ) {
+    if ( !$threadid || $threadid eq q{} ) {
         $newthreadid = getnewid();
     }
 
@@ -2314,8 +2313,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     $thissubject = from_html($thissubject);
 
     require Sources::Mailer;
-
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     manageboardnotify( 'load', $currentboard );
     foreach ( keys %theboard ) {
         $languages{ ${ $theboard{$_} }[0] } = 1;
@@ -2393,7 +2391,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     require Sources::Mailer;
 
     my %mailsent;
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     if ( -e "$boardsdir/$currentboard.mail" ) {
         manageboardnotify( 'load', $currentboard );
         foreach ( keys %theboard ) {
@@ -3072,7 +3070,7 @@ sub mod_alert2 {
     if ( $enable_bm_level && $modgrps ) {
         if ( $modgrps =~ /admins|gmods|fmods|mods/xsm ) { $x = 1; }
         else {
-            if ( !%memberinf ) { manage_memberinfo('load'); }
+            if ( !%memberinf ) { require Variables::Memberinfo; }
           MANAGEINFO: foreach ( keys %memberinf ) {
                 foreach ( split /,/xsm, $memberinf{$_}[4] ) {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) {
@@ -3126,7 +3124,7 @@ sub mod_alert2 {
                 );
             }
             elsif ( $enable_bm_level && $x ) {
-                if ( !%memberinf ) { manage_memberinfo('load'); }
+                if ( !%memberinf ) { require Variables::Memberinfo; }
                 foreach ( split /,/xsm, ( $memberinf{$toBoardMod} )[4] ) {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) { next MANAGEMODS; }
                 }

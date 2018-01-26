@@ -193,7 +193,7 @@ sub banning {
     my @x          = @_;
     my $ban_user   = $x[0] || $username;
     my $ban_email  = $x[1] || ${ $uid . $username }{'email'};
-    my $admincheck = $x[2];
+    my $admincheck = $x[2] || 0;
     our ($BAN);
     fopen( 'BAN', '<', "$vardir/banlist.db" )
       or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
@@ -207,7 +207,7 @@ sub banning {
     }
 
     if ( !$admincheck && ( $username eq 'admin' || $iamadmin ) ) { return; }
-    my ($tmp);
+    my $tmb = 0;
     local *write_banlog = sub {
         my ($bantry) = @_;
         if ($admincheck) {
@@ -233,8 +233,8 @@ sub banning {
             );
         }
         else {
-            $tmp = time_ban_sec( $banned[4], $banned[2] );
-            $myban_time = qq~$security_txt{'ban_permt'} ~ . timeformat($tmp);
+            $tmb = time_ban_sec( $banned[4], $banned[2] );
+            $myban_time = qq~$security_txt{'ban_permt'} ~ . timeformat($tmb);
             fatal_error( 'suspend',
 "$security_txt{'ban_warn_s'} $myban_time $bannedfor$security_txt{'ban_warn_c'} $banner."
             );
@@ -247,7 +247,7 @@ sub banning {
     foreach my $i (@banlist) {
         chomp $i;
         @banned = split /[|]/xsm, $i;
-        my $tmb = time_ban_sec( $banned[4], $banned[2] );
+        $tmb = time_ban_sec( $banned[4], $banned[2] );
 
         # IP BANNING
         if ( $user_ip =~ /^$banned[1]/xsm ) { write_banlog($user_ip); }
@@ -415,7 +415,7 @@ sub access_check {
     my @allowed_groups = ();
     if ( $checktyp{$checktype} ) {
         my ( $allowgrp, $acces ) =
-          $checktyp{$checktype}( $curboard, $boardmod, \@myperms );
+          $checktyp{$checktype}( $curboard, $boardmod, \@myperms, $username );
         @allowed_groups = @{$allowgrp};
         $access         = $acces;
     }
@@ -584,9 +584,8 @@ qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|\n~;
 }
 
 sub ban_page_a {
-
     if ( $iamadmin || $iamgmod || $iamfmod ) {
-        my $ban       = $INFO{'ban'};
+        my $ban_ip    = $INFO{'ban'};
         my $lev       = $INFO{'lev'};
         my $ban_email = $INFO{'ban_email'};
         my $ban_mem   = $INFO{'ban_memname'};
@@ -599,11 +598,11 @@ sub ban_page_a {
             $ban_time = qq~<b>$profile_txt{'ban_for'} $profile_txt{$lev}</b>~;
         }
         my ( $ban_item, $bantype, $bantypeval );
-        if ($ban) {
+        if ($ban_ip) {
             $ban_item =
-qq~<b>$profile_txt{'908'}:</b><br /><span style="font-size:120%">$ban</span><br />$ban_time~;
+qq~<b>$profile_txt{'908'}:</b><br /><span style="font-size:120%">$ban_ip</span><br />$ban_time~;
             $bantype    = 'ban';
-            $bantypeval = $ban;
+            $bantypeval = $ban_ip;
         }
         elsif ($ban_email) {
             $ban_item =
@@ -667,7 +666,6 @@ sub ban_page_b {
         fclose('BAN') or croak "$croak{'close'} banlist";
         chomp @myban;
 
-        $ihave = 0;
         my $banned = q{};
         my $type   = q{};
         if ($ban) {
@@ -743,7 +741,6 @@ sub ipban_gip {
     if ( $iamadmin || $iamgmod || $iamfmod ) {
         my $banned = $INFO{'ban'};
         my $time   = time;
-        my $ihave  = 0;
         our ($BAN);
         fopen( 'BAN', '<', "$vardir/banlist.db" )
           or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
@@ -752,7 +749,7 @@ sub ipban_gip {
         chomp @myban;
 
         my $type = 'I';
-        $ihave = 0;
+        my $ihave = 0;
         my $tmb = 0;
         foreach my $i (@myban) {
             my @banned = split /[|]/xsm, $i;
@@ -886,29 +883,33 @@ sub get_currentthread {
     my ($curnm) = @_;
     my $curbrd = q{};
     if ($curnm) {
-        if ( $curnm =~ /\D/xsm ) {
-            fatal_error( 'only_numbers_allowed', "Thread ID: '$curnm'" );
+        my @curn = split /\//xsm, $curnm;
+        my $curn = $curn[0];
+        if ( $curn =~ /\D/xsm ) {
+            fatal_error( 'only_numbers_allowed', "Thread ID: '$curn'" );
         }
-        if ( !-e "$datadir/$curnum.txt" ) {
-            if ( eval { require Variables::Movedthreads; 1 } ) {
-                if ( !$moved_file{$curnm} ) {
-                    fatal_error( 'no_topic_found', $curnm );
+        if ( !-e "$datadir/$curn.txt" ) {
+            if ( -e "$vardir/Movedthreads.pm" ) {
+                require Variables::Movedthreads;
+                if ( !$moved_file{$curn} ) {
+                    fatal_error( 'no_topic_found', $curn );
                 }
-                while ( exists $moved_file{$curnm} ) {
-                    $curnum = $moved_file{$curnm};
-                    next if exists $moved_file{$curnm};
-                    if ( !-e "$datadir/$curnum.txt" ) {
-                        fatal_error( 'no_topic_found', $curnm );
+                while ( exists $moved_file{$curn} ) {
+                    $curn = $moved_file{$curn};
+                    next if exists $moved_file{$curn};
+                    if ( !-e "$datadir/$curn.txt" ) {
+                        fatal_error( 'no_topic_found', $curn );
                     }
                 }
                 $INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnm;
             }
         }
-
-        message_totals( 'load', $curnm );
-        $curbrd = ${$curnm}{'board'};
+        else {
+            message_totals( 'load', $curn );
+            $curbrd = ${$curn}{'board'};
+        }
     }
-    else {
+    elsif ( $INFO{'board'} ) {
         $curbrd = $INFO{'board'};
     }
     return $curbrd;
@@ -941,7 +942,7 @@ sub get_brd_access {
     if ( !$iamadmin ) {
         my $accesstype = q{};
         if ( $action eq 'post' ) {
-            if ( $INFO{'title'} eq 'CreatePoll' || $INFO{'title'} eq 'AddPoll' )
+            if ( $INFO{'title'} && ( $INFO{'title'} eq 'CreatePoll' || $INFO{'title'} eq 'AddPoll' ) )
             {
                 $accesstype = 3;    # Post Poll
             }
@@ -1001,51 +1002,56 @@ sub get_boardmod {
 }
 
 sub check1 {
-    my ( $curboard, undef, $myperms ) = @_;
-    my $access         = 'granted';
+    my ( $curboard, undef, $myperms, undef ) = @_;
+    my $access         = 'denied';
     my @myperms        = @{$myperms};
-    my @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'topicperms'};
+    my @allowed_groups = ();
     if ( !${ $uid . $curboard }{'topicperms'} ) {
         $access = 'granted';
     }
-    if ( $myperms[1] ) { $access = 'notgranted'; }
+    else {
+        @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'topicperms'};
+        if ( $myperms[1] ) { $access = 'notgranted'; }
+    }
     return ( \@allowed_groups, $access );
 }
 
 sub check2 {
-    my ( $curboard, $boardmod, $myperms ) = @_;
-    my $access         = 'granted';
+    my ( $curboard, $boardmod, $myperms, $usr ) = @_;
+    my $access         = 'denied';
     my @myperms        = @{$myperms};
     my @allowed_groups = ();
     if ( $iamgmod || $iamfmod || $boardmod ) { $access = 'granted'; }
     else {
-        @allowed_groups =
-          split /\//xsm, ${ $uid . $curboard }{'replyperms'};
         if ( !${ $uid . $curboard }{'replyperms'} ) {
             $access = 'granted';
         }
-        if ( $myperms[2] && !$topicstart{$username} ) {
-            $access = 'notgranted';
+        else {
+            @allowed_groups =  split /\//xsm, ${ $uid . $curboard }{'replyperms'};
+            if ( $myperms[2] && !$topicstart{$usr} ) { $access = 'notgranted'; }
         }
     }
     return ( \@allowed_groups, $access );
 }
 
 sub check3 {
-    my ( $curboard, undef, $myperms ) = @_;
-    my $access         = 'granted';
+    my ( $curboard, undef, $myperms, undef ) = @_;
+    my $access         = 'denied';
     my @myperms        = @{$myperms};
-    my @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'pollperms'};
+    my @allowed_groups = ();
     if ( !${ $uid . $curboard }{'pollperms'} ) {
         $access = 'granted';
     }
-    if ( $myperms[3] ) { $access = 'notgranted'; }
+    else {
+        @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'pollperms'};
+       if ( $myperms[3] ) { $access = 'notgranted'; }
+    }
     return ( \@allowed_groups, $access );
 }
 
 sub check4 {
-    my ( $curboard, undef, $myperms ) = @_;
-    my $access         = 'granted';
+    my ( $curboard, undef, $myperms, undef ) = @_;
+    my $access         = 'denied';
     my @myperms        = @{$myperms};
     my @allowed_groups = ();
     if ( ${ $uid . $curboard }{'attperms'} ) { $access = 'granted'; }

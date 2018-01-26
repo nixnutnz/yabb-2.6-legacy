@@ -1059,8 +1059,6 @@ qq~<input type="radio" name="ext_$id" value="$i"$selected />$options[$i]\n~;
 
 sub get_out_checkbox {
     my ( $val, $options, $id, $template1, $template2 ) = @_;
-
-# we have to use a little trick here to get a value from a checkbox if it has been unchecked by adding a hidden <input value=""> before it
     my $out =
         $template1
       . qq~<input type="hidden" name="ext_$id" value="" /><input type="checkbox" name="ext_$id" id="ext_$id"${ischecked($val)} />~
