@@ -698,7 +698,7 @@ sub get_rss_threadlist {
                     $mdate = sprintf '%010d', $mdate;
 
                     # Check if it's hidden. If so, don't show it
-                    if ( $mstate =~ /h/xsm && !$iamadmin && !$iamgmod ) {
+                    if ( $mstate && $mstate =~ /h/xsm && !$iamadmin && !$iamgmod ) {
                         next;
                     }
 
