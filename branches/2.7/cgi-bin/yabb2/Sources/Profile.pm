@@ -1815,6 +1815,7 @@ sub modify_profile_admin2 {
 
 sub view_profile {
     if ($iamguest) { fatal_error('members_only'); }
+    if (!$INFO{'username'}) { fatal_error('no_profile_exists'); }
 
     # If someone registers with a '+' in their name It causes problems.
     # Get's turned into a <space> in the query string Change it back here.
