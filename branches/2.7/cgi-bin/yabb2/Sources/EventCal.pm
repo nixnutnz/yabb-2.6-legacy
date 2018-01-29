@@ -1290,15 +1290,15 @@ sub get_cal_greet3 {
                 $greet = $var_cal{'bdayhide'};
             }
             $out3 .=
-qq~<div class="small calhr">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet<hr class="hr2" /></div>~;
+qq~<div class="small calhr"><br />$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet</div>~;
         }
         elsif ( $ctype eq 'c' ) {
             $out3 .=
-qq~<div class="small calhr">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent<hr class="hr2" /></div>~;
+qq~<div class="small calhr"><br />$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent</div>~;
         }
         else {
             $out3 .=
-qq~<div class="small calhr">$cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent<hr class="hr2" /></div>~;
+qq~<div class="small calhr"><br />$cal_icon{$cicon} $cdate <b>$icon_text</b><br /> $eventuserlink$cevent</div>~;
         }
     }
     else {
