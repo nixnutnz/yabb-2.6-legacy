@@ -89,7 +89,7 @@ cgi-bin/yabb2/Sources/Decoder.pm|37bf34e5c13a5bf6a361e1579d391157
 cgi-bin/yabb2/Sources/Display.pm|10337321e8a0716e801f57233478ce93
 cgi-bin/yabb2/Sources/DoSmilies.pm|2766d7af5ed0dce07f34b4117390cae5
 cgi-bin/yabb2/Sources/Downloads.pm|0066790af28c061313a9fafb74f590c8
-cgi-bin/yabb2/Sources/EventCal.pm|63a2b86bafceed2b704cbc3bb1e09899
+cgi-bin/yabb2/Sources/EventCal.pm|8dcd7a20439f319a9deb57d582ff900b
 cgi-bin/yabb2/Sources/EventCalBirthdays.pm|bda82a09b97b0d81129b27b63ecd073e
 cgi-bin/yabb2/Sources/EventCalSSI.pm|0a0df03fe0e90d53594940847831237b
 cgi-bin/yabb2/Sources/ExtendedProfiles.pm|91f2f73a594b29de2331d773499746ef
