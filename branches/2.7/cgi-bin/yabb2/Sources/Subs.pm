@@ -566,16 +566,13 @@ qq~            <form id="styleswitcher" action="$scripturl" method="post">
     # static/dynamic clock
     our $yytime = timeformat( $date, 1 );
     my $zone = q{};
-    if (   ( $iamguest && $default_tz eq 'UTC' )
-        || ( ${ $uid . $username }{'user_tz'} eq 'UTC' )
+    if (   ( ( $iamguest || !$enabletz ) && $default_tz eq 'UTC' )
+        || ( $enabletz && ${ $uid . $username }{'user_tz'} eq 'UTC' )
         || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
     {
         $zone = qq~ $maintxt{'UTC'}~;
     }
-    my $toffs = 0;
-    if ($enabletz) {
-        $toffs = toffs($date);
-    }
+    my $toffs = toffs($date);
     our $yyjavascripta = q{};
     if (
         $mytimeselected != 7

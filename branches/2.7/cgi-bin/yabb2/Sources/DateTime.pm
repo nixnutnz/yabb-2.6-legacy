@@ -48,13 +48,15 @@ sub calcdtdiff {    # Input: $date1 $date2
 sub toffs {
     my ( $mydate, $forum_deflt ) = @_;
     our $toffs = 0;
-    my ($tzname);
+    my $tzname = 'UTC';
     {
         no strict qw(refs);
         if (   $iamguest
             || $forum_deflt
             || !$username
-            || !${ $uid . $username }{'user_tz'} )
+            || !${ $uid . $username }{'user_tz'}
+            || !$enabletz
+           )
         {
             $tzname = $default_tz || 'UTC';
         }
@@ -82,6 +84,7 @@ sub toffs {
     else {
         if ( $tzname eq 'local' ) {
             $toffs = $timeoffset;
+            $dstoffset ||= 0;
             $toffs +=
               ( localtime( $mydate + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
             $toffs = 3600 * $toffs;
@@ -199,10 +202,7 @@ sub timeformat {
     return if !$oldformat;
 
     # find out what timezone is to be used.
-    my $toffs = 0;
-    if ($enabletz) {
-        $toffs = toffs( $oldformat, $forum_deflt );
-    }
+    my $toffs = toffs( $oldformat, $forum_deflt );
     my $mynewtime = $oldformat + $toffs;
 
     my (

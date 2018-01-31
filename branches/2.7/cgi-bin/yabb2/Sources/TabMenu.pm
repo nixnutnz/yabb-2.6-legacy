@@ -213,9 +213,9 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
 
             my $scriptperm = qq~$perm_domain/$symlink/~;
             foreach my $gtab ( keys %tab ) {
-                for (@gsttabs) {
-                    if ( $gtab eq $_ ) {
-                        if ( $_ eq 'home' ) {
+                foreach my $i (@gsttabs) {
+                    if ( $gtab && $gtab eq $i ) {
+                        if ( $i eq 'home' ) {
                             $tab{$gtab} =~ s/$scripturl/$scriptperm/xsm;
                         }
                         $tab{$gtab} =~ s/$scripturl[?]action\=/$scriptperm/xsm;

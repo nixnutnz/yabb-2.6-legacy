@@ -420,35 +420,15 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         }
         $yytime = timeformat( $date, 1 );
         my $zone = q{};
-        if (   ( $default_tz eq 'UTC' )
-            || ( ${ $uid . $username }{'user_tz'} eq 'UTC' )
-            || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
         {
-            $zone = qq~ $admin_txt{'UTC'} ~;
-        }
-        my $toffs = 0;
-        if ($enabletz) {
-            $toffs = toffs($date);
-        }
-        my $mytimeselected = $timeselected;
-        if (
-            $mytimeselected != 7
-            && ( $dynamic_clock
-                || ${ $uid . $username }{'dynamic_clock'} )
-          )
-        {
-            my ( $aa, $bb );
-            if ( $yytime =~ /(.*?)\d+:\d+((\w+)|:\d+)?/xsm ) {
-                ( $aa, $bb ) = ( $1, $3 );
+            no strict qw(refs);
+            my $mytimeselected = ${ $uid . $username }{'timeselect'} || 'UTC';
+            if (   ( !$enabletz && $default_tz eq 'UTC' )
+                || ( $enabletz && ${ $uid . $username }{'user_tz'} eq 'UTC' )
+                || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
+            {
+                $zone = qq~ $admin_txt{'UTC'} ~;
             }
-            $aa =~ s/<.+?>//gxsm;
-            if ( $mytimeselected == 6 ) { $bb = q{ }; }
-            $yytime =
-qq~&nbsp;<script type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
-            $yyjavascripta .= q~
-        var OurTime = ~
-          . sprintf( '%d', ( $date + $toffs ) )
-          . qq~000;\n        var YaBBTime = new Date();\n        var TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
         }
         $yytime .= $zone;
     }
