@@ -808,7 +808,6 @@ qq~\n<option value="local"${isselected($mytz eq 'local')}>$profile_txt{'372a'}</
     $my_time =~ s/\Q{yabb profile_txt479}\E/$profile_txt{'479'}/xsm;
     $my_time =~ s/\Q{yabb profile_txt373}\E/$profile_txt{'373'}/xsm;
     $my_time =~ s/\Q{yabb profile_txt520}\E/$profile_txt{'520'}/xsm;
-    $my_time =~ s/\Q{yabb profile_txt521}\E/$profile_txt{'521'}/xsm;
     $my_time =~
       s/\Q{yabb profile_txtusernumbformat}\E/$profile_txt{'usernumbformat'}/xsm;
 

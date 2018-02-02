@@ -39,8 +39,8 @@ push @INC, './Modules';
 our ( %admin_txt, %admintxt, %croak, %load_txt, %modulecheck, %yabmtxt );
 ## locations ##
 our (
-    $admindir,  $adminurl,     $boardurl, $htmldir, $imagesdir,
-    $scripturl, $templatesdir, $vardir,   $yyhtml_root
+    $admindir,  $adminurl,  $boarddir,     $boardurl, $htmldir,
+    $imagesdir, $scripturl, $templatesdir, $vardir,   $yyhtml_root
 );
 ## settings ##
 our (
@@ -94,9 +94,8 @@ if   ( -e ("$yyexec.cgi") ) { $yyaext = 'cgi'; }
 else                        { $yyaext = 'pl'; }
 $adminurl = qq~$boardurl/AdminIndex.$yyaext~;
 
-my $back_url = q{};
 if ( -e "$vardir/backup.lock" ) {
-    $back_url = "$boardurl/BackupFix.$yyaext";
+    my $back_url = "$boardurl/BackupFix.$yyaext";
     print "Location: $back_url\n\n" or croak 'cannot print location';
     exit;
 }
@@ -109,7 +108,7 @@ if ( eval { require Time::HiRes; import Time::HiRes qw(time); } ) {
 }
 our $START_TIME = time;
 
-require './Sources/Subs.pm';
+require "$boarddir/Sources/Subs.pm";
 require Sources::System;
 require Sources::DateTime;
 require Sources::Load;
@@ -277,7 +276,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/default.css" type="
     my @forum_settings = (
         "|$admintxt{'a1_title'}|$admintxt{'a1_label'} - $admintxt{'34'}|a1",
         "newsettings;page=main|$admintxt{'a1_sub1'}|$admintxt{'a1_label1'}|",
-        "newsettings;page=advanced|$admintxt{'a1_sub2'}|$admintxt{'a1_label2'}|",
+"newsettings;page=advanced|$admintxt{'a1_sub2'}|$admintxt{'a1_label2'}|",
         "gmodaccess|$admintxt{'a2_sub5'}|$admintxt{'a2_label5'}|",
         "editpaths|$admintxt{'a1_sub3'}|$admintxt{'a1_label3'}|",
         "editbots|$admintxt{'a1_sub4'}|$admintxt{'a1_label4'}|",
@@ -301,11 +300,11 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/default.css" type="
 
     my @security_settings = (
         "|$admintxt{'a3_title'}|$admintxt{'a3_label'} - $admintxt{'34'}|a3",
-        "newsettings;page=security|$admintxt{'a3_sub2'}|$admintxt{'a3_label2'}|",
+"newsettings;page=security|$admintxt{'a3_sub2'}|$admintxt{'a3_label2'}|",
         "setreserve|$admintxt{'a6_sub6'}|$admintxt{'a6_label6'}|",
         "referer_control|$admintxt{'a3_sub1'}|$admintxt{'a3_label1'}|",
         "setup_guardian|$admintxt{'a3_sub3'}|$admintxt{'a3_label3'}|",
-        "newsettings;page=antispam|$admintxt{'a3_sub4'}|$admintxt{'a3_label4'}|",
+"newsettings;page=antispam|$admintxt{'a3_sub4'}|$admintxt{'a3_label4'}|",
         "spam_questions|$admintxt{'a3_sub6'}|$admintxt{'a3_label6'}|",
     );
 
@@ -402,10 +401,10 @@ qq~<a href="$boardurl/$yyexec.$yyext?action=mycenter" target="_blank">$admin_txt
         my $realname = ${ $uid . $username }{'realname'} || 'Administrator';
         $topmenu_five =~ s/USER/$realname/xsm;
     }
-    my $yytime = q{};
+    my $yytime        = q{};
     my $yyjavascripta = q{};
     if ( $action ne 'detailedversion' ) {
-        if ( $maintenance ) {
+        if ($maintenance) {
             $yyadmin_alert .=
 qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
         }
@@ -414,8 +413,8 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
                 require Sources::DateTime;
                 $yyadmin_alert .=
 qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'617'} ~
-              . timeformat($lastbackup)
-              . q~</b></span>~;
+                  . timeformat($lastbackup)
+                  . q~</b></span>~;
             }
         }
         $yytime = timeformat( $date, 1 );
@@ -428,6 +427,21 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
                 || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
             {
                 $zone = qq~ $admin_txt{'UTC'} ~;
+            }
+            my $toffs = toffs($date);
+            if ( $dynamic_clock && ${ $uid . $username }{'dynamic_clock'} ) {
+                my ( $aa, $bb );
+                if ( $yytime =~ /(.*?)\d+:\d+((\w+)|:\d+)?/xsm ) {
+                    ( $aa, $bb ) = ( $1, $3 );
+                }
+                $aa =~ s/<.+?>//gxsm;
+                if ( !$bb ) { $bb = q{ }; }
+                $yytime =
+qq~&nbsp;<script type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
+                $yyjavascripta .= q~
+        var OurTime = ~
+                  . sprintf( '%d', ( $date + $toffs ) )
+                  . qq~000;\n        var YaBBTime = new Date();\n        var TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
             }
         }
         $yytime .= $zone;
@@ -506,3 +520,4 @@ sub trackadminlogins {
 }
 
 1;
+
