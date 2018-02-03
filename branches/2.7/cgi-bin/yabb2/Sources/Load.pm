@@ -1266,7 +1266,7 @@ sub what_template {
     our (
         $usestyle,        $useimages,     $usehead,     $useboard,
         $usemessage,      $usedisplay,    $usemycenter, $use_menu_t,
-        $usethread_tools, $usepost_tools, $use_mobile
+        $usethread_tools, $usepost_tools
     ) = @{ $templateset{$template} };
     $use_menu_type = $use_menu_t;
 

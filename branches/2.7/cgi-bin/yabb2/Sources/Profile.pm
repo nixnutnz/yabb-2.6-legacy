@@ -2485,7 +2485,6 @@ qq~$profile_txt{'566'}<select name="bday3"$disable_bday_fields><option value="">
 qq~<option value="$e" ${isselected($uyear && $uyear == $e)}>$e</option>\n~;
     }
     $seluyear .= q~</select> ~;
-    my $brk = get_break();
 
     my $selectmnth = q{};
     my $dayormonthm =
@@ -2497,7 +2496,7 @@ qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"
         $dayormonthm .=
 qq~<option value="$c" ${isselected($umonth && $umonth == $bb)}>$c</option>\n~;
     }
-    $dayormonthm .= qq~</select>$brk ~;
+    $dayormonthm .= qq~</select>~;
 
     my $selectday = q{};
     my $dayormonthd =
@@ -2509,7 +2508,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         $dayormonthd .=
 qq~<option value="$d" ${isselected($uday && $uday == $aa)}>$d</option>\n~;
     }
-    $dayormonthd .= qq~</select> $brk~;
+    $dayormonthd .= qq~</select>~;
     my $dayormonth = $dayormonthm . $dayormonthd;
     if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
 

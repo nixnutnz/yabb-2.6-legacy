@@ -104,7 +104,7 @@ our (
     $qcksearchaccess,  $regdate,                $spam_hits_left_count,
     $spam_wrd,         $staff,                  $tabsep,
     $templatejump,     $testenv,                $thread_notify,
-    $tmpregpasswrd1,   $tmpregpasswrd2,         $use_mobile,
+    $tmpregpasswrd1,   $tmpregpasswrd2,
     $useboard,         $usedisplay,             $usehead,
     $useimages,        $usemessage,             $usemycenter,
     $user,             $username,               $userreg,
@@ -3205,14 +3205,6 @@ sub get_template {
         }
     }
     return;
-}
-
-sub get_break {
-    my $brk = q{};
-    if ($use_mobile) {
-        $brk = '<br />';
-    }
-    return $brk;
 }
 
 sub get_gmod {

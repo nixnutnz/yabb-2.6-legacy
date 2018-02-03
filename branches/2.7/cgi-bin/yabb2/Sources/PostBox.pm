@@ -297,9 +297,7 @@ q~onclick="storeCaret(this);" onkeyup="storeCaret(this); autoPreview()" onchange
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />% <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-10);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(10);" /></span>
             </div>~;
     if ( $action ne 'imsend' ) { $box .= '</div></div>'; }
-    my $brk = get_break() || q{};
     $box =~ s/\Q{yabb br}\E/$break/gxsm;
-    $box =~ s/{yabb_getbreak}/$brk/gxsm;
     return $box;
 }
 

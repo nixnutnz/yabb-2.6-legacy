@@ -254,7 +254,7 @@ sub modify_skin {
     my (
         $aktstyle,       $aktimages,    $akthead,     $aktboard,
         $aktmessage,     $aktdisplay,   $aktmycenter, $aktmenutype,
-        $aktthreadtools, $aktposttools, $aktmobile
+        $aktthreadtools, $aktposttools
     ) = @{ $templateset{$akttemplate} };
     my $thisimagesdir = "$yyhtml_root/Templates/Forum/$aktimages";
 
@@ -266,11 +266,6 @@ sub modify_skin {
     if ( $aktposttools || $INFO{'posttools'} ) {
         $ptoolschecked = ' checked="checked"';
     }
-    my $ismobilechecked = q{};
-    if ( $aktmobile || $INFO{'ismobile'} ) {
-        $ismobilechecked = ' checked="checked"';
-    }
-
     my ( $fullcss, $line, );
     my $cssfile = "$aktstyle.css";
     if ( $INFO{'cssfile'} ) { $cssfile = $INFO{'cssfile'}; }
@@ -295,8 +290,6 @@ sub modify_skin {
     }
     $use_posttools = $aktposttools;
     if ( $INFO{'posttools'} ) { $use_posttools = $INFO{'posttools'}; }
-    my $use_mobile = $aktmobile;
-    if ( $INFO{'ismobile'} ) { $use_mobile = $INFO{'ismobile'}; }
 
     my $selectedsection = 'vboard';
     if ( $INFO{'selsection'} ) { $selectedsection = $INFO{'selsection'}; }
@@ -627,9 +620,6 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                             <br /><input type="checkbox" name="threadtools" id="threadtools" value="1"$ttoolschecked />
                             <br /><label for="headfile" class="small">$templ_txt{'527'}</label>
                             <br /><input type="checkbox" name="posttools" id="posttools" value="1"$ptoolschecked />
-                        </div>
-                        <div style="float: left; width: 32%; text-align: left;">
-                            <label for="ismobile" class="small">$templ_txt{'mobile'}</span></label><br /><input type="checkbox" name="ismobile" id="ismobile" value="1"$ismobilechecked />
                         </div>
                         <br style="clear:left" />
                         <div style="float: left; width: 32%; text-align: left;">

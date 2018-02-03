@@ -94,7 +94,7 @@ our (
     $flood_text,     $hasfavorite,          $hide_results,
     $iamadmin,       $iamgmod,              $iamguest,
     $iammod,         $icanbypass,           $icon,
-    $idinfo,         $ismobile,             $js_pstat,
+    $idinfo,         $js_pstat,
     $language,       $lastmod,              $mename,
     $menusep,        $mess,                 $messageclass,
     $mfn,            $multi_choice,         $my_is_prev,
@@ -107,7 +107,7 @@ our (
     $spam_question,  $spam_question_id,     $staff,
     $thestatus,      $thismusername,        $threadclass,
     $threadcount,    $tmpmdate,             $uid,
-    $use_mobile,     $user_ip,              $username,
+    $user_ip,        $username,
     $verification,   $view,                 $vote_limit,
     $yy_threadline,  $yyinlinestyle,        $yymain,
     $yynavigation,   $yysetlocation,        $yytitle,
@@ -421,10 +421,8 @@ sub post_page {
         $tmpmusername    = $username;
     }
     $moddate = timeformat($moddate);
-    if ( !$use_mobile ) {
-        require Sources::ContextHelp;
-        $ctmain = context_script( 'post', $displayname );
-    }
+    require Sources::ContextHelp;
+    $ctmain = context_script( 'post', $displayname );
 
     if (   $postid ne 'Poll'
         && $destination ne 'modalert2'
@@ -715,18 +713,12 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
     if (   $destination ne 'modalert2'
         && $destination ne 'guestpm2' )
     {
-        my $iconliveprev = q{};
-        if ( !$ismobile ) {
-            $iconliveprev =
-              q~         document.images.liveicons.src = icon_show;~;
-        }
-
         $my_modalert = qq~
     function showimage() {
         $js_post
         var icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;
         var icon_show = jsPost.getItem(icon_set);
-$iconliveprev
+        document.images.liveicons.src = icon_show;
         document.images.icons.src = icon_show;
     }~;
     }
@@ -881,7 +873,6 @@ function calcpoll() {
 }
 </script>
 ~;
-            $my_maxpc =~ s/\Q{yabb_getbreak}\E//xsm;
             $my_maxpc .= $my_poll_comment_b;
         }
 

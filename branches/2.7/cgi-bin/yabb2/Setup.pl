@@ -778,7 +778,6 @@ sub setinstall2 {
 \$yymycharset = 'UTF-8';                           # character encoding now 'UTF-8' only;
 
 \%templateset = ('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
-'Mobile' => ['mobile','mobile','mobile','mobile','mobile','mobile','mobile','0','0','0','1'],
 );                                                # Forum templates settings
 
 \%lngs = ($mylangs);

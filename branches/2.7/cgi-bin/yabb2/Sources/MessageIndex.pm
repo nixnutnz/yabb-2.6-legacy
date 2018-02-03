@@ -137,7 +137,6 @@ sub message_index {
 
 # Load template here for conditionals based on whether we're ajax loading or not.
     get_template('MessageIndex');
-    my $brk = get_break();
 
     # Build a list of the board's moderators. We don't need this if it's ajax.
     if ( !$messagelist ) {
@@ -497,7 +496,7 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
             $bdescrip = ${ $uid . $currentboard }{'description'};
             $bdescrip = to_chars($bdescrip);
             $boarddescription =~
-              s/\Q{yabb boarddescription}\E/$brk$bdescrip/gxsm;
+              s/\Q{yabb boarddescription}\E/$bdescrip/gxsm;
             $messageindex_template =~
               s/\Q{yabb description}\E/$boarddescription/gxsm;
         }
@@ -815,7 +814,6 @@ sub list_pages {
 
     print_output_header();
     get_template('MessageIndex');
-    my $brk = get_break();
 
     our $output = $msg_listpages;
     $output =~ s/\Q{yabb jcode}\E/$jcode/xsm;

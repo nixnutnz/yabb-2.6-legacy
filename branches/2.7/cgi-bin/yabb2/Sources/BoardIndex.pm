@@ -145,7 +145,6 @@ sub board_index {
     }
 
     get_template('BoardIndex');
-    my $brk = get_break();
     my (
         $numusers,     $guests,  $numbots, $user_in_log,
         $guest_in_log, $botlist, $tmplist, $bvusers,
@@ -608,7 +607,7 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 my $zero = q{};
                 $bddescr = q{};
                 if ( ${ $uid . $crboard }{'description'} ) {
-                    $bddescr = $brk . ${ $uid . $crboard }{'description'};
+                    $bddescr = ${ $uid . $crboard }{'description'};
                     $bddescr = to_chars($bddescr);
                 }
                 $iammod     = q{};
@@ -622,10 +621,10 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 }
                 my $showmods = q{};
                 if ( keys %moderators == 1 ) {
-                    $showmods = qq~$brk$boardindex_txt{'298'}: ~;
+                    $showmods = qq~$boardindex_txt{'298'}: ~;
                 }
                 elsif ( keys %moderators > 1 ) {
-                    $showmods = qq~$brk$boardindex_txt{'63'}: ~;
+                    $showmods = qq~$boardindex_txt{'63'}: ~;
                 }
                 my %sortmd = reverse %moderators;
                 my @sortmd = sort keys %sortmd;

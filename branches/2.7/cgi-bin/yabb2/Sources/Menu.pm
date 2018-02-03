@@ -40,7 +40,7 @@ our ( $htmldir, $modimgurl, $scripturl, $yyhtml_root, $templatesdir, );
 ## system/template ##
 our (
     $menusep,      $my_sep,        $thegtalkname,
-    $thegtalkuser, $use_menu_type, $use_mobile,
+    $thegtalkuser, $use_menu_type,
     $usestyle,     %img,           %img_set,
 );
 
@@ -88,8 +88,7 @@ sub set_menu {
         if (   $key ne 'lastpost'
             && $key ne 'pollicon'
             && $key ne 'polliconnew'
-            && $key ne 'polliconclosed'
-            && !$use_mobile )
+            && $key ne 'polliconclosed' )
         {
             if ( $use_menu_type == 0 ) {
                 $menusep = $my_sep;

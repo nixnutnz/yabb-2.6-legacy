@@ -881,7 +881,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
         my %newcheck = ();
         @template_dir = sort @template_dir;
         my $nvercheck = 1;
-        if ( $folderindir ne 'default' && -e "$templatesdir/$folderindir/checksum.txt" ) {
+        if ( $folderindir ne 'default' && $folderindir ne 'admin' && -e "$templatesdir/$folderindir/checksum.txt" ) {
             %newcheck = ();
             our ($CHK);
             fopen( 'CHK', '<', "$templatesdir/$folderindir/checksum.txt" )

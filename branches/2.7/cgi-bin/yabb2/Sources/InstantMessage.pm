@@ -85,7 +85,7 @@ our (
     $signature,             $spam_image,         $spam_question,
     $spam_question_id,      $staff,              $submittxt,
     $subtitle,              $thestatus,          $threadid,
-    $uid,                   $use_menu_type,      $use_mobile,
+    $uid,                   $use_menu_type, 
     $useimages,             $useremail,          $username,
     $verification_question, $yysetlocation,      %FORM,
     %format_unbold,         %gmod_access2,       %grps,
@@ -518,7 +518,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
     # this is for the ubbc buttons
     my $my_ubbc_yes = q{};
     if ( !$replyguest ) {
-        if ( $enable_ubbc && $showyabbcbutt && !$use_mobile ) {
+        if ( $enable_ubbc && $showyabbcbutt ) {
             $my_ubbc_yes .= qq~<b>$post_txt{'252'}:</b><br />~;
 
             # ubbc set separated out into PostBox.pm DAR 11/13/2012 #
@@ -614,7 +614,6 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
         @fileusers );
     my $my_imfa = q{};
     if (   !$replyguest
-        && !$use_mobile
         && $allow_attach_im
         && $allow_groups
         && -d "$pmuploaddir" )
@@ -826,7 +825,7 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
             <input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;
         }
         my $sentbox_attachinfo = q{};
-        if ( $allow_attach_im && $allow_groups && !$use_mobile ) {
+        if ( $allow_attach_im && $allow_groups ) {
             $sentbox_attachinfo = qq~<br />$inmes_txt{'321'}~;
         }
         $my_isreply .= q~
