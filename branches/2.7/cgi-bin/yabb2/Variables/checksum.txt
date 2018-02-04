@@ -354,7 +354,7 @@ Quick-Guide_27/English/install/setup.html|ae49cf5a24d00874d8b0ce5138461069
 cgi-bin/yabb2/Help/English/HelpOrder.pm|3537e008dad348cbd70a986a6c30908f
 cgi-bin/yabb2/Languages/English/AddModerators.lng|9db998daf893dcb083dd384ec8f41a4b
 cgi-bin/yabb2/Languages/English/Admin.lng|f01295212b7cdf9993f47ef98f62a482
-cgi-bin/yabb2/Languages/English/Backup.lng|b8b5065c878c9edd6faa649c6d0de84b
+cgi-bin/yabb2/Languages/English/Backup.lng|6ea67558a7897ffce9601be49119026e
 cgi-bin/yabb2/Languages/English/BoardIndex.lng|36248f38178173f33605de3e1c6cf899
 cgi-bin/yabb2/Languages/English/Bookmarks.lng|c5eee614860eab6ac2206a7dadb407b5
 cgi-bin/yabb2/Languages/English/ContextHelp.lng|bf98c80291f9a318ed23003f4f1170b9
