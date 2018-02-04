@@ -1,7 +1,7 @@
 checksum.txt
 Languages/Dutch/AddModerators.lng|286e47fef027550c0a7ca051afd92eb9
 Languages/Dutch/Admin.lng|491f20ab0cbf6159ebb5f450dcb43c0a
-Languages/Dutch/Backup.lng|7977d78ef68d513f7cbc506f4f7f3087
+Languages/Dutch/Backup.lng|e23adc2dad01c3716046533c5dc794a2
 Languages/Dutch/BoardIndex.lng|c09dd703bfa751715a070024e9c44e85
 Languages/Dutch/Bookmarks.lng|c2769722a4041a83ce87910976cab1bd
 Languages/Dutch/ContextHelp.lng|b16442805bb298c7b6879a356d00e39b

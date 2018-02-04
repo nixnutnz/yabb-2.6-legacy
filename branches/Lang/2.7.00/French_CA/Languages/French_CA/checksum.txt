@@ -1,7 +1,7 @@
 checksum.txt
 Languages/French_CA/AddModerators.lng|c5b84b4434d07c363cf68e51352d038d
 Languages/French_CA/Admin.lng|0d0504e9b25b170bfb1af5a14cba495e
-Languages/French_CA/Backup.lng|92776098aa6f83912e85fc5ba0468a2c
+Languages/French_CA/Backup.lng|e549270ffd33e96f88e2e5ed6b4b840d
 Languages/French_CA/BoardIndex.lng|fa4661cf850331ed9cff78ffeac7ba10
 Languages/French_CA/Bookmarks.lng|8722f82978d742d6d538ec4d8c7a17b4
 Languages/French_CA/ContextHelp.lng|56ea3e50c194b3edca6a500f181b4563
