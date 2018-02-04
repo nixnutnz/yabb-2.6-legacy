@@ -25,7 +25,7 @@ $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
-( $support_env_path = $script_root ) =~ s/\/\w+[.][pl|cgi]//xsm;
+( $support_env_path = $script_root ) =~ s/\/\w+[.](?:pl|cgi)//xsm;
 
 %backup_txt = (
     '1' => q~Резервное копирование~,
