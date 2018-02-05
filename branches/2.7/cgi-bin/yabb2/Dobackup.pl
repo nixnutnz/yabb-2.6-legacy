@@ -404,7 +404,7 @@ sub RecurseDirectory {
     my ( @newcontents );
     if ( -d $dir ) {
         opendir RECURSEDIR, $dir;
-        my @dirlist = readdir RECURSEDIR;
+        my (@dirlist) = readdir RECURSEDIR;
         closedir RECURSEDIR;
 
         foreach my $item (@dirlist) {
@@ -418,7 +418,7 @@ sub RecurseDirectory {
             elsif (
                 -f "$dir/$item"
                 && (  !$backupnewest
-                    || $backupnewest > -M "$dir/$item" )
+                    || ( $backupnewest && $backupnewest > -M "$dir/$item" ) )
               )
             {
                 push @newcontents, "$dir/$item";
@@ -430,7 +430,8 @@ sub RecurseDirectory {
 
 sub print_BackupSettings {
     my @newpaths;
-    foreach my $path (qw(src bo lan mem mes temp var html upld)) {
+    my @paths = qw(src bo lan mem mes temp var html upld);
+    foreach my $path (@paths) {
         foreach (@backup_paths) {
             if ( $_ eq $path ) { push @newpaths, $path; last; }
         }

@@ -921,9 +921,9 @@ sub refcontrol {
       viewprofile    register     reminder     search
     );
     my @refermods = ('refer_mods');
+    ## refershow Mod Hooks
     my @action    = @refergeneral;
     push @action, @refermods;
-    ## refershow Mod Hooks
     foreach my $i (@action) {
         $refexpl_txt{$i} =~ s/\x22/\x27/gxsm;
     }
