@@ -188,7 +188,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '01'      => q~Ouvrir l'aperçu~,
     '02'      => q~Fermer l'aperçu~,
     '03'      => q~Max~,
-    '03a'     => q~caractères. {yabb_getbreak} caractères restants:~,
+    '03a'     => q~caractères. caractères restants:~,
     '04'      => q~Aperçu~,
     '05'      => q~<strong>Police de caractère/Taille</strong>~,
     'default' => q~Défaut~,

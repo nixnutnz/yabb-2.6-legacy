@@ -128,8 +128,6 @@ q~Ich nutze mein eigenes Format von Datum und Zeit (im nächsten Feld angeben)~,
     '513'  => q~ICQ~,
     '519'  => q~Automatische Sommerzeitänderung aktivieren?~,
     '520'  => q~Dynamische Uhr oben auf der Seite aktivieren?~,
-    '521' =>
-q~Dies ist nicht möglich, wenn Du Dein eigenes Uhrzeitformat eingegeben habst.~,
     '563'  => q~Geburtstag~,
     '563a' => q~Verstecke Alter und Geburtsjahr?~,
     '563b' => q~(erforderlich)~,

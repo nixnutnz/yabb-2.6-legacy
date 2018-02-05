@@ -122,7 +122,6 @@ q~Esta sección establece en que formato verás las fechas que aparecen en el fo
     '513'  => q~ICQ~,
     '519'  => q~¿Selección automática del horario de verano?~,
     '520'  => q~¿Habilitar reloj dinámico al principio de la página?~,
-    '521'  => q~No disponible si has escrito tu propio formato horario.~,
     '563'  => q~Fecha de nacimiento~,
     '563a' => q~Hide age and birth year?~,
     '563b' => q~(necesario)~,

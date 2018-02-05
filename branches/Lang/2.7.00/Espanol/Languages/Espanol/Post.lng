@@ -203,7 +203,7 @@ q~Si quieres citar esta contribución, y pulsas sobre OK, entonces tus registros
     '01'                => q~Abrir previsualización en vivo~,
     '02'                => q~Cerrar previsualización en vivo~,
     '03'                => q~Máximo~,
-    '03a'               => q~caracteres.{yabb_getbreak}Caracteres restantes: ~,
+    '03a'               => q~caracteres. Caracteres restantes: ~,
     '04'                => q~Previsualización en vivo~,
     '05'                => q~<b>Fuente Familia / Tamaño</b>~,
     'features_text'     => q~Colapsar/Expandir características adicionales~,

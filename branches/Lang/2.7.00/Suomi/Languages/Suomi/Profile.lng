@@ -122,7 +122,6 @@ q~- Tai valitse palvelimelle ladattava kuvatiedosto.<br />Kuvamuodon tulee olla 
     '513'  => q~ICQ~,
     '519'  => q~Ota kesäaika/talviaika käyttöön~,
     '520'  => q~Aktivoi dynaaminen kello sivun ylälaidassa?~,
-    '521'  => q~Ei käytössä mikäli kirjoitit oman aikaformaatin.~,
     '563'  => q~Syntymäpäivä~,
     '563a' => q~Piilota ikä ja syntymävuosi?~,
     '563b' => q~(vaaditaan)~,

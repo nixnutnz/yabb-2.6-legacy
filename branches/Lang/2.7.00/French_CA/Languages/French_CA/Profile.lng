@@ -112,7 +112,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '513'  => q~ICQ~,
     '519'  => q~Activer le changement automatique de l'heure d'été?~,
     '520'  => q~Activer l'horloge dynamique en haut de la page?~,
-    '521'  => q~Non disponible si vous avez écrit votre propre format d'heure.~,
     '563'  => q~Date de naissance~,
     '563a' => q~Masquer l'âge et l'année de naissance?~,
     '563b' => q~(Champs obligatoires)~,
