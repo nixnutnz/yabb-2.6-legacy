@@ -29,8 +29,8 @@ Languages/French_CA/MoveSplitSplice.lng|ea4ad837045270fc055fc11d3e0cb2d0
 Languages/French_CA/MyCenter.lng|f550e06dde0d5f76f9be6287defffd2e
 Languages/French_CA/Notify.lng|0849c11043e6722ae0f3af80e3b7324b
 Languages/French_CA/Poll.lng|1ea3bf8f0df82a9d2412daeaa052c097
-Languages/French_CA/Post.lng|7981874ef6d863e6be4b61169a68e526
-Languages/French_CA/Profile.lng|c9a1bb534f86bd7156decc91ba37c4ba
+Languages/French_CA/Post.lng|ae7be8099d3950bef41eb1a2ece49614
+Languages/French_CA/Profile.lng|a3c8bfb6d061972d96ef630851343c40
 Languages/French_CA/RefControl.lng|4b9f5f5abef332d8e06530c1ac38f31c
 Languages/French_CA/Register.lng|cb79bc664df292696d109c7df2c57e1e
 Languages/French_CA/Search.lng|d2cde69213031fbb463d394ec0fceac4

@@ -29,8 +29,8 @@ Languages/Espanol/MoveSplitSplice.lng|0996a2b71ea6bf3af78ea5ccf50427df
 Languages/Espanol/MyCenter.lng|6675c30b6e0ee6ae444d963e96facca7
 Languages/Espanol/Notify.lng|c97218357d230834ed5477f7c2ffee2f
 Languages/Espanol/Poll.lng|8f21fae8b32f72cf14239b6102847bb6
-Languages/Espanol/Post.lng|7c37890d7b4cbe79f287ec84294e319e
-Languages/Espanol/Profile.lng|279706e6f343684980f5da8c7c078ada
+Languages/Espanol/Post.lng|621903e9616ad0dc324a87af878d7fbd
+Languages/Espanol/Profile.lng|ac41594bff1d6c7d8e7486982b99c5cf
 Languages/Espanol/RefControl.lng|c17c940bd2e1b9f46a8cf387586b7849
 Languages/Espanol/Register.lng|e3baf64d03153a3c185609f928ae8503
 Languages/Espanol/Search.lng|7b2965a2f5fb114b555363a410f8e711

@@ -30,7 +30,7 @@ Languages/Russianx/MyCenter.lng|3f464420720be05ae0f58fce8895f676
 Languages/Russianx/Notify.lng|23d74e381a6b8b504396c0f8cc5c3cef
 Languages/Russianx/Poll.lng|26346e47732cc5ec1f360fef6c918d2c
 Languages/Russianx/Post.lng|c330ef266fbae9efaac897b9e03ec784
-Languages/Russianx/Profile.lng|ea7bad50badc0ec1d671bcb666b4d203
+Languages/Russianx/Profile.lng|02e080ba5cc65f2f0b2ca26c456a0fee
 Languages/Russianx/RefControl.lng|a72f57b0ea85b9b382add9779e3cb423
 Languages/Russianx/Register.lng|70a114453b3766f09b39a34cc5855ab0
 Languages/Russianx/Search.lng|06852c926b742677541e1d8236a0fa40
