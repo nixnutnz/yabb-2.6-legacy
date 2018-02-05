@@ -1,13 +1,13 @@
 checksum.txt
 Quick-Guide_27/Quick-Guide.html|53dd07bc1bac79f3023c01a799622f2d
 Quick-Guide_27/style.css|20dc9614887a69adc942e65605b4a292
-cgi-bin/yabb2/AdminIndex.pl|7c8237e7ef4b22bfe2d116bd49702b98
+cgi-bin/yabb2/AdminIndex.pl|cf552dfb514d9efcd3c0552367557792
 cgi-bin/yabb2/BackupFix.pl|b1f1c6bee72f8745765b797f42afc86a
 cgi-bin/yabb2/BoardConvert.pl|d11885243a751451ae635ad150a25788
 cgi-bin/yabb2/Convert1x.pl|b28add5694045bbbc21c32f189c572ae
 cgi-bin/yabb2/Convert2x.pl|7120a0916826844a8a1c85a340869f57
 cgi-bin/yabb2/ConvertLang.pl|9e96f224c003d87e30b8ebba510429f4
-cgi-bin/yabb2/Dobackup.pl|646f1e717054a58bcea9319525f4fa43
+cgi-bin/yabb2/Dobackup.pl|5308b68606b2c7a98dd1c65aff905bbc
 cgi-bin/yabb2/index.html|b912ece89c623c481f50566e50270d0c
 cgi-bin/yabb2/Setup.pl|72a5eb0c14a05c320e0d2ef8cf2c0aa9
 cgi-bin/yabb2/YaBB.pl|46b7830382f3b167a572e146cfe93b7c
@@ -31,7 +31,7 @@ Quick-Guide_27/images/setup.png|d1197fdcf287c82eeeb42de7feaf7fe9
 Quick-Guide_27/images/shebang.gif|5485da454926baf32edd9bced750ffb9
 Quick-Guide_27/images/yabb254.png|b29b45bb099c6b93f01069ffcb4b294c
 Quick-Guide_27/images/yabblogo_26.png|5c05168471096a5abd0a90d41b530794
-cgi-bin/yabb2/Admin/Admin.pm|44de44bca1c74f881959850df2412a09
+cgi-bin/yabb2/Admin/Admin.pm|c53ddc90224f75d9de068170d54d216a
 cgi-bin/yabb2/Admin/AdminEdit.pm|2516422bd3c5453a18af525dfa828770
 cgi-bin/yabb2/Admin/AdminSubList.pm|b2ed1b876844bbf75dcaa2603788ed11
 cgi-bin/yabb2/Admin/AdminSubs.pm|4400436e89e375be0f877312793631ec
@@ -40,7 +40,7 @@ cgi-bin/yabb2/Admin/Attachments.pm|c76a009041f0018ad167c0e599029ae3
 cgi-bin/yabb2/Admin/Backup.pm|4f795b75fb6ac8c1312ba6952eafe8ed
 cgi-bin/yabb2/Admin/Ban.pm|f6b396927e63760f831318a81c592c33
 cgi-bin/yabb2/Admin/Checkspace.pm|29bdc8dbf5d65accda6254cf061bf9f1
-cgi-bin/yabb2/Admin/DetailedVersion.pm|0b4c5046642001b6f37aec49276226c5
+cgi-bin/yabb2/Admin/DetailedVersion.pm|181b4c168ef9947d1c5a15f5108762a5
 cgi-bin/yabb2/Admin/EditEmailTemplates.pm|4a93eea86fd30328ccbdb20c5d667717
 cgi-bin/yabb2/Admin/EditHelpCentre.pm|8392e29b54af95c3497428d239728f4c
 cgi-bin/yabb2/Admin/ErrorLog.pm|9244bcbbe2dc7431b97f8db959789c1c
