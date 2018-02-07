@@ -52,7 +52,7 @@ sub boardtotals {
     if ( !@updateboards ) { @updateboards = @allboards; }
     no strict qw(refs);
     my (@boardvars);
-    if ($updateboards[0]) {
+    if ( $updateboards[0] ) {
         chomp @updateboards;
         our %totals;
         require "$boardsdir/forum.totals";
@@ -675,7 +675,7 @@ sub rearrange_sticky {
 sub job_update {
     my ($updatethread) = @_;
     no strict qw(refs);
-    if ( !${ $updatethread }{'board'} )
+    if ( !${$updatethread}{'board'} )
     {    ## load if the variable is not already filled
         message_totals( 'load', $updatethread );
     }
@@ -685,12 +685,12 @@ sub job_update {
 sub job_load {
     my ($updatethread) = @_;
     no strict qw(refs);
-    if ( ${ $updatethread }{'board'} ) {
+    if ( ${$updatethread}{'board'} ) {
         return;
     }    ## skip load if the variable is already filled
     if ( -e "$datadir/$updatethread.ctb" ) {
         require "$datadir/$updatethread.ctb";
-        @repliers = split /,/xsm, ${ $updatethread }{'repliers'};
+        @repliers = split /,/xsm, ${$updatethread}{'repliers'};
         return @repliers;
     }
     return;

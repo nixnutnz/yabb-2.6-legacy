@@ -690,13 +690,15 @@ sub get_cal_allow {
     elsif ( !$cal_event_perms ) { $allow_event_input = 1; }
     elsif ( $iamguest && $cal_event_perms ) { $allow_event_input = 0; }
     else {
-      no strict qw(refs);
-      foreach my $element ( split /,/xsm, $cal_event_perms ) {
-            if ( ${ $uid . $username }{'position'} && $element eq ${ $uid . $username }{'position'} ) {
+        no strict qw(refs);
+        foreach my $element ( split /,/xsm, $cal_event_perms ) {
+            if ( ${ $uid . $username }{'position'}
+                && $element eq ${ $uid . $username }{'position'} )
+            {
                 $allow_event_input = 1;
                 last;
             }
-            if ($memberaddgroup{$username}) {
+            if ( $memberaddgroup{$username} ) {
                 foreach my $i ( split /,/xsm, $memberaddgroup{$username} ) {
                     if ( $element eq $i ) { $allow_event_input = 1; last; }
                 }
@@ -1575,7 +1577,7 @@ sub get_cal_mini {
         }
         my $icon_text = $var_cal{$cico};
         my $cal_icon  = $cal_icon{$cico};
-        my $message = $ceve;
+        my $message   = $ceve;
         if ( $enable_ubbc && !$ns ) {
             no strict qw(refs);
             enable_yabbc();

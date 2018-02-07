@@ -477,7 +477,7 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
     my $dropdisplaynum = 10;
     my $startpage      = 0;
     my $max            = $mreplies + 1;
-    my $do_rev = 0; 
+    my $do_rev         = 0;
     if ( !$iamguest && $ttsreverse && $ttsureverse && $userthreadpage ) {
         $do_rev = 1;
     }
@@ -936,8 +936,8 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
     }
     else {
         foreach my $i ( @{ $thread_arrayref{$viewnum} } ) {
-            if (    $counter > ( $mreplies - $start - $maxmessagedisplay )
-                 && $counter <= ( $mreplies - $start ) )
+            if (   $counter > ( $mreplies - $start - $maxmessagedisplay )
+                && $counter <= ( $mreplies - $start ) )
             {
                 push @messages, $i;
             }
@@ -1058,7 +1058,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                   ? $fatxt{'41b'}
                   : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
-                    if ( $i =~ /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
+                    if (   $i =~ /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
@@ -1252,7 +1252,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 && $showuserage
                 && ( !$showage || !${ $uid . $musername }{'hideage'} ) )
             {
-                my $age = get_age( $musername );
+                my $age = get_age($musername);
                 $template_age = qq~$display_txt{'age'}: $age<br />~;
             }
             my $dr_regdate = q{};
@@ -2150,7 +2150,7 @@ sub next_prev {
     if ($countsticky)   { push @threadlist, @stickythreadlist; }
     if ($countnosticky) { push @threadlist, @nostickythreadlist; }
 
-    my $is = 0;
+    my $is        = 0;
     my $datecount = 0;
     foreach my $i ( 0 .. $#threadlist ) {
         my ( $mnum, undef, undef, undef, $mdate, undef ) =

@@ -90,7 +90,7 @@ sub modify_message {
     if ( !$currentboard ) { fatal_error('no_access'); }
 
     our $threadid = $INFO{'thread'};
-    our $postid   = $INFO{'message'} || 0;
+    our $postid = $INFO{'message'} || 0;
 
     my $extensions = join q{ }, @ext;
     $checkext ||= 0;
@@ -289,7 +289,7 @@ sub modify_message2 {
     }
 
     my $threadid = $FORM{'threadid'};
-    my $postid   = $FORM{'postid'} || 0;
+    my $postid = $FORM{'postid'} || 0;
     $pollthread = $FORM{'pollthread'};
 
     if ($pollthread) {
@@ -455,7 +455,10 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     # Make sure the user is allowed to edit this post.
-    if ( $threadid && $postid >= 0 && $postid < @{ $thread_arrayref{$threadid} } ) {
+    if (   $threadid
+        && $postid >= 0
+        && $postid < @{ $thread_arrayref{$threadid} } )
+    {
         {
             no strict qw(refs);
             (
@@ -1178,7 +1181,8 @@ sub get_fixtime {
         if (
             (
                 ${ $uid . $currbrd }{'modtopic'} == 0
-                || $date < $mdate + ( ${ $uid . $currbrd }{'modtopic'} * $timeset )
+                || $date <
+                $mdate + ( ${ $uid . $currbrd }{'modtopic'} * $timeset )
             )
           )
         {

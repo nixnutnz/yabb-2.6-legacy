@@ -143,10 +143,10 @@ sub ext_get_field {
 sub ext_has_access {
     my ( $allowed_users, $allowed_groups ) = @_;
     no strict qw(refs);
-    my $access         = 0;
-    my $usergroup      = ${ $uid . $username }{'position'},
-    my $useraddgroup   = ${ $uid . $username }{'addgroups'},
-    my $postcount      = ${ $uid . $username }{'postcount'};
+    my $access       = 0;
+    my $usergroup    = ${ $uid . $username }{'position'},
+    my $useraddgroup = ${ $uid . $username }{'addgroups'},
+    my $postcount    = ${ $uid . $username }{'postcount'};
 
     my @users;
     my $groupid = q{};
@@ -273,7 +273,8 @@ sub ext_viewprofile {
 # returns the output for the post page
 sub ext_viewinposts {
     my ( $psername, $popup ) = @_;
-    my ( $output, $previous, $pre_output, $displayedfieldname ) = ( q{}, 0, q{}, q{} );
+    my ( $output, $previous, $pre_output, $displayedfieldname ) =
+      ( q{}, 0, q{}, q{} );
 
     if ( $psername ne 'Guest' ) {
         foreach my $fieldname (@ext_prof_order) {

@@ -28,7 +28,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## languages ##
-our ( %croak, %fatxt, %inmes_txt, %load_imtxt, %maintxt, $yycopyright,);
+our ( %croak, %fatxt, %inmes_txt, %load_imtxt, %maintxt, $yycopyright, );
 ## paths ##
 our (
     $datadir,     $htmldir,   $imagesdir, $memberdir, $pmuploaddir,
@@ -38,10 +38,10 @@ our (
 our ( $amdisplaypics, $enable_ubbc, $mbname, $pm_display_pics, );
 ## system ##
 our (
-    $currentboard, $date,       $iamguest,     $myprint,
-    $myprint_im,   $mythread,   $showprinturl, $showurl,
-    $staff,        $threadpost, $uid,          $useimages,
-    $username,     %att_img,    %attach_gif,   %INFO,
+    $currentboard, $date,            $iamguest,     $myprint,
+    $myprint_im,   $mythread,        $showprinturl, $showurl,
+    $staff,        $threadpost,      $uid,          $useimages,
+    $username,     %att_img,         %attach_gif,   %INFO,
     %micon_bg,     %thread_arrayref, $yabbversion,
 );
 ## our Mod Hook ##
@@ -519,13 +519,13 @@ sub print_post {
 
     load_language('FA');
     my $printthread = q{};
-    if ( @{ $thread_arrayref{$num} }[$post - 1] ) {
-            my (
-                $threadtitle, $threadposter, undef, $threaddate,
-                undef,        undef,         undef, undef,
-                $threadpst,   $ns,           undef, undef,
-                $attachments
-            ) = split /[|]/xsm, @{ $thread_arrayref{$num} }[$post - 1];
+    if ( @{ $thread_arrayref{$num} }[ $post - 1 ] ) {
+        my (
+            $threadtitle, $threadposter, undef, $threaddate,
+            undef,        undef,         undef, undef,
+            $threadpst,   $ns,           undef, undef,
+            $attachments
+        ) = split /[|]/xsm, @{ $thread_arrayref{$num} }[ $post - 1 ];
         ( $threadtitle, undef ) = split_splice_move( $threadtitle, 0 );
         ( $threadpost,  undef ) = split_splice_move( $threadpst,   $num );
         if ( $enable_ubbc && !$ns ) {
@@ -552,7 +552,7 @@ sub print_post {
                     ) = split /[|]/xsm;
                     if ($atfile) {
                         $atcount ||= 0;
-                    $attach_count{$atfile} = $atcount;
+                        $attach_count{$atfile} = $atcount;
                     }
                 }
                 fclose('ATM') or croak "$croak{'close'} attachments";
@@ -626,7 +626,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         $printthread =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     }
     our $output = $myprint;
-    my $year ||= (gmtime)[5] + 1900;
+    my $year = (gmtime)[5] + 1900;
     my $numa = qq~$num;post=$post~;
     $output =~ s/\Q{yabb copyright}\E/$yycopyright/gxsm;
     $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
@@ -650,7 +650,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
 }
 
 sub print_thread {
-    my $num  = $INFO{'num'};
+    my $num = $INFO{'num'};
     our ( $message, $displayname, );
     my ($curcat);
 
@@ -676,9 +676,9 @@ sub print_thread {
     # Figure out the name of the category
     our ( %catinfo, %board, );
     get_forum_master();
-    my ( $cat, $catperms ) = @{$catinfo{$curcat}};
+    my ( $cat, $catperms ) = @{ $catinfo{$curcat} };
 
-    my ( $boardname, $boardperms, $boardview ) = @{$board{$currentboard}};
+    my ( $boardname, $boardperms, $boardview ) = @{ $board{$currentboard} };
 
     load_censor_list();
 
@@ -737,7 +737,7 @@ sub print_thread {
                     ) = split /[|]/xsm;
                     if ($atfile) {
                         $atcount ||= 0;
-                    $attach_count{$atfile} = $atcount;
+                        $attach_count{$atfile} = $atcount;
                     }
                 }
                 fclose('ATM') or croak "$croak{'close'} attachments";
@@ -811,7 +811,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         $printthread =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     }
     our $output = $myprint;
-    my $year ||= (gmtime)[5] + 1900;
+    my $year = (gmtime)[5] + 1900;
     $output =~ s/\Q{yabb copyright}\E/$yycopyright/gxsm;
     $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
     $output =~ s/\Q{yabb version}\E/$yabbversion/gxsm;

@@ -407,10 +407,19 @@ sub setup_guardian2 {
     $banned_requests =~ s/post//igxsm;
     $banned_requests =~ s/get//igxsm;
     $banned_requests =~ s/[|]+/|/igxsm;    # Clean up extra pipes
-
+    require Admin::AdminSubs;
+    my @whitelist = split /[|]/xsm, $whitelist;
+    foreach my $i (@whitelist) {
+        my $bad = chk_ip($i);
+        if ( !$bad ) { fatal_error( 'badip', $i ); }
+    }
     require Admin::NewSettings;
     save_settings_to('Settings.pm');
     my @access_denied = split /[\r\n]/xsm, $access_denied;
+    foreach my $i (@access_denied) {
+        my $bad = chk_ip($i);
+        if ( !$bad ) { fatal_error( 'badip', $i ); }
+    }
     gr_update_htaccess( 'save', @access_denied );
 
     $yysetlocation = qq~$adminurl?action=setup_guardian~;

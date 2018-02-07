@@ -364,6 +364,10 @@ q~Sorry, Global Mods cannot modify Post-dependent users because the Maintenance-
     'nofile'   => q~No file has been selected for download~,
     'nogtalk'  => q~Cannot load Google Hangout~,
     'noextern' => q~No external board~,
+
+## ban checking##
+    'badip'   => q~This does not appear to be a valid IP address.~,
+
 );
 
 1;

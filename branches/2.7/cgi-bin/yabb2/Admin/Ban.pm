@@ -15,7 +15,6 @@
 use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-use CGI;
 use Time::Local;
 use Time::gmtime;
 our $VERSION = '2.7.00';
@@ -303,7 +302,11 @@ sub ipban_add {
     my $type   = $FORM{'type'};
 
     my @banin = split /\n/xsm, $ban_in;
-
+    require Admin::AdminSubs;
+    foreach my $i (@banin) {
+        my $bad = chk_ip($i);
+        if ( !$bad ) { fatal_error( 'badip', $i ); }
+    }
     our ($BAN);
     fopen( 'BAN', '<', "$vardir/banlist.db" )
       || fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
@@ -340,7 +343,7 @@ sub ipban_add {
             {
                 no strict qw(refs);
                 $printban =
-qq~$type|$ja|$time|${$uid.$username}{'realname'} ($username)|p|$jb|\n~;
+qq~$type|$ja|$time|${ $uid . $username }{'realname'} ($username)|p|$jb|\n~;
             }
         }
         our ($BAN2);
@@ -449,6 +452,7 @@ sub ipban_err {
     my @myban = <$BAN>;
     fclose('BAN') or croak "$croak{'close'} BAN";
     chomp @myban;
+
     foreach my $i (@myban) {
         $i =~ tr/\r//d;
         $i =~ s/\A[\s\n]+|[ ]|[\s\n]+\Z//gxsm;

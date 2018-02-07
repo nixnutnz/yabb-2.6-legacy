@@ -2581,7 +2581,7 @@ EOF
     our $cal_admax_messlen = isempty( $AdMaxCalMessLen,  300 );
     our $show_event_cal    = isempty( $Show_EventCal,    0 );
     our $event_todaycolor  = isempty( $Event_TodayColor, '#ff0000' );
-    our $gzcomp = 0;
+    our $gzcomp            = 0;
     our $fontsizemin = int( ( $fontsizemin * 100 ) / 12 );
     our $fontsizemax = int( ( $fontsizemax * 100 ) / 12 );
     our $ip_lookup = isempty( $ipLookup, 1 );
@@ -2606,16 +2606,16 @@ EOF
     $enabletz              = isempty( $enabletz,              0 );
     $default_tz            = isempty( $default_tz,            'UTC' );
     $screenlogin           = isempty( $screenlogin,           1 );
-    $ip_banlist           = q{};
-    $email_banlist        = q{};
-    $user_banlist         = q{};
-    $showsearchbox        = isempty( $showsearchbox, 1 );
-    $fmodview             = isempty( $fmodview, $gmodview );
-    $mdfmod               = isempty( $mdfmod, $mdglobal );
-    $show_online_ip_admin = isempty( $show_online_ip_admin, 1 );
-    $show_online_ip_gmod  = isempty( $show_online_ip_gmod, 1 );
-    $show_online_ip_fmod  = isempty( $show_online_ip_fmod, 1 );
-    $bm_subcut = isempty( $bm_subcut, 50 );
+    $ip_banlist            = q{};
+    $email_banlist         = q{};
+    $user_banlist          = q{};
+    $showsearchbox         = isempty( $showsearchbox,         1 );
+    $fmodview              = isempty( $fmodview,              $gmodview );
+    $mdfmod                = isempty( $mdfmod,                $mdglobal );
+    $show_online_ip_admin  = isempty( $show_online_ip_admin,  1 );
+    $show_online_ip_gmod   = isempty( $show_online_ip_gmod,   1 );
+    $show_online_ip_fmod   = isempty( $show_online_ip_fmod,   1 );
+    $bm_subcut             = isempty( $bm_subcut,             50 );
 
     my @adv =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );

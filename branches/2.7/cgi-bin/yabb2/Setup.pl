@@ -535,44 +535,67 @@ sub save_paths {
 
 ########## Directories ##########
 
-\$boardurl = '$boardurl';                                         # URL of your board's folder (without trailing '/')
-\$boarddir = '$boarddir';                                         # The server path to the board's folder (usually can be left as '.')
-\$boardsdir = '$boardsdir';                                       # Directory with board data files
-\$datadir = '$datadir';                                           # Directory with messages
-\$memberdir = '$memberdir';                                       # Directory with member files
-\$sourcedir = '$sourcedir';                                       # Directory with YaBB source files
-\$admindir = '$admindir';                                         # Directory with YaBB admin source files
-\$vardir = '$vardir';                                             # Directory with variable files
-\$langdir = '$langdir';                                           # Directory with Language files and folders
-\$helpfile = '$helpfile';                                         # Directory with Help files and folders
-\$templatesdir = '$templatesdir';                                 # Directory with template files and folders
-\$htmldir = '$htmldir';                                           # Base Path for all public-html files and folders
-\$facesdir = '$facesdir';                                         # Base Path for all avatar files
-\$uploaddir = '$uploaddir';                                       # Base Path for all attachment files
-\$pmuploaddir = '$pmuploaddir';                                   # Base Path for all PM attachment files
-\$modimgdir = '$modimgdir';                                       # Base Path for all mod images
+\$boardurl = '$boardurl';
+# URL of your board's folder (without trailing '/')
+\$boarddir = '$boarddir';
+# The server path to the board's folder (usually can be left as '.')
+\$boardsdir = '$boardsdir';
+# Directory with board data files
+\$datadir = '$datadir';
+# Directory with messages
+\$memberdir = '$memberdir';
+# Directory with member files
+\$sourcedir = '$sourcedir';
+# Directory with YaBB source files
+\$admindir = '$admindir';
+# Directory with YaBB admin source files
+\$vardir = '$vardir';
+# Directory with variable files
+\$langdir = '$langdir';
+# Directory with Language files and folders
+\$helpfile = '$helpfile';
+# Directory with Help files and folders
+\$templatesdir = '$templatesdir';
+# Directory with template files and folders
+\$htmldir = '$htmldir';
+# Base Path for all public-html files and folders
+\$facesdir = '$facesdir';
+# Base Path for all avatar files
+\$uploaddir = '$uploaddir';
+# Base Path for all attachment files
+\$pmuploaddir = '$pmuploaddir';
+# Base Path for all PM attachment files
+\$modimgdir = '$modimgdir';
+# Base Path for all mod images
 
 ########## URLs ##########
 
-\$yyhtml_root = '$yyhtml_root';                                   # Base URL for all html/css files and folders
-\$facesurl = '$facesurl';                                         # Base URL for all avatar files
-\$uploadurl = '$uploadurl';                                       # Base URL for all attachment files
-\$pmuploadurl = '$pmuploadurl';                                   # Base URL for all PM attachment files
-\$modimgurl = '$modimgurl';                                       # Base URL for all mod images
+\$yyhtml_root = '$yyhtml_root';
+# Base URL for all html/css files and folders
+\$facesurl = '$facesurl';
+# Base URL for all avatar files
+\$uploadurl = '$uploadurl';
+# Base URL for all attachment files
+\$pmuploadurl = '$pmuploadurl';
+# Base URL for all PM attachment files
+\$modimgurl = '$modimgurl';
+# Base URL for all mod images
+
+if (\$ENV{'HTTPS'}) {
+    \$boardurl =~ s\/http:\/https:\/ixsm;
+    \$yyhtml_root =~ s\/http:\/https:\/ixsm;
+    \$facesurl =~ s\/http:\/https:\/ixsm;
+    \$pmuploadurl =~ s\/http:\/https:\/ixsm;
+    \$modimgurl =~ s\/http:\/https:\/ixsm;
+}
 
 1;
 EOF
 
-    my $filler = q{ } x 70;
-    $setfile =~
-      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
-    $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gexm;
-    $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gexm;
-
     open my $FILE, '>', "$boarddir/Paths.pm"
       or setup_fatal_error( "$maintext_23 ./Paths.pm: ", 1 );
     print {$FILE} $setfile
-      or croak 'cannot print nicely aligned Paths.pm';
+      or croak 'cannot print Paths.pm';
     close $FILE or croak 'cannot close Paths.pm';
 
     $yysetlocation = qq~$set_cgi?action=checkmodules;getlang=$mylang~;

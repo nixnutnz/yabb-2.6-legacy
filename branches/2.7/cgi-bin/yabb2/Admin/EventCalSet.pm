@@ -556,7 +556,7 @@ sub eventcal_save {
 
 sub admin_del_old_events {
     my $caltoday = 1;
-    my ( $mday, $mon, $year ) = ( gmtime($date) )[ 3, 4, 5 ];
+    my ( $mday, $mon, $year ) = ( gmtime $date )[ 3, 4, 5 ];
     $year += 1900;
     $mon++;
     $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;

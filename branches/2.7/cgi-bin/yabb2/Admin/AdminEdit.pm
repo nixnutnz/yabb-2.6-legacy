@@ -539,7 +539,7 @@ sub gmod_settings {
         'gmodsecurity_settings',     'referer_control',
         'newsettings;page=security', 'setup_guardian',
         'newsettings;page=antispam', 'spam_questions',
-        'honeypot', 'blockip',
+        'honeypot',                  'blockip',
     );
     my @gmodforum_controls =
       qw(gmodforum_controls managecats manageboards helpadmin editemailtemplates);
@@ -678,7 +678,10 @@ sub gmod_settings2 {
         $FORM{'deletemultimembers'} ||= q{};
         $deletemulti = qq~deletemultimembers => '$FORM{'deletemultimembers'}',~;
     }
-    if ( $FORM{'deletemultimembers'} || $FORM{'addmember'} || $FORM{'manageattachments'} ) {
+    if (   $FORM{'deletemultimembers'}
+        || $FORM{'addmember'}
+        || $FORM{'manageattachments'} )
+    {
         $FORM{'viewmembers'} = 'on';
     }
 
@@ -1241,27 +1244,13 @@ EOF
 
     our ($PATHS);
     fopen( 'PATHS', '>', 'Paths.pm' ) or croak "$croak{'open'} PATHS";
-    print {$PATHS} nicely_aligned_file($setfile)
+    print {$PATHS} $setfile
       or croak "$croak{'print'} FILE";
     fclose('PATHS') or croak "$croak{'close'} PATHS";
 
     $yysetlocation = qq~$adminurl?action=editpaths~;
     redirectexit();
     return;
-}
-
-sub nicely_aligned_file {
-    my ($setfile) = @_;
-    my $filler = q{ } x 70;
-
-    # Make files look nicely aligned. The comment starts after 70 Col
-
-    $setfile =~
-      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
-    $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gexm;
-    $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gexm;
-    return $setfile;
-
 }
 
 1;

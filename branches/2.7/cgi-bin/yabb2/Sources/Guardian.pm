@@ -71,14 +71,13 @@ sub guard {
     my $whitelisted = 0;
     foreach my $i (@white_list) {
         chomp $i;
-        if ( $i ne q{} &&
-            (
-                   $proxy0 =~ m/$i/xsm
+        if (
+            $i ne q{}
+            && (   $proxy0 =~ m/$i/xsm
                 || $proxy1 =~ m/$i/xsm
                 || $proxy2 =~ m/$i/xsm
                 || $proxy3 =~ m/$i/xsm
-                || $username eq $i
-            )
+                || $username eq $i )
           )
         {
             $whitelisted = 1;
@@ -128,8 +127,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
     my $remote = get_ip();
     if ( index $remote, q{, } ) {
         my @remotes = split /,\s*/xsm, $remote;
-        if (
-            $remotes[0]
+        if (   $remotes[0]
             && $remotes[0] ne 'unknown'
             && $remotes[0] ne 'empty'
             && $remotes[0] ne '127.0.0.1'

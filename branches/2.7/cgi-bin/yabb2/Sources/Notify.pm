@@ -583,7 +583,7 @@ sub notification_alert {
     ## run through boards list
     foreach my $myboard (@bmaildir) {    # board name from file name
         if ( !-e "$boardsdir/$myboard.txt" )
-        {                            # remove from user board_notifications
+        {                                # remove from user board_notifications
             manageboardnotify( 'delete', $myboard, $username );
             next;
         }

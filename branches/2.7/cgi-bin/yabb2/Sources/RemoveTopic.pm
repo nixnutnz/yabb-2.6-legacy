@@ -29,7 +29,8 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language/settings/paths ##
-our ( %croak, $adminbin, $maxdisplay, $boardsdir, $datadir, $scripturl, $vardir );
+our ( %croak, $adminbin, $maxdisplay, $boardsdir, $datadir, $scripturl,
+    $vardir );
 ## system ##
 our (
     $binboard,      $currentboard, $iamadmin, $iamfmod,

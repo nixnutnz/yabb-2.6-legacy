@@ -1813,8 +1813,8 @@ sub modify_profile_admin2 {
 }
 
 sub view_profile {
-    if ($iamguest) { fatal_error('members_only'); }
-    if (!$INFO{'username'}) { fatal_error('no_profile_exists'); }
+    if ($iamguest)            { fatal_error('members_only'); }
+    if ( !$INFO{'username'} ) { fatal_error('no_profile_exists'); }
 
     # If someone registers with a '+' in their name It causes problems.
     # Get's turned into a <space> in the query string Change it back here.
@@ -2330,8 +2330,13 @@ sub getipban {
             $banlink[$ip] =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'905a'}$ip_ban[$ip]');">$profile_txt{'905'}</a> ]</span>~;
         }
-        elsif ( ( !${ $uid . $user }{'position'}
-            || ${ $uid . $user }{'position'} ne 'Administrator' ) && ( $iamadmin || $iamgmod ) )
+        elsif (
+            (
+                  !${ $uid . $user }{'position'}
+                || ${ $uid . $user }{'position'} ne 'Administrator'
+            )
+            && ( $iamadmin || $iamgmod )
+          )
         {
             $banlink[$ip] = qq~<span class="small">[ $profile_txt{'908'}: ~;
             my @timeban = qw( d w m p );
@@ -2496,7 +2501,7 @@ qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"
         $dayormonthm .=
 qq~<option value="$c" ${isselected($umonth && $umonth == $bb)}>$c</option>\n~;
     }
-    $dayormonthm .= qq~</select>~;
+    $dayormonthm .= q~</select>~;
 
     my $selectday = q{};
     my $dayormonthd =
@@ -2508,7 +2513,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         $dayormonthd .=
 qq~<option value="$d" ${isselected($uday && $uday == $aa)}>$d</option>\n~;
     }
-    $dayormonthd .= qq~</select>~;
+    $dayormonthd .= q~</select>~;
     my $dayormonth = $dayormonthm . $dayormonthd;
     if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
 

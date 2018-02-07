@@ -318,7 +318,8 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
         my %settings = @_;
         my $newset   = q{};
         my @iplist   = ();
-        foreach my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
+        foreach my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} )
+        {
             if (   $iplookup_url =~ /:\/\//xsm
                 && $iplookup_url !~ /http(?:s|):\/\//xsm )
             {

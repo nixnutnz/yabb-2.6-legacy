@@ -55,8 +55,7 @@ sub toffs {
             || $forum_deflt
             || !$username
             || !${ $uid . $username }{'user_tz'}
-            || !$enabletz
-           )
+            || !$enabletz )
         {
             $tzname = $default_tz || 'UTC';
         }
@@ -110,8 +109,8 @@ sub timetostring {
     $min  = sprintf '%02d', $min;
     $hour = sprintf '%02d', $hour;
     $mday = sprintf '%02d', $mday;
-    $mon  += 1;
-    $mon  = sprintf '%02d', $mon;
+    $mon += 1;
+    $mon = sprintf '%02d', $mon;
     $yr += 1900;
     my $saveyear = ( $yr % 100 );
     $saveyear = sprintf '%02d', $saveyear;
@@ -420,7 +419,7 @@ sub timeformatcal {
 }
 
 sub calc_age {
-    my ( $user ) = @_;
+    my ($user) = @_;
 
     my $toffs = toffs($date);
     my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];
@@ -439,7 +438,7 @@ sub calc_age {
 }
 
 sub get_age {
-    my ( $user ) = @_;
+    my ($user) = @_;
     my $toffs = toffs($date);
     my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];
     $year += 1900;
@@ -464,7 +463,7 @@ sub get_age {
 }
 
 sub get_bday {
-    my ( $user ) = @_;
+    my ($user) = @_;
 
     my $toffs = toffs($date);
     my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];

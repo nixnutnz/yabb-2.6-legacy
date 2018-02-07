@@ -54,14 +54,14 @@ our (
     $iamfmod,          $iamgmod,       $iamguest,        $iammod,
     $language,         $menusep,       $my_blank_avatar, $password,
     $pathval,          $session_id,    $sessionvalid,    $staff,
-    $uid,              $use_menu_type,   $user_ip,
-    $username,         $yyexec,        $yyext,           $yysetlocation,
-    %cat,              %FORM,          %format,          %format_unbold,
-    %gmod_access2,     %img,           %ims,             %INFO,
-    %load_con,         %memberinfo,    %memberunfo,      %moderators,
-    %mybuddie,         %tmpimg,        %user_pm_level,   %useraccount,
-    %vars,             %yy_cookies,    %yy_udloaded,     @categoryorder,
-    @censored,         @other_cookies, $user
+    $uid,              $use_menu_type, $user_ip,         $username,
+    $yyexec,           $yyext,         $yysetlocation,   %cat,
+    %FORM,             %format,        %format_unbold,   %gmod_access2,
+    %img,              %ims,           %INFO,            %load_con,
+    %memberinfo,       %memberunfo,    %moderators,      %mybuddie,
+    %tmpimg,           %user_pm_level, %useraccount,     %vars,
+    %yy_cookies,       %yy_udloaded,   @categoryorder,   @censored,
+    @other_cookies,    $user
 );
 ## local ##
 our ( @allboards, $yyim, $yyuname, %thread_arrayref, $qlcount );
@@ -824,21 +824,24 @@ qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink<
 qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$memberinfo{$usr}</span>~;
         }
         else {
-            if ($profile_int) { $userlink = qq~<a href="$scripturl?action=link_profileview">$userlink</a>~;}
+            if ($profile_int) {
+                $userlink =
+qq~<a href="$scripturl?action=link_profileview">$userlink</a>~;
+            }
             $link{$usr} =
               qq~<span title="$maintxt{'members_only'}">$userlink</span>~;
-            $format{$usr} = $userlink;
+            $format{$usr}        = $userlink;
             $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
-            $col_title{$usr} = $memberinfo{$usr};
+            $col_title{$usr}     = $memberinfo{$usr};
         }
     }
     else {
         no strict qw(refs);
         $link{$usr} =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$userlink</a>~;
-        $format{$usr} = $userlink;
+        $format{$usr}        = $userlink;
         $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
-        $col_title{$usr} = $memberinfo{$usr};
+        $col_title{$usr}     = $memberinfo{$usr};
     }
     $addmembergroup{$usr} = q~<br />~;
     %addmembergroup = get_brd_perms( $usr, \@memstat, \%addmembergroup );
@@ -870,7 +873,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$userlink
             }
             my ( undef, undef, undef, undef, $topicstarter, undef ) =
               split /[|]/xsm, ${ $thread_arrayref{$viewnum} }[0], 6;
-            if ( $topicstarter && $usr eq $topicstarter ) { $topicstart{$usr} = 'Topic Starter'; }
+            if ( $topicstarter && $usr eq $topicstarter ) {
+                $topicstart{$usr} = 'Topic Starter';
+            }
         }
     }
     my (%memberaddgroup);
@@ -1264,8 +1269,8 @@ sub what_template {
         }
     }
     our (
-        $usestyle,        $useimages,     $usehead,     $useboard,
-        $usemessage,      $usedisplay,    $usemycenter, $use_menu_t,
+        $usestyle,        $useimages,  $usehead,     $useboard,
+        $usemessage,      $usedisplay, $usemycenter, $use_menu_t,
         $usethread_tools, $usepost_tools
     ) = @{ $templateset{$template} };
     $use_menu_type = $use_menu_t;

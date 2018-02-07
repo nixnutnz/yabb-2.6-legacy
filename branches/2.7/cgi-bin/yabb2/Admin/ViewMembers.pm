@@ -519,7 +519,7 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
             }
             elsif ( ${ $uid . $user }{'position'} ne q{} ) {
                 $tempgroups = 0;
-                foreach my $i( keys %grp_staff ) {
+                foreach my $i ( keys %grp_staff ) {
                     if ( ${ $uid . $user }{'position'} eq $i ) {
                         (
                             $memberinfo, $stars,      $starpic,
@@ -532,7 +532,7 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
                     }
                 }
                 if ( !$tempgroups ) {
-                    foreach my $i( sort { $a <=> $b } keys %grp_nopost ) {
+                    foreach my $i ( sort { $a <=> $b } keys %grp_nopost ) {
                         if ( ${ $uid . $user }{'position'} eq $i ) {
                             (
                                 $memberinfo, $stars,      $starpic,
@@ -561,8 +561,13 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
                 $user eq 'admin'
                 || (
                     $iamgmod
-                    && ( ( ${ $uid . $user }{'position'} && ${ $uid . $user }{'position'} eq 'Administrator' )
-                        || $gmod_access{'deletemultimembers'} ne 'on' )
+                    && (
+                        (
+                               ${ $uid . $user }{'position'}
+                            && ${ $uid . $user }{'position'} eq 'Administrator'
+                        )
+                        || $gmod_access{'deletemultimembers'} ne 'on'
+                    )
                 )
               )
             {
@@ -897,8 +902,12 @@ sub viewbuildpages {
 
     my $sel_box = q{};
     $checking_all ||= q{};
-    if ( $iamadmin
-        || ( $iamgmod && $gmod_access{'deletemultimembers'} && $gmod_access{'deletemultimembers'} eq 'on' ) )
+    if (
+        $iamadmin
+        || (   $iamgmod
+            && $gmod_access{'deletemultimembers'}
+            && $gmod_access{'deletemultimembers'} eq 'on' )
+      )
     {
         $sel_box = qq~
             <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">

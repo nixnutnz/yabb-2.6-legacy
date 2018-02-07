@@ -1352,7 +1352,7 @@ qq~                           <option value="Mid Moderator">$name</option>\n~;
         if ( $foundit != 1 || $count == $#perms ) {
             foreach my $i (@nopostorder) {
                 ( $name, undef ) = @{ $grp_nopost{$i} };
-                if ( $perm eq $i) {
+                if ( $perm eq $i ) {
                     $foundit = 1;
                     $found{$i} = 1;
                     $groupsel .=
@@ -2310,7 +2310,7 @@ sub fix_dupes {
     my %hash;
     my ( @del, @dupcat );
     $i = 0;
-    foreach my $j(@torem) { $hash{$j}++; }
+    foreach my $j (@torem) { $hash{$j}++; }
     foreach my $j ( keys %hash ) {
         my ( $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $j;
         if ( $tp eq 'c' ) {

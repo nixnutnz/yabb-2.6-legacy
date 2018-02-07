@@ -11,15 +11,15 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$defaultmicondefver = 'YaBB 2.7.00 $Revision$';
+$defaultmicondefver  = 'YaBB 2.7.00 $Revision$';
 @defaultmicondefmods = ();
 if (@defaultmicondefmods) {
     $defaultmicondefmods = 1;
 }
 
-$admin_images = "$yyhtml_root/Templates/Admin/default";
+$admin_images    = "$yyhtml_root/Templates/Admin/default";
 $my_blank_avatar = 'blank.gif';
-$nn_avatar = 'nn.gif';
+$nn_avatar       = 'nn.gif';
 load_language('Micon');
 no warnings qw(uninitialized);
 
@@ -31,70 +31,107 @@ if ( !-e "$htmldir/Templates/Forum/$useimages/dropdown.png" ) {
 }
 
 %micon = (
-'pollicon' => qq~<img src="$imgdir/poll_open.gif" alt="$img_polltxt_m{'44'}" />~,
-'polliconclosed' => qq~<img src="$imgdir/poll_lock.gif" alt="$img_polltxt_m{'46'}" />~,
-'polliconnew' => qq~<img src="$imgdir/poll_new.gif" alt="$img_polltxt_m{'45'}" />~,
-'xx' => qq~<img src="$imgdir/xx.gif" alt="" />~,
-'no_postcount' => qq~<img src="$imgdir/no_postcount.gif" alt="" />~,
-'exclamation' => qq~<img src="$imgdir/exclamation.png" alt="" />~,
-'thumbup' => qq~<img src="$smiledir/thumbup.gif" alt="" />~,
-'thumbdown' => qq~<img src="$smiledir/thumbdown.gif" alt="" />~,
-'question' => qq~<img src="$imgdir/question.png" alt="" />~,
-'lamp' => qq~<img src="$imgdir/lamp.gif" alt="" />~,
-'smiley' => qq~<img src="$smiledir/smiley.gif" alt="" />~,
-'angry' => qq~<img src="$smiledir/angry.gif" alt="" />~,
-'cheesy' => qq~<img src="$smiledir/cheesy.gif" alt="" />~,
-'grin' => qq~<img src="$smiledir/grin.gif" alt="" />~,
-'sad' => qq~<img src="$smiledir/sad.gif" alt="" />~,
-'wink' => qq~<img src="$smiledir/wink.gif" alt="" />~,
-'alert' => qq~<img src="$imgdir/alert.png" alt="" />~,
-'thread' => qq~<img src="$imgdir/thread.gif" alt="$messageindex_txt_m{'457'}" title="$messageindex_txt_m{'457'}" />~,
-'hide' => qq~<img src="$imgdir/hide.gif" alt="$messageindex_txt_m{'458'}" title="$messageindex_txt_m{'458'}" />~,
-'locked' => qq~<img src="$imgdir/locked.gif" alt="$messageindex_txt_m{'456'}" title="$messageindex_txt_m{'456'}" />~,
-'veryhotthread' => qq~<img src="$imgdir/veryhotthread.gif" alt="$messageindex_txt_m{'455'} {yabb veryhotthread} $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'455'} {yabb veryhotthread} $messageindex_txt_m{'454a'}" />~,
-'hotthread' => qq~<img src="$imgdir/hotthread.gif" alt="$messageindex_txt_m{'454'} {yabb hottopic} $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'454'} {yabb hottopic} $messageindex_txt_m{'454a'}" />~,
-'hidesticky' => qq~<img src="$imgdir/hidesticky.gif" alt="$messageindex_txt_m{'459'}" title="$messageindex_txt_m{'459'}" />~,
-'hidelock' => qq~<img src="$imgdir/hidelock.gif" alt="$messageindex_txt_m{'460'}" title="$messageindex_txt_m{'460'}" />~,
-'hidestickylock' => qq~<img src="$imgdir/hidestickylock.gif" alt="$messageindex_txt_m{'461'}" title="$messageindex_txt_m{'461'}" />~,
-'stickylock' => qq~<img src="$imgdir/stickylock.gif" alt="$messageindex_txt_m{'456'}" title="$messageindex_txt_m{'780'}" />~,
-'sticky' => qq~<img src="$imgdir/sticky.gif" alt="$messageindex_txt_m{'779'}" title="$messageindex_txt_m{'779'}" />~,
-'announcementlock' => qq~<img src="$imgdir/announcementlock.gif" alt="$messageindex_txt_m{'779b'}" title="$messageindex_txt_m{'779b'}" />~,
-'announcement' => qq~<img src="$imgdir/announcement.gif" alt="$messageindex_txt_m{'779a'}" title="$messageindex_txt_m{'779a'}" />~,
-'locked_moved' => qq~<img src="$imgdir/locked_moved.gif" alt="$messageindex_txt_m{'845'}" title="$messageindex_txt_m{'845'}" />~,
-'guestpmreply' => qq~<img src="$imgdir/guestpmreply.gif" alt="$im_message_status_m{'guestpmreply'}" title="$im_message_status_m{'guestpmreply'}" />~,
-'standard' => qq~<img src="$imgdir/standard.gif" alt="$im_message_status_m{'standard'}" title="$im_message_status_m{'standard'}" />~,
-'confidential' => qq~<img src="$imgdir/confidential.gif" alt="$im_message_status_m{'confidential'}" title="$im_message_status_m{'confidential'}" />~,
-'urgent' => qq~<img src="$imgdir/exclamation.png" alt="$im_message_status_m{'urgent'}" title="$im_message_status_m{'urgent'}" />~,
-'guestpm' => qq~<img src="$imgdir/guestpm.gif" alt="$im_message_status_m{'guestpm'}" title="$im_message_status_m{'guestpm'}" />~,
-'alertmod' => qq~<img src="$imgdir/alertmod.gif" alt="$im_message_status_m{'alertmod'}" title="$im_message_status_m{'alertmod'}" />~,
-'imopen' => qq~<img src="$imgdir/imopen.gif" alt="$im_message_status_m{'imopen'}" title="$im_message_status_m{'imopen'}" />~,
-'tabsave' => qq~<img src="$imgdir/tabsave.gif" alt="$tabmenu_txt_m{'savetab'}" title="$tabmenu_txt_m{'savetab'}" />~,
-'tabdel' => qq~<img src="$imgdir/tabdelete.gif" alt="$tabmenu_txt_m{'tabdel'}" title="$tabmenu_txt_m{'tabdel'}" />~,
-'tabadd' => qq~<img src="$imgdir/tabadd.gif" alt="$tabmenu_txt_m{'newtab'}" title="$tabmenu_txt_m{'newtab'}" />~,
-'tabedit' => qq~<img src="$imgdir/tabedit.gif" alt="$tabmenu_txt_m{'edittab'}" title="$tabmenu_txt_m{'edittab'}" />~,
-'new' => qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
-'sort_first' => qq~<img src="$imgdir/sort_down.gif" alt="$messageindex_sort_m{'sort_first'}" title="$messageindex_sort_m{'sort_first'}" />~,
-'sort_up' => qq~<img src="$imgdir/sort_up.gif" alt="$messageindex_sort_m{'sort_za'}" title="$messageindex_sort_m{'sort_za'}" />~,
-'sort_down' => qq~<img src="$imgdir/sort_down.gif" alt="$messageindex_sort_m{'sort_az'}" title="$messageindex_sort_m{'sort_az'}" />~,
-'lockopen' => qq~<img src="$imgdir/lockopen_001.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}" />~,
-'lockimg' => qq~<img src="$imgdir/lockclose_001.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}"/>~,
-'lockopen_sub' => qq~<img src="$imgdir/lockopen_sub.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}" />~,
-'lockimg_sub' => qq~<img src="$imgdir/lockclose_sub.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}"/>~,
-'addfav' => qq~<img src="$imgdir/addfav.png" alt="$img_txt_m{'70'}" title="$img_txt_m{'70'}" />~,
+    'pollicon' =>
+      qq~<img src="$imgdir/poll_open.gif" alt="$img_polltxt_m{'44'}" />~,
+    'polliconclosed' =>
+      qq~<img src="$imgdir/poll_lock.gif" alt="$img_polltxt_m{'46'}" />~,
+    'polliconnew' =>
+      qq~<img src="$imgdir/poll_new.gif" alt="$img_polltxt_m{'45'}" />~,
+    'xx'           => qq~<img src="$imgdir/xx.gif" alt="" />~,
+    'no_postcount' => qq~<img src="$imgdir/no_postcount.gif" alt="" />~,
+    'exclamation'  => qq~<img src="$imgdir/exclamation.png" alt="" />~,
+    'thumbup'      => qq~<img src="$smiledir/thumbup.gif" alt="" />~,
+    'thumbdown'    => qq~<img src="$smiledir/thumbdown.gif" alt="" />~,
+    'question'     => qq~<img src="$imgdir/question.png" alt="" />~,
+    'lamp'         => qq~<img src="$imgdir/lamp.gif" alt="" />~,
+    'smiley'       => qq~<img src="$smiledir/smiley.gif" alt="" />~,
+    'angry'        => qq~<img src="$smiledir/angry.gif" alt="" />~,
+    'cheesy'       => qq~<img src="$smiledir/cheesy.gif" alt="" />~,
+    'grin'         => qq~<img src="$smiledir/grin.gif" alt="" />~,
+    'sad'          => qq~<img src="$smiledir/sad.gif" alt="" />~,
+    'wink'         => qq~<img src="$smiledir/wink.gif" alt="" />~,
+    'alert'        => qq~<img src="$imgdir/alert.png" alt="" />~,
+    'thread' =>
+qq~<img src="$imgdir/thread.gif" alt="$messageindex_txt_m{'457'}" title="$messageindex_txt_m{'457'}" />~,
+    'hide' =>
+qq~<img src="$imgdir/hide.gif" alt="$messageindex_txt_m{'458'}" title="$messageindex_txt_m{'458'}" />~,
+    'locked' =>
+qq~<img src="$imgdir/locked.gif" alt="$messageindex_txt_m{'456'}" title="$messageindex_txt_m{'456'}" />~,
+    'veryhotthread' =>
+qq~<img src="$imgdir/veryhotthread.gif" alt="$messageindex_txt_m{'455'} {yabb veryhotthread} $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'455'} {yabb veryhotthread} $messageindex_txt_m{'454a'}" />~,
+    'hotthread' =>
+qq~<img src="$imgdir/hotthread.gif" alt="$messageindex_txt_m{'454'} {yabb hottopic} $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'454'} {yabb hottopic} $messageindex_txt_m{'454a'}" />~,
+    'hidesticky' =>
+qq~<img src="$imgdir/hidesticky.gif" alt="$messageindex_txt_m{'459'}" title="$messageindex_txt_m{'459'}" />~,
+    'hidelock' =>
+qq~<img src="$imgdir/hidelock.gif" alt="$messageindex_txt_m{'460'}" title="$messageindex_txt_m{'460'}" />~,
+    'hidestickylock' =>
+qq~<img src="$imgdir/hidestickylock.gif" alt="$messageindex_txt_m{'461'}" title="$messageindex_txt_m{'461'}" />~,
+    'stickylock' =>
+qq~<img src="$imgdir/stickylock.gif" alt="$messageindex_txt_m{'456'}" title="$messageindex_txt_m{'780'}" />~,
+    'sticky' =>
+qq~<img src="$imgdir/sticky.gif" alt="$messageindex_txt_m{'779'}" title="$messageindex_txt_m{'779'}" />~,
+    'announcementlock' =>
+qq~<img src="$imgdir/announcementlock.gif" alt="$messageindex_txt_m{'779b'}" title="$messageindex_txt_m{'779b'}" />~,
+    'announcement' =>
+qq~<img src="$imgdir/announcement.gif" alt="$messageindex_txt_m{'779a'}" title="$messageindex_txt_m{'779a'}" />~,
+    'locked_moved' =>
+qq~<img src="$imgdir/locked_moved.gif" alt="$messageindex_txt_m{'845'}" title="$messageindex_txt_m{'845'}" />~,
+    'guestpmreply' =>
+qq~<img src="$imgdir/guestpmreply.gif" alt="$im_message_status_m{'guestpmreply'}" title="$im_message_status_m{'guestpmreply'}" />~,
+    'standard' =>
+qq~<img src="$imgdir/standard.gif" alt="$im_message_status_m{'standard'}" title="$im_message_status_m{'standard'}" />~,
+    'confidential' =>
+qq~<img src="$imgdir/confidential.gif" alt="$im_message_status_m{'confidential'}" title="$im_message_status_m{'confidential'}" />~,
+    'urgent' =>
+qq~<img src="$imgdir/exclamation.png" alt="$im_message_status_m{'urgent'}" title="$im_message_status_m{'urgent'}" />~,
+    'guestpm' =>
+qq~<img src="$imgdir/guestpm.gif" alt="$im_message_status_m{'guestpm'}" title="$im_message_status_m{'guestpm'}" />~,
+    'alertmod' =>
+qq~<img src="$imgdir/alertmod.gif" alt="$im_message_status_m{'alertmod'}" title="$im_message_status_m{'alertmod'}" />~,
+    'imopen' =>
+qq~<img src="$imgdir/imopen.gif" alt="$im_message_status_m{'imopen'}" title="$im_message_status_m{'imopen'}" />~,
+    'tabsave' =>
+qq~<img src="$imgdir/tabsave.gif" alt="$tabmenu_txt_m{'savetab'}" title="$tabmenu_txt_m{'savetab'}" />~,
+    'tabdel' =>
+qq~<img src="$imgdir/tabdelete.gif" alt="$tabmenu_txt_m{'tabdel'}" title="$tabmenu_txt_m{'tabdel'}" />~,
+    'tabadd' =>
+qq~<img src="$imgdir/tabadd.gif" alt="$tabmenu_txt_m{'newtab'}" title="$tabmenu_txt_m{'newtab'}" />~,
+    'tabedit' =>
+qq~<img src="$imgdir/tabedit.gif" alt="$tabmenu_txt_m{'edittab'}" title="$tabmenu_txt_m{'edittab'}" />~,
+    'new' =>
+qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
+    'sort_first' =>
+qq~<img src="$imgdir/sort_down.gif" alt="$messageindex_sort_m{'sort_first'}" title="$messageindex_sort_m{'sort_first'}" />~,
+    'sort_up' =>
+qq~<img src="$imgdir/sort_up.gif" alt="$messageindex_sort_m{'sort_za'}" title="$messageindex_sort_m{'sort_za'}" />~,
+    'sort_down' =>
+qq~<img src="$imgdir/sort_down.gif" alt="$messageindex_sort_m{'sort_az'}" title="$messageindex_sort_m{'sort_az'}" />~,
+    'lockopen' =>
+qq~<img src="$imgdir/lockopen_001.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}" />~,
+    'lockimg' =>
+qq~<img src="$imgdir/lockclose_001.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}"/>~,
+    'lockopen_sub' =>
+qq~<img src="$imgdir/lockopen_sub.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}" />~,
+    'lockimg_sub' =>
+qq~<img src="$imgdir/lockclose_sub.png" alt="$maintxt_m{'900pd'}" title="$maintxt_m{'900pd'}"/>~,
+    'addfav' =>
+qq~<img src="$imgdir/addfav.png" alt="$img_txt_m{'70'}" title="$img_txt_m{'70'}" />~,
 );
 
 %micon_bg = (
-'angry' => qq~$smiledir/angry.gif~,
-'cheesy' => qq~$smiledir/cheesy.gif~,
-'grin' => qq~$smiledir/grin.gif~,
-'sad' => qq~$smiledir/sad.gif~,
-'smiley' => qq~$smiledir/smiley.gif~,
-'thumbdown' => qq~$smiledir/thumbdown.gif~,
-'thumbup' => qq~$smiledir/thumbup.gif~,
-'wink' => qq~$smiledir/wink.gif~,
+    'angry'     => qq~$smiledir/angry.gif~,
+    'cheesy'    => qq~$smiledir/cheesy.gif~,
+    'grin'      => qq~$smiledir/grin.gif~,
+    'sad'       => qq~$smiledir/sad.gif~,
+    'smiley'    => qq~$smiledir/smiley.gif~,
+    'thumbdown' => qq~$smiledir/thumbdown.gif~,
+    'thumbup'   => qq~$smiledir/thumbup.gif~,
+    'wink'      => qq~$smiledir/wink.gif~,
 );
 
-my @miconbglist = qw(admin_move admin_rem alert announcement announcementlock boardrss buddylist confidential email exclamation hide hidelock hidesticky hidestickylock hotthread ip lamp locked locked_moved lockmail new_mess noimg paperclip poll_mod question rss standard sticky stickylock tabsave thread urgent veryhotthread www xx );
+my @miconbglist =
+  qw(admin_move admin_rem alert announcement announcementlock boardrss buddylist confidential email exclamation hide hidelock hidesticky hidestickylock hotthread ip lamp locked locked_moved lockmail new_mess noimg paperclip poll_mod question rss standard sticky stickylock tabsave thread urgent veryhotthread www xx );
 
 foreach my $img (@miconbglist) {
     $imga = $img . '.gif';
@@ -114,65 +151,80 @@ foreach my $img (@miconbglist) {
 }
 
 %att_img = (
-'7z' => q~7z.gif~,
-'doc' => q~doc.gif~,
-'docx' => q~docx.gif~,
-'gif' => q~gif.gif~,
-'img' => q~img.gif~,
-'jpe' => q~jpe.gif~,
-'jpeg' => q~jpeg.gif~,
-'jpg' => q~jpg.gif~,
-'pdf' => q~pdf.gif~,
-'png' => q~png.gif~,
-'ppt' => q~ppt.gif~,
-'psd' => q~psd.gif~,
-'rar' => q~rar.gif~,
-'swf' => q~swf.gif~,
-'tar' => q~tar.gif~,
-'tar.gz' => q~tar.gz.gif~,
-'txt' => q~txt.gif~,
-'xls' => q~xls.gif~,
-'zip' => q~zip.gif~,
+    '7z'     => q~7z.gif~,
+    'doc'    => q~doc.gif~,
+    'docx'   => q~docx.gif~,
+    'gif'    => q~gif.gif~,
+    'img'    => q~img.gif~,
+    'jpe'    => q~jpe.gif~,
+    'jpeg'   => q~jpeg.gif~,
+    'jpg'    => q~jpg.gif~,
+    'pdf'    => q~pdf.gif~,
+    'png'    => q~png.gif~,
+    'ppt'    => q~ppt.gif~,
+    'psd'    => q~psd.gif~,
+    'rar'    => q~rar.gif~,
+    'swf'    => q~swf.gif~,
+    'tar'    => q~tar.gif~,
+    'tar.gz' => q~tar.gz.gif~,
+    'txt'    => q~txt.gif~,
+    'xls'    => q~xls.gif~,
+    'zip'    => q~zip.gif~,
 );
 
 %cal_icon = (
-'eventbd' => qq~<img src="$imgdir/eventbd.gif" alt="$var_cal_m{'calbirthday'}" />~,
-'eventprivate' => qq~<img src="$imgdir/eventprivate.gif" alt="$var_cal_m{'calprivate'}" />~,
-'modify' => qq~<img src="$imgdir/modify.png" alt="$var_cal_m{'caledit'}" title="$var_cal_m{'caledit'}" />~,
-'delete' => qq~<img src="$imgdir/delete.gif" alt="$var_cal_m{'caldel'}" title="$var_cal_m{'caldel'}" />~,
-'eventmore' => qq~<img src="$imgdir/eventmore.gif" alt="" />~,
-'eventmoreadd' => qq~<img src="$imgdir/eventmore.gif" alt="$var_cal_m{'getaddevent'}" />~,
-'eventinfo' => qq~<img src="$imgdir/eventinfo.gif" alt="$var_cal_m{'eventinfo'}" />~,
-'eventinfobd' => qq~<img src="$imgdir/eventinfobd.gif" alt="" />~,
-'eventannounce' => qq~<img src="$yyhtml_root/EventIcons/eventannounce.gif" alt="$var_cal_m{'eventannounce'}" />~,
-'eventholiday' => qq~<img src="$yyhtml_root/EventIcons/eventholiday.gif" alt="$var_cal_m{'eventholiday'}" />~,
-'eventnote' => qq~<img src="$yyhtml_root/EventIcons/eventnote.gif" alt="$var_cal_m{'eventnote'}" />~,
-'eventparty' => qq~<img src="$yyhtml_root/EventIcons/eventparty.gif" alt="$var_cal_m{'eventparty'}" />~,
-'eventcelebration' => qq~<img src="$yyhtml_root/EventIcons/eventcelebration.gif" alt="$var_cal_m{'eventcelebration'}" />~,
-'eventsport' => qq~<img src="$yyhtml_root/EventIcons/eventsport.gif" alt="$var_cal_m{'eventsport'}" />~,
-'eventmedia' => qq~<img src="$yyhtml_root/EventIcons/eventmedia.gif" alt="$var_cal_m{'eventmedia'}" />~,
-'eventmeeting' => qq~<img src="$yyhtml_root/EventIcons/eventmeeting.gif" alt="$var_cal_m{'eventmeeting'}" />~,
+    'eventbd' =>
+      qq~<img src="$imgdir/eventbd.gif" alt="$var_cal_m{'calbirthday'}" />~,
+    'eventprivate' =>
+      qq~<img src="$imgdir/eventprivate.gif" alt="$var_cal_m{'calprivate'}" />~,
+    'modify' =>
+qq~<img src="$imgdir/modify.png" alt="$var_cal_m{'caledit'}" title="$var_cal_m{'caledit'}" />~,
+    'delete' =>
+qq~<img src="$imgdir/delete.gif" alt="$var_cal_m{'caldel'}" title="$var_cal_m{'caldel'}" />~,
+    'eventmore' => qq~<img src="$imgdir/eventmore.gif" alt="" />~,
+    'eventmoreadd' =>
+      qq~<img src="$imgdir/eventmore.gif" alt="$var_cal_m{'getaddevent'}" />~,
+    'eventinfo' =>
+      qq~<img src="$imgdir/eventinfo.gif" alt="$var_cal_m{'eventinfo'}" />~,
+    'eventinfobd' => qq~<img src="$imgdir/eventinfobd.gif" alt="" />~,
+    'eventannounce' =>
+qq~<img src="$yyhtml_root/EventIcons/eventannounce.gif" alt="$var_cal_m{'eventannounce'}" />~,
+    'eventholiday' =>
+qq~<img src="$yyhtml_root/EventIcons/eventholiday.gif" alt="$var_cal_m{'eventholiday'}" />~,
+    'eventnote' =>
+qq~<img src="$yyhtml_root/EventIcons/eventnote.gif" alt="$var_cal_m{'eventnote'}" />~,
+    'eventparty' =>
+qq~<img src="$yyhtml_root/EventIcons/eventparty.gif" alt="$var_cal_m{'eventparty'}" />~,
+    'eventcelebration' =>
+qq~<img src="$yyhtml_root/EventIcons/eventcelebration.gif" alt="$var_cal_m{'eventcelebration'}" />~,
+    'eventsport' =>
+qq~<img src="$yyhtml_root/EventIcons/eventsport.gif" alt="$var_cal_m{'eventsport'}" />~,
+    'eventmedia' =>
+qq~<img src="$yyhtml_root/EventIcons/eventmedia.gif" alt="$var_cal_m{'eventmedia'}" />~,
+    'eventmeeting' =>
+qq~<img src="$yyhtml_root/EventIcons/eventmeeting.gif" alt="$var_cal_m{'eventmeeting'}" />~,
 );
 
-foreach my $img (keys %cal_icon) {
+foreach my $img ( keys %cal_icon ) {
     $imga = $img . '.gif';
-     if ( !-e "$htmldir/Templates/Forum/$useimages/$imga" ) {
+    if ( !-e "$htmldir/Templates/Forum/$useimages/$imga" ) {
         $cal_icon{$img} =~ s/$imgdir/$defaultimagesdir/xsm;
     }
 }
 
 %cal_icon_bg = (
-'eventannounce' => qq~$yyhtml_root/EventIcons/eventannounce.gif~,
-'eventholiday' => qq~$yyhtml_root/EventIcons/eventholiday.gif~,
-'eventnote' => qq~$yyhtml_root/EventIcons/eventnote.gif~,
-'eventparty' => qq~$yyhtml_root/EventIcons/eventparty.gif~,
-'eventcelebration' => qq~$yyhtml_root/EventIcons/eventcelebration.gif~,
-'eventsport' => qq~$yyhtml_root/EventIcons/eventsport.gif~,
-'eventmedia' => qq~$yyhtml_root/EventIcons/eventmedia.gif~,
-'eventmeeting' => qq~$yyhtml_root/EventIcons/eventmeeting.gif~,
+    'eventannounce'    => qq~$yyhtml_root/EventIcons/eventannounce.gif~,
+    'eventholiday'     => qq~$yyhtml_root/EventIcons/eventholiday.gif~,
+    'eventnote'        => qq~$yyhtml_root/EventIcons/eventnote.gif~,
+    'eventparty'       => qq~$yyhtml_root/EventIcons/eventparty.gif~,
+    'eventcelebration' => qq~$yyhtml_root/EventIcons/eventcelebration.gif~,
+    'eventsport'       => qq~$yyhtml_root/EventIcons/eventsport.gif~,
+    'eventmedia'       => qq~$yyhtml_root/EventIcons/eventmedia.gif~,
+    'eventmeeting'     => qq~$yyhtml_root/EventIcons/eventmeeting.gif~,
 );
 
-my @caliconbg = qw(eventbd eventinfo eventprivate eventinfobd eventmore eventmorebd eventmoreadd);
+my @caliconbg =
+  qw(eventbd eventinfo eventprivate eventinfobd eventmore eventmorebd eventmoreadd);
 
 foreach my $img (@caliconbg) {
     $imga = $img . '.gif';
@@ -192,57 +244,61 @@ foreach my $img (@caliconbg) {
 }
 
 %load_con = (
-'icqadd' => qq~<img src="$imgdir/icqadd.gif" alt="{yabb usericq}" title="{yabb usericq}" />~,
-'gender' => qq~<img src="$imgdir/{yabb gender}.png" alt="{yabb genderTitle}" title="{yabb genderTitle}" />~,
-'actionslock' => qq~<img src="$imgdir/actionslock.png" alt="{yabb actionlock}" title="{yabb actionlock}" />~,
+    'icqadd' =>
+qq~<img src="$imgdir/icqadd.gif" alt="{yabb usericq}" title="{yabb usericq}" />~,
+    'gender' =>
+qq~<img src="$imgdir/{yabb gender}.png" alt="{yabb genderTitle}" title="{yabb genderTitle}" />~,
+    'actionslock' =>
+qq~<img src="$imgdir/actionslock.png" alt="{yabb actionlock}" title="{yabb actionlock}" />~,
 );
 
 %admin_img = (
-'infoimg' => qq~<img src="$admin_images/ad_info.png" alt="" />~,
-'prefimg' => qq~<img src="$admin_images/preferences.png" alt="" />~,
-'guardimg' => qq~<img src="$admin_images/guardian.png" alt="" />~,
-'aarea' => qq~<img src="$admin_images/aarea.jpg" alt="" />~,
-'banimg' => qq~<img src="$admin_images/ban.gif" alt="" />~,
-'profile' => qq~<img src="$admin_images/profile.gif" alt="" />~,
-'cat_img' => qq~<img src="$admin_images/cat.gif" alt="" />~,
-'board' => qq~<img src="$admin_images/board.gif" alt="" />~,
-'index_togl' => qq~<img src="$imgdir/index_togl.png" alt="" />~,
-'register' => qq~<img src="$imgdir/register.gif" alt="" />~,
-'xx' => qq~<img src="$imgdir/xx.gif" alt="" />~,
-'guest' => qq~<img src="$imgdir/guest.gif" alt="" />~,
-'off' => qq~<img src="$imgdir/off.png" alt="" />~,
-'admin_rem' => qq~$imgdir/admin_rem.gif~,
-'question' => qq~$imgdir/question.png~,
-'reorder' => qq~$admin_images/reorder.gif~,
+    'infoimg'    => qq~<img src="$admin_images/ad_info.png" alt="" />~,
+    'prefimg'    => qq~<img src="$admin_images/preferences.png" alt="" />~,
+    'guardimg'   => qq~<img src="$admin_images/guardian.png" alt="" />~,
+    'aarea'      => qq~<img src="$admin_images/aarea.jpg" alt="" />~,
+    'banimg'     => qq~<img src="$admin_images/ban.gif" alt="" />~,
+    'profile'    => qq~<img src="$admin_images/profile.gif" alt="" />~,
+    'cat_img'    => qq~<img src="$admin_images/cat.gif" alt="" />~,
+    'board'      => qq~<img src="$admin_images/board.gif" alt="" />~,
+    'index_togl' => qq~<img src="$imgdir/index_togl.png" alt="" />~,
+    'register'   => qq~<img src="$imgdir/register.gif" alt="" />~,
+    'xx'         => qq~<img src="$imgdir/xx.gif" alt="" />~,
+    'guest'      => qq~<img src="$imgdir/guest.gif" alt="" />~,
+    'off'        => qq~<img src="$imgdir/off.png" alt="" />~,
+    'admin_rem'  => qq~$imgdir/admin_rem.gif~,
+    'question'   => qq~$imgdir/question.png~,
+    'reorder'    => qq~$admin_images/reorder.gif~,
 );
 
 %index_togl = (
-'index_togl' => qq~$imgdir/index_togl.png~,
-'index_left' => qq~$imgdir/index_left.png~,
-'index_left0' => qq~$imgdir/index_left0.png~,
-'index_right' => qq~$imgdir/index_right.png~,
-'index_right0' => qq~$imgdir/index_right0.png~,
+    'index_togl'   => qq~$imgdir/index_togl.png~,
+    'index_left'   => qq~$imgdir/index_left.png~,
+    'index_left0'  => qq~$imgdir/index_left0.png~,
+    'index_right'  => qq~$imgdir/index_right.png~,
+    'index_right0' => qq~$imgdir/index_right0.png~,
 );
 
 %chrwarn = (
-'g0' => qq~$imgdir/green0.gif~,
-'g1' => qq~$imgdir/green1.gif~,
-'r0' => qq~$imgdir/red0.gif~,
-'r1' => qq~$imgdir/red1.gif~,
+    'g0' => qq~$imgdir/green0.gif~,
+    'g1' => qq~$imgdir/green1.gif~,
+    'r0' => qq~$imgdir/red0.gif~,
+    'r1' => qq~$imgdir/red1.gif~,
 );
 
 %newload = (
-'new_mess' => qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
-'brd_new' => 'on.png',
-'brd_old' => 'off.png',
-'sub_brd_new' => 'on_sub.png',
-'sub_brd_old' => 'off_sub.png',
-'brd_col' => 'cat_collapse.png',
-'brd_exp' => 'cat_expand.png',
-'imopen' => 'imopen.gif',
-'imopen2' => 'imopen2.gif',
-'imclose' => 'imclose.gif',
-'imclose2' => 'imclose2.gif',
+    'new_mess' =>
+qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
+    'brd_new'     => 'on.png',
+    'brd_old'     => 'off.png',
+    'sub_brd_new' => 'on_sub.png',
+    'sub_brd_old' => 'off_sub.png',
+    'brd_col'     => 'cat_collapse.png',
+    'brd_exp'     => 'cat_expand.png',
+    'imopen'      => 'imopen.gif',
+    'imopen2'     => 'imopen2.gif',
+    'imclose'     => 'imclose.gif',
+    'imclose2'    => 'imclose2.gif',
 );
 
 %iconlist = (
@@ -284,19 +340,21 @@ $newload = qq~
 #####################################################################
 #                   JS Variables for im_post, post                  #
 #####################################################################
-@jspostlist = qw( xx exclamation thumbup thumbdown question lamp smiley angry cheesy grin sad wink );
+@jspostlist =
+  qw( xx exclamation thumbup thumbdown question lamp smiley angry cheesy grin sad wink );
 $js_postlist = q{};
 for (@jspostlist) {
-        $js_postlist .= qq~'$_', '$micon_bg{$_}',\n~;
+    $js_postlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
 $js_postlist =~ s/\,\n\Z//xsm;
 $js_post = qq~
 var jsPost = new Hash($js_postlist);
 ~;
 
-@jspstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread);
+@jspstatlist =
+  qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread);
 for (@jspstatlist) {
-        $js_pstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
+    $js_pstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
 $js_pstatlist =~ s/\,\n\Z//xsm;
 $js_pstat = qq~
@@ -306,7 +364,7 @@ var jsPstat = new Hash($js_pstatlist);
 @js_imlist = qw( standard confidential urgent );
 $js_imlist = q{};
 for (@js_imlist) {
-        $js_imlist .= qq~'$_', '$micon_bg{$_}',\n~;
+    $js_imlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
 $js_imlist =~ s/\,\n\Z//xsm;
 $js_im = qq~
@@ -317,4 +375,5 @@ $my_sep = q{ };
 if ( $use_menu_type && $use_menu_type == 1 ) {
     $my_sep = q{ | };
 }
+
 1;

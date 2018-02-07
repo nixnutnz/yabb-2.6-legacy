@@ -350,10 +350,10 @@ sub do_contents {
                 next;
             }
 
-            my $section_anchor = ${ "section_sub$i" };
-            ${ "section_sub$i" } =~ s/_/ /gxsm;
+            my $section_anchor = ${"section_sub$i"};
+            ${"section_sub$i"} =~ s/_/ /gxsm;
             $section_anchor =~ s/\Q{yabb_boardname}\E/$mbname/gxsm;
-            ${ "section_sub$i" } =~ s/\Q{yabb_boardname}\E/$mbname/gxsm;
+            ${"section_sub$i"} =~ s/\Q{yabb_boardname}\E/$mbname/gxsm;
 
             $section_anchor =~ s/\s/_/gxsm;
             $tempparse = $content_item;
@@ -362,7 +362,7 @@ sub do_contents {
             $tempparse =~ s/\Q{yabb content}\E/${ "section_sub$i" }/gxsm;
 
             $contents .= $tempparse;
-            ${ "section_sub$i" } = q{};
+            ${"section_sub$i"} = q{};
             $i++;
         }
     }

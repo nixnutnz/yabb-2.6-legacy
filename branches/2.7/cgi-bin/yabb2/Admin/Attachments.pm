@@ -102,7 +102,7 @@ sub attachments {
     my $attachment_space = 0;
     foreach my $i ( 0 .. $#attachments ) {
         my @check = split /[|]/xsm, $attachments[$i];
-        if ( @check && scalar @check != 9  ) {
+        if ( @check && scalar @check != 9 ) {
             fatal_error( 'bad data', "attachments.db bad line $i", 1 );
         }
         if (@check) {
@@ -1145,10 +1145,11 @@ sub remove_ghostattach {
 
 sub remove_attachments
 {    # remove single or multiple attachments stored in a hash-reference
-    my $count = 0;
+    my $count         = 0;
     my $threadhashref = shift;
-# usage: ${$ThreadHashref}{'threadnum'} = 'filename1|filename2|...'
-# all attachments of thread are included if filname is undefined (undef)
+
+    # usage: ${$ThreadHashref}{'threadnum'} = 'filename1|filename2|...'
+    # all attachments of thread are included if filname is undefined (undef)
 
     if ( !%{$threadhashref} ) { return $count; }
 
@@ -1175,7 +1176,7 @@ sub remove_attachments
             undef,       undef, $afilename, undef
         ) = split /[|]/xsm, $attachments[$i];
         my $del = 0;
-        if ($athreadnum &&  exists ${$threadhashref}{$athreadnum} ) {
+        if ( $athreadnum && exists ${$threadhashref}{$athreadnum} ) {
             if ( defined ${$threadhashref}{$athreadnum} ) {
                 for ( split /[|]/xsm, ${$threadhashref}{$athreadnum} ) {
                     if ( $_ eq $afilename ) { $del = 1; last; }
@@ -1195,7 +1196,8 @@ sub remove_attachments
             $count++;
         }
         else {
-            print {$ATM} $attachments[$i] . qq~\n~ or croak "$croak{'print'} ATM";
+            print {$ATM} $attachments[$i] . qq~\n~
+              or croak "$croak{'print'} ATM";
         }
     }
     fclose('ATM') or croak "$croak{'close'} ATM";
@@ -1746,7 +1748,8 @@ sub remove_pmattachments {
         my $del = 0;
         if ( exists ${$threadhashref}{$athreadnum} ) {
             if ( defined ${$threadhashref}{$athreadnum} ) {
-                foreach my $j ( split /[|]/xsm, ${$threadhashref}{$athreadnum} ) {
+                foreach my $j ( split /[|]/xsm, ${$threadhashref}{$athreadnum} )
+                {
                     if ( $j eq $afilename ) { $del = 1; last; }
                 }
             }

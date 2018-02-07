@@ -252,8 +252,8 @@ sub modify_skin {
     }
 
     my (
-        $aktstyle,       $aktimages,    $akthead,     $aktboard,
-        $aktmessage,     $aktdisplay,   $aktmycenter, $aktmenutype,
+        $aktstyle,       $aktimages,  $akthead,     $aktboard,
+        $aktmessage,     $aktdisplay, $aktmycenter, $aktmenutype,
         $aktthreadtools, $aktposttools
     ) = @{ $templateset{$akttemplate} };
     my $thisimagesdir = "$yyhtml_root/Templates/Forum/$aktimages";
@@ -2050,7 +2050,7 @@ sub upload_file2 {
             }
         }
     }
-    return ($fixfile);
+    return $fixfile;
 }
 
 1;

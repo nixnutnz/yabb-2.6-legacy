@@ -104,23 +104,23 @@ our (
     $qcksearchaccess,  $regdate,                $spam_hits_left_count,
     $spam_wrd,         $staff,                  $tabsep,
     $templatejump,     $testenv,                $thread_notify,
-    $tmpregpasswrd1,   $tmpregpasswrd2,
-    $useboard,         $usedisplay,             $usehead,
-    $useimages,        $usemessage,             $usemycenter,
-    $user,             $username,               $userreg,
-    $usestyle,         $viewnum,                $yy_setcookies1,
-    $yy_setcookies2,   $yy_setcookies3,         $yy_yabbloaded,
-    $yyexec,           $yyiis,                  $yynavigation,
-    $yysetlocation,    $yytitle,                %board,
-    %cat,              %catcol,                 %catinfo,
-    %control,          %FORM,                   %format_unbold,
-    %gmod_access,      %INFO,                   %memberinf,
-    %memberlist,       %moved_file,             %recent,
-    %referallow,       %subboard,               %totals,
-    %user_pm_level,    %useraccount,            %yy_cookies,
-    %yyuserlog,        @categoryorder,          @censored,
-    @logentries,       @other_cookies,          $openfiles,
-    $START_TIME,       $file_close,             $file_open,
+    $tmpregpasswrd1,   $tmpregpasswrd2,         $useboard,
+    $usedisplay,       $usehead,                $useimages,
+    $usemessage,       $usemycenter,            $user,
+    $username,         $userreg,                $usestyle,
+    $viewnum,          $yy_setcookies1,         $yy_setcookies2,
+    $yy_setcookies3,   $yy_yabbloaded,          $yyexec,
+    $yyiis,            $yynavigation,           $yysetlocation,
+    $yytitle,          %board,                  %cat,
+    %catcol,           %catinfo,                %control,
+    %FORM,             %format_unbold,          %gmod_access,
+    %INFO,             %memberinf,              %memberlist,
+    %moved_file,       %recent,                 %referallow,
+    %subboard,         %totals,                 %user_pm_level,
+    %useraccount,      %yy_cookies,             %yyuserlog,
+    @categoryorder,    @censored,               @logentries,
+    @other_cookies,    $openfiles,              $START_TIME,
+    $file_close,       $file_open,
 );
 our (
     $boardindex_template, $boardname,  $boardpassw,
@@ -1562,11 +1562,11 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                     next;
                 }
                 if ( ${ $uid . $board }{'brdpasswr'} ) {
-                    my $bdmods          = ${ $uid . $board }{'mods'};
-                    my $bdmodgroups     = ${ $uid . $board }{'modgroups'};
-                    my $pswiammod  = sub_pswiammod( $bdmods, $bdmodgroups );
-                    my $cookiename = "$cookiepassword$board$username";
-                    my $crypass    = ${ $uid . $board }{'brdpassw'};
+                    my $bdmods      = ${ $uid . $board }{'mods'};
+                    my $bdmodgroups = ${ $uid . $board }{'modgroups'};
+                    my $pswiammod   = sub_pswiammod( $bdmods, $bdmodgroups );
+                    my $cookiename  = "$cookiepassword$board$username";
+                    my $crypass     = ${ $uid . $board }{'brdpassw'};
 
                     if (   !$iamadmin
                         && !$iamgmod
@@ -2369,17 +2369,16 @@ sub write_log {
     $hostin =~ s/[^\x20-\x7E]//gxsm;
     $hostin =~ s/\x7C//gxsm;
     my $pr_log = "$field|$date|$user_ip|$hostin|$username|$currentboard|"
-          . (
-            ( !$action && $INFO{'num'} && $currentboard )
-            ? 'display'
-            : (
-                (
-                        !$action
-                      && $ENV{'SCRIPT_FILENAME'} =~ /\/AdminIndex[.](pl|cgi)/xsm
-                ) ? 'admincenter' : $action
-            )
-          )
-          . "|$INFO{'username'}|$curnum\n";
+      . (
+        ( !$action && $INFO{'num'} && $currentboard )
+        ? 'display'
+        : (
+            (
+                    !$action
+                  && $ENV{'SCRIPT_FILENAME'} =~ /\/AdminIndex[.](pl|cgi)/xsm
+            ) ? 'admincenter' : $action
+        )
+      ) . "|$INFO{'username'}|$curnum\n";
     fopen( 'LOG', '>', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
     print {$LOG} $pr_log, @new_log or croak "$croak{'print'} user.log";
     fclose('LOG') or croak "$croak{'close'} user.log";
@@ -3749,7 +3748,9 @@ sub get_userpmchk {
     }
     foreach my $curgroup ( split /\//xsm, ${ $uid . $checkboard }{'modgroups'} )
     {
-        if ( ${ $uid . $checkuser }{'position'} && ${ $uid . $checkuser }{'position'} eq $curgroup ) {
+        if (   ${ $uid . $checkuser }{'position'}
+            && ${ $uid . $checkuser }{'position'} eq $curgroup )
+        {
             $user_pm_level = 2;
             last;
         }
@@ -3880,8 +3881,11 @@ sub update_adminlst {
             $i eq $usr
             && (
                 $memposition ne 'Administrator'
-                && ( $memposition ne 'Global Moderator'
-                    || ( $memposition eq 'Global Moderator' && !$gmod_access{'backup'} ) )
+                && (
+                    $memposition ne 'Global Moderator'
+                    || ( $memposition eq 'Global Moderator'
+                        && !$gmod_access{'backup'} )
+                )
             )
           )
         {

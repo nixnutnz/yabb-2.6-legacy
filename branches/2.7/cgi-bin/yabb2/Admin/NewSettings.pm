@@ -791,7 +791,7 @@ qq~\$addedsmilies{'$i'} = \[ '${$addedsmilies{$i}}[0]', '${$addedsmilies{$i}}[1]
         $smilieorder = join q{ }, @smilieorder;
 
         $bookmarks = q{};
-        foreach my $i( keys %bookmarks ) {
+        foreach my $i ( keys %bookmarks ) {
             $bookmarks .=
 qq~\$bookmarks{'$i'} = \[ '${$bookmarks{$i}}[0]', '${$bookmarks{$i}}[1]', '${$bookmarks{$i}}[2]', '${$bookmarks{$i}}[3]' \];\n~;
         }

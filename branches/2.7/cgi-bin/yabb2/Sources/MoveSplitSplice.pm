@@ -1046,8 +1046,11 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             my ( $attid, undef, undef, undef, undef, undef, undef,
                 $attachmentname, $downloadscount )
               = split /[|]/xsm;
-            if (  $attid && ( ( $attid != $curthreadid && $attid != $newthreadid )
-                || ( $attid == $curthreadid && $attachments != 1 ) ) )
+            if (
+                $attid
+                && (   ( $attid != $curthreadid && $attid != $newthreadid )
+                    || ( $attid == $curthreadid && $attachments != 1 ) )
+              )
             {
                 push @newattachments, $_;
             }

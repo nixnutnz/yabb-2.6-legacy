@@ -42,13 +42,13 @@ our (
 );
 ## system ##
 our (
-    $advsearchaccess, $catid,    $curboard,        $date,
-    $iamadmin,        $iamfmod,  $iamgmod,         $iamguest,
-    $iammod,          $menusep,  $qcksearchaccess, $staff,
-    $uid,             $username, $yymain,          $yynavigation,
-    $yytitle,         %board,    %cat,             %catcol,
-    %catinfo,         %FORM,     %gmod_access2,    %INFO,
-    %subboard,        %yy_cookies,      @categoryorder,
+    $advsearchaccess, $catid,      $curboard,        $date,
+    $iamadmin,        $iamfmod,    $iamgmod,         $iamguest,
+    $iammod,          $menusep,    $qcksearchaccess, $staff,
+    $uid,             $username,   $yymain,          $yynavigation,
+    $yytitle,         %board,      %cat,             %catcol,
+    %catinfo,         %FORM,       %gmod_access2,    %INFO,
+    %subboard,        %yy_cookies, @categoryorder,
 );
 ## templates ##
 our (
@@ -452,7 +452,8 @@ sub plush_search2 {
                 my $pswiammod   = sub_pswiammod( $bdmods, $bdmodgroups );
                 my $cookiename  = "$cookiepassword$curboard$username";
                 my $crypass     = ${ $uid . $curboard }{'brdpassw'};
-                if (   !$iamadmin
+                if (
+                       !$iamadmin
                     && !$iamgmod
                     && !$pswiammod
                     && (  !$yy_cookies{$cookiename}
@@ -1244,7 +1245,6 @@ qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small">$_</span></a> 
             }
         }
     }
-    ## Search for IP Address end
     return ( $ipfound, $mip );
 }
 

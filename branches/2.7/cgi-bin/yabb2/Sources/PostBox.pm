@@ -284,6 +284,7 @@ q~onclick="storeCaret(this);" onkeyup="storeCaret(this); autoPreview()" onchange
                         </div>
                     </div>~;
     my $break = q{ };
+
     if ( !$replyguest ) {
         if ( $max_messlen >= 10000 ) {
             $break = q~<br />~;
@@ -633,21 +634,26 @@ sub my_check_prev {
     $post         ||= q{};
     my $isguest = q{};
     if ( $iamguest && $post ne 'imsend' && $post ne 'imsend2' ) {
-        $isguest .= qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
+        $isguest .=
+qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
             if (document.postmodify.name.value === "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError === 0) isError = 1; }
             if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError === 0) isError = 1; }
             if (document.postmodify.email.value === "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError === 0) isError = 1; }
             else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~;
         if ($gpvalid_en) {
-			$isguest .= qq~if (document.postmodify.verification.value === "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~;
-		}
-		if ( $spam_questions_gp && -e "$langdir/$language/spam.questions" ) {
-			$isguest .= qq~if (document.postmodify.verification_question.value === "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~;
-		}
+            $isguest .=
+qq~if (document.postmodify.verification.value === "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~;
+        }
+        if ( $spam_questions_gp && -e "$langdir/$language/spam.questions" ) {
+            $isguest .=
+qq~if (document.postmodify.verification_question.value === "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~;
+        }
     }
-    else { $isguest .= qq~if (livepostas == "imsend" || livepostas == "imsend2") {
+    else {
+        $isguest .= qq~if (livepostas == "imsend" || livepostas == "imsend2") {
             if (document.postmodify.toshow.options.length === 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
-            }~;}
+            }~;
+    }
     my $x = qq~
         <script type="text/javascript">
 
@@ -658,8 +664,7 @@ sub my_check_prev {
             var isError = 0;
             var msgError = "";
             var msgErrorTitle = "<strong>$livepreview_txt{'info_missing'}<\/strong>";
-            ~ . $isguest
-      . (
+            ~ . $isguest . (
         $action ne 'eventcal'
         ? qq~
             if (document.postmodify.subject.value === "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError === 0) isError = 1; }

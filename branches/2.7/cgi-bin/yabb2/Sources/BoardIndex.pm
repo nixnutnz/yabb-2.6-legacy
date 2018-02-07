@@ -213,7 +213,8 @@ sub board_index {
             {
                 $iammodhere = 1;
             }
-            foreach my $i ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} )
+            foreach
+              my $i ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} )
             {
                 if ( $curgroup && $i && $i eq $curgroup ) {
                     $iammodhere = 1;
@@ -304,9 +305,10 @@ sub board_index {
         else { $lastposttime{$crboard} = $boardindex_txt{'470'}; }
 
         $lastpostrealtime{$crboard} =
-          ( !${ $uid . $crboard }{'lastposttime'} 
-          || ${ $uid . $crboard }{'lastposttime'} eq 'N/A' 
-          || ${ $uid . $crboard }{'lastposttime'} eq  $boardindex_txt{'470'} )
+          (     !${ $uid . $crboard }{'lastposttime'}
+              || ${ $uid . $crboard }{'lastposttime'} eq 'N/A'
+              || ${ $uid . $crboard }{'lastposttime'} eq $boardindex_txt{'470'}
+          )
           ? 0
           : ${ $uid . $crboard }{'lastposttime'};
 
@@ -1613,7 +1615,10 @@ sub redirect_externalshow {
                 chomp $excount;
             }
         }
-        if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' && $exboard && $board{$exboard} )
+        if (   $INFO{'action'}
+            && $INFO{'action'} eq 'showexternal'
+            && $exboard
+            && $board{$exboard} )
         {
             my $link = ${ $board{$exboard} }[0];
             if ($link) {
@@ -1711,8 +1716,8 @@ sub find_latest_data {
 
 sub getbrdpics {
     my ($curboard) = @_;
-    my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
-    my @sublist = ();
+    my $bdpic      = qq~$imagesdir/boards.$bdpic_ext~;
+    my @sublist    = ();
 
     foreach my $i ( keys %subboard ) {
         push @sublist, @{ $subboard{$i} };
@@ -2293,7 +2298,9 @@ sub getbrdmods {
         {
             $iammod = 1;
         }
-        foreach my $i ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} ) {
+        foreach
+          my $i ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} )
+        {
             if ( $i && $i eq $curgroup ) { $iammod = 1; last; }
         }
         if ( $grp_nopost{$curgroup} ) {

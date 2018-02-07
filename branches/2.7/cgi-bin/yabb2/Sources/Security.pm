@@ -748,9 +748,9 @@ sub ipban_gip {
         fclose('BAN') or croak "$croak{'close'} banlist";
         chomp @myban;
 
-        my $type = 'I';
+        my $type  = 'I';
         my $ihave = 0;
-        my $tmb = 0;
+        my $tmb   = 0;
         foreach my $i (@myban) {
             my @banned = split /[|]/xsm, $i;
             if ( $banned[4] && $timeban{ $banned[4] } ) {
@@ -803,7 +803,7 @@ sub set_banned {
 
 sub do_emailban {
     my ( $lev, $user, $ban_reason ) = @_;
-    my ( $banned_time, $bannedsubj, $bemail, $busersybject, $tmp );
+    my ( $banned_time, $bannedsubj, $bemail, $busersybject );
     load_language('Email');
     if ( $lev eq 'p' ) {
         $banned_time  = $profile_txt{'p'};
@@ -942,7 +942,11 @@ sub get_brd_access {
     if ( !$iamadmin ) {
         my $accesstype = q{};
         if ( $action eq 'post' ) {
-            if ( $INFO{'title'} && ( $INFO{'title'} eq 'CreatePoll' || $INFO{'title'} eq 'AddPoll' ) )
+            if (
+                $INFO{'title'}
+                && (   $INFO{'title'} eq 'CreatePoll'
+                    || $INFO{'title'} eq 'AddPoll' )
+              )
             {
                 $accesstype = 3;    # Post Poll
             }
@@ -981,7 +985,8 @@ sub bigcheck {
 sub get_boardmod {
     my ($curboard) = @_;
     my $boardmod = 0;
-    foreach my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} || q{} ) {
+    foreach my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} || q{} )
+    {
         if ( $username eq $curuser ) { $boardmod = 1; }
     }
     my @board_modgrps = split /\//xsm,
@@ -1027,7 +1032,8 @@ sub check2 {
             $access = 'granted';
         }
         else {
-            @allowed_groups =  split /\//xsm, ${ $uid . $curboard }{'replyperms'};
+            @allowed_groups = split /\//xsm,
+              ${ $uid . $curboard }{'replyperms'};
             if ( $myperms[2] && !$topicstart{$usr} ) { $access = 'notgranted'; }
         }
     }
@@ -1044,7 +1050,7 @@ sub check3 {
     }
     else {
         @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'pollperms'};
-       if ( $myperms[3] ) { $access = 'notgranted'; }
+        if ( $myperms[3] ) { $access = 'notgranted'; }
     }
     return ( \@allowed_groups, $access );
 }

@@ -77,8 +77,8 @@ my (
 );
 
 my $imgdir = $imagesdir;
-    if ( !-e "$htmldir/Templates/Forum/$useimages/noimg.gif" ) {
-   $imgdir = $defaultimagesdir;
+if ( !-e "$htmldir/Templates/Forum/$useimages/noimg.gif" ) {
+    $imgdir = $defaultimagesdir;
 }
 
 sub find_mem {
@@ -254,7 +254,8 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                 load_user($recentname);
             }
             if ( ${ $uid . $recentname }{'realname'} ) {
-                $memberinf{$recentname}[0] = ${ $uid . $recentname }{'realname'};
+                $memberinf{$recentname}[0] =
+                  ${ $uid . $recentname }{'realname'};
                 $memberinf{$recentname}[1] = ${ $uid . $recentname }{'email'};
             }
         }

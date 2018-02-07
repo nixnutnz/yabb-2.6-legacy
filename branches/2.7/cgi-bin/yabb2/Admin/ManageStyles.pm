@@ -939,8 +939,7 @@ qq~<input type="radio" name="ubbcselbutton" id="ubbcselbutton$y" value="$i"$uche
 qq~<br /><input type="hidden" id="ubbcbuttonbg" name="ubbcbuttonbg" value="$ubbcbuttonbackstyle" /><div style="float:left; padding: 0 20px 0 0">$ubbcbuttonlist</div><div class="clear"></div></td>
     </tr>~;
 
-    my $viewstylestart =
-q~<!DOCTYPE html>
+    my $viewstylestart = q~<!DOCTYPE html>
 <html lang="{yabb xml_lang}">
 <head>
 <title>Test Styles</title>

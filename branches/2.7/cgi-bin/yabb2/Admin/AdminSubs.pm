@@ -108,4 +108,26 @@ s/(.+;)[ \t]+([#].+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . 
     return;
 }
 
+sub chk_ip {
+    my ($tochk) = @_;
+    my $bad = 1;
+    if ( $tochk =~ /[^A-F0-9.:]/xsm ) { $bad = 0; }
+    elsif ( $tochk =~ /[.]/xsm && $tochk !~ /[:]/xsm ) {
+        my @chk = split /[.]/xsm, $tochk;
+        if ( @chk > 4 ) { $bad = 0; }
+        foreach my $i (@chk) {
+            if ( $i =~ /\D/xsm || $i eq q{} || $i > 255 ) {
+                $bad = 0;
+                last;
+            }
+        }
+    }
+    elsif ( $tochk =~ /[:]/xsm ) {
+        if ( $tochk =~ /[:]{3}/xsm ) {
+            $bad = 0;
+        }
+    }
+    return $bad;
+}
+
 1;

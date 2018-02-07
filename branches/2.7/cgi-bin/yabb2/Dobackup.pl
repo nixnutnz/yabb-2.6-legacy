@@ -89,8 +89,8 @@ load_language('Backup');
 my @ENVpaths = split /\:/xsm, $ENV{'PATH'};
 my $mcurtime = CORE::time;
 
-my $anno = ( gmtime $mcurtime)[5];
-my $yr = 1900 + $anno;
+my $anno = ( gmtime $mcurtime )[5];
+my $yr   = 1900 + $anno;
 
 my $back_urlyabb = "$boardurl/YaBB.$yyext";
 if ( $check != 1 ) {
@@ -222,6 +222,7 @@ sub runbackup {
     BackupMethodFinalize( $filedirs, 0 );
 
     our $lastbackup = $curtime;
+
     # save the last backup time with the actual settings
     print_BackupSettings();
     backupdone();
@@ -401,7 +402,7 @@ sub RecurseDirectory {
 
 # Simple subroutine to run through every entry in a directory and return a giant list of the files/subdirs.
     my ( $dir, $recursemode ) = @_;
-    my ( @newcontents );
+    my (@newcontents);
     if ( -d $dir ) {
         opendir RECURSEDIR, $dir;
         my (@dirlist) = readdir RECURSEDIR;
@@ -413,11 +414,12 @@ sub RecurseDirectory {
                 && $item ne q{..}
                 && -d "$dir/$item" )
             {
-                push @newcontents, RecurseDirectory( "$dir/$item", $recursemode );
+                push @newcontents,
+                  RecurseDirectory( "$dir/$item", $recursemode );
             }
             elsif (
                 -f "$dir/$item"
-                && (  !$backupnewest
+                && ( !$backupnewest
                     || ( $backupnewest && $backupnewest > -M "$dir/$item" ) )
               )
             {

@@ -377,14 +377,14 @@ function hideMods(id) {
                 fclose('CHK') or croak "$croak{'close'} checksum";
                 chomp @checksum;
                 foreach my $i (@checksum) {
-                   my ( $key, $check ) = split /[|]/xsm, $i;
-                   my @keys = split /\//xsm, $key;
-                   $newcheck{ $keys[-1] } = $check;
+                    my ( $key, $check ) = split /[|]/xsm, $i;
+                    my @keys = split /\//xsm, $key;
+                    $newcheck{ $keys[-1] } = $check;
                 }
                 $nvercheck = 0;
             }
             elsif ( $fld eq 'English' && -e "$vardir/checksum.txt" ) {
-                %newcheck = %checksum;
+                %newcheck  = %checksum;
                 $nvercheck = 0;
             }
             foreach my $filein_dir (@lfilesanddirsf) {
@@ -418,8 +418,9 @@ function hideMods(id) {
                     $date    = scalar localtime $age;
                     if (
                         (
-                            $nvercheck == 0
-                            && $newcheck{$filein_dir} && $linec ne $newcheck{$filein_dir}
+                               $nvercheck == 0
+                            && $newcheck{$filein_dir}
+                            && $linec ne $newcheck{$filein_dir}
                         )
                         || ( $nvercheck == 1 && $age > $ver_age )
                       )
@@ -471,7 +472,7 @@ qq~<span class="small"> $detailed{'upped'} $date</span>~;
                 }
             }
 
-            my @helps = qw(Admin Gmod Moderator User);
+            my @helps     = qw(Admin Gmod Moderator User);
             my $hvercheck = 1;
             if ( $fld ne 'English' && -e "$helpfile/$fld/helpchecksum.txt" ) {
                 %newcheck = ();
@@ -482,14 +483,14 @@ qq~<span class="small"> $detailed{'upped'} $date</span>~;
                 fclose('CHK') or croak "$croak{'close'} checksum";
                 chomp @checksum;
                 foreach my $i (@checksum) {
-                   my ( $key, $check ) = split /[|]/xsm, $i;
-                   my @keys = split /\//xsm, $key;
-                   $newcheck{ $keys[-1] } = $check;
+                    my ( $key, $check ) = split /[|]/xsm, $i;
+                    my @keys = split /\//xsm, $key;
+                    $newcheck{ $keys[-1] } = $check;
                 }
                 $hvercheck = 0;
             }
             elsif ( $fld eq 'English' && -e "$vardir/checksum.txt" ) {
-                %newcheck = %checksum;
+                %newcheck  = %checksum;
                 $hvercheck = 0;
             }
             foreach my $area (@helps) {
@@ -529,8 +530,9 @@ qq~<span class="small"> $detailed{'upped'} $date</span>~;
                             $date = scalar localtime $age;
                             if (
                                 (
-                                    $hvercheck == 0
-                                    && $newcheck{$helpin_dir} && $linec ne $newcheck{$helpin_dir}
+                                       $hvercheck == 0
+                                    && $newcheck{$helpin_dir}
+                                    && $linec ne $newcheck{$helpin_dir}
                                 )
                                 || ( $hvercheck == 1 && $age > $ver_age )
                               )
@@ -881,7 +883,10 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
         my %newcheck = ();
         @template_dir = sort @template_dir;
         my $nvercheck = 1;
-        if ( $folderindir ne 'default' && $folderindir ne 'admin' && -e "$templatesdir/$folderindir/checksum.txt" ) {
+        if (   $folderindir ne 'default'
+            && $folderindir ne 'admin'
+            && -e "$templatesdir/$folderindir/checksum.txt" )
+        {
             %newcheck = ();
             our ($CHK);
             fopen( 'CHK', '<', "$templatesdir/$folderindir/checksum.txt" )
@@ -890,14 +895,14 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             fclose('CHK') or croak "$croak{'close'} checksum";
             chomp @checksum;
             foreach my $i (@checksum) {
-               my ( $key, $check ) = split /[|]/xsm, $i;
-               my @keys = split /\//xsm, $key;
-               $newcheck{ $keys[-1] } = $check;
+                my ( $key, $check ) = split /[|]/xsm, $i;
+                my @keys = split /\//xsm, $key;
+                $newcheck{ $keys[-1] } = $check;
             }
             $nvercheck = 0;
-            }
+        }
         elsif ( $folderindir eq 'default' && -e "$vardir/checksum.txt" ) {
-            %newcheck = %checksum;
+            %newcheck  = %checksum;
             $nvercheck = 0;
         }
         foreach my $filein_dir (@template_dir) {
@@ -965,8 +970,14 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 my $age =
                   ( stat("$templatesdir/$folderindir/$filein_dir")->mtime );
                 $date = scalar localtime $age;
-                if (   ( $vercheck == 0 && $newcheck{$filein_dir} && $linec ne $newcheck{$filein_dir} )
-                    || ( $vercheck == 1 && $age > $ver_age ) )
+                if (
+                    (
+                           $vercheck == 0
+                        && $newcheck{$filein_dir}
+                        && $linec ne $newcheck{$filein_dir}
+                    )
+                    || ( $vercheck == 1 && $age > $ver_age )
+                  )
                 {
                     $chkmatch =
 qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
@@ -1010,7 +1021,8 @@ s/<!--\s YaBB\s (.*?)\s \$Revision\:\s (.*?)\s \$\s -->/YaBB $1 Build $2/igxsm;
                         if (
                             (
                                    $vercheck == 0
-                                && $newcheck{"$folderindir.html"} && $linec ne $newcheck{"$folderindir.html"}
+                                && $newcheck{"$folderindir.html"}
+                                && $linec ne $newcheck{"$folderindir.html"}
                             )
                             || ( $vercheck == 1 && $age > $ver_age )
                           )

@@ -192,7 +192,7 @@ sub rss_board {
 
         rss_template();
     }
-    else { 
+    else {
         our $yysetlocation = "$scripturl?action=RSSrecent";
         redirectexit();
     }
@@ -565,11 +565,12 @@ sub get_rss_mins {
     my $mins = q~       <item>
                 <title>~ . rss_description_trim($msub) . q~</title>
                 <link>~;
-    $mins .=  rss_description_trim("$scripturl?num=$curnum") . q~</link>
+    $mins .= rss_description_trim("$scripturl?num=$curnum") . q~</link>
                 <category>~ . rss_description_trim($category) . q~</category>
                 <guid>~;
     $mins .= rss_description_trim("$scripturl?num=$curnum") . q~</guid>
 ~;
+
     if ( $accept_permalink || $accept_permafull ) {
         my $permdate = permtimer($curnum);
         $mins = q~       <item>
@@ -698,7 +699,11 @@ sub get_rss_threadlist {
                     $mdate = sprintf '%010d', $mdate;
 
                     # Check if it's hidden. If so, don't show it
-                    if ( $mstate && $mstate =~ /h/xsm && !$iamadmin && !$iamgmod ) {
+                    if (   $mstate
+                        && $mstate =~ /h/xsm
+                        && !$iamadmin
+                        && !$iamgmod )
+                    {
                         next;
                     }
 

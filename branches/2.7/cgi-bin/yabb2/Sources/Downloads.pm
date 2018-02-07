@@ -359,7 +359,10 @@ sub get_att_gif {
         $ext = lc $1;
     }
     if ( !exists $attach_gif{$ext} ) {
-        if ( $ext && $att_img{$ext} && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" ) {
+        if (   $ext
+            && $att_img{$ext}
+            && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+        {
             $attach_gif{$ext} = "$imagesdir/$att_img{$ext}";
         }
         else {

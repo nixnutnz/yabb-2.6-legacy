@@ -38,11 +38,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 our ( $htmldir, $modimgurl, $scripturl, $yyhtml_root, $templatesdir, );
 ## settings ##
 ## system/template ##
-our (
-    $menusep,      $my_sep,        $thegtalkname,
-    $thegtalkuser, $use_menu_type,
-    $usestyle,     %img,           %img_set,
-);
+our ( $menusep, $my_sep, $thegtalkname, $thegtalkuser, $use_menu_type,
+    $usestyle, %img, %img_set, );
 
 get_micon();
 

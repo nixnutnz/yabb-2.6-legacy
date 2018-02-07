@@ -69,29 +69,29 @@ our (
 );
 ## system ##
 our (
-    $callerid,              $cgi_query,          $checkspam,
-    $countmulti,            $date,               $draft,
-    $error,                 $flood_text,         $guest_email,
-    $guest_name,            $iamadmin,           $iamfmod,
-    $iamgmod,               $iamguest,           $icon,
-    $is_preview,            $js_im,              $language,
-    $mattach,               $mc_globalformstart, $memb_adinfo,
-    $mename,                $menusep,            $mfrom,
-    $msubject,              $mto,                $my_send,
-    $my_tosend,             $nscheck,            $onchange_text2,
-    $pm_attachext,          $post,               $postid,
-    $replyguest,            $send_bm_mess,       $send_email,
-    $send_pm,               $show_my_sig,        $showcheck,
-    $signature,             $spam_image,         $spam_question,
-    $spam_question_id,      $staff,              $submittxt,
-    $subtitle,              $thestatus,          $threadid,
-    $uid,                   $use_menu_type, 
-    $useimages,             $useremail,          $username,
-    $verification_question, $yysetlocation,      %FORM,
-    %format_unbold,         %gmod_access2,       %grps,
-    %INFO,                  %memberlist,         %messlst,
-    %useraccount,           @allto,              @dimmessages,
-    @filelist,              @messages,           @multiple,
+    $callerid,         $cgi_query,          $checkspam,
+    $countmulti,       $date,               $draft,
+    $error,            $flood_text,         $guest_email,
+    $guest_name,       $iamadmin,           $iamfmod,
+    $iamgmod,          $iamguest,           $icon,
+    $is_preview,       $js_im,              $language,
+    $mattach,          $mc_globalformstart, $memb_adinfo,
+    $mename,           $menusep,            $mfrom,
+    $msubject,         $mto,                $my_send,
+    $my_tosend,        $nscheck,            $onchange_text2,
+    $pm_attachext,     $post,               $postid,
+    $replyguest,       $send_bm_mess,       $send_email,
+    $send_pm,          $show_my_sig,        $showcheck,
+    $signature,        $spam_image,         $spam_question,
+    $spam_question_id, $staff,              $submittxt,
+    $subtitle,         $thestatus,          $threadid,
+    $uid,              $use_menu_type,      $useimages,
+    $useremail,        $username,           $verification_question,
+    $yysetlocation,    %FORM,               %format_unbold,
+    %gmod_access2,     %grps,               %INFO,
+    %memberlist,       %messlst,            %useraccount,
+    @allto,            @dimmessages,        @filelist,
+    @messages,         @multiple,
 );
 ## templates ##
 our (
@@ -613,7 +613,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
     my ( $pmfile_typeinfo, $pmfile_sizeinfo, $pmfile_extensions, @files,
         @fileusers );
     my $my_imfa = q{};
-    if (   !$replyguest
+    if (  !$replyguest
         && $allow_attach_im
         && $allow_groups
         && -d "$pmuploaddir" )
@@ -1434,8 +1434,8 @@ sub pagelinks_list {
             $i++;
         }
     }
-    my $max         = scalar @tempim;
-    our $start       = 0;
+    my $max = scalar @tempim;
+    our $start = 0;
     my $allselected = q{};
     if ( $INFO{'start'} && $INFO{'start'} =~ /all/xsm ) {
         $maxmessagedisplay = $max;
@@ -2140,7 +2140,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
             }
             else {
                 my $touseract = q{};
-                if (${ $uid . $messlst{'musername'} }{'realname'} ) {
+                if ( ${ $uid . $messlst{'musername'} }{'realname'} ) {
                     $touseract = qq~;to=$useraccount{$messlst{'musername'}}~;
                 }
                 $showim_link .= qq~
@@ -2575,7 +2575,7 @@ sub get_filelist {
             }
             else {
                 foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
-                my $pm_attachext = join q{, }, @pm_attachext;
+                $pm_attachext = join q{, }, @pm_attachext;
                 fatal_error( q{}, "$fixfile $fatxt{'20'} $pm_attachext" );
             }
 
@@ -2683,7 +2683,7 @@ sub get_filelist {
             push @filelist, $FORM{"w_filename$y"};
         }
     }
-    my $fixfile = join q{,}, @filelist;
+    my $fixfile     = join q{,}, @filelist;
     my $log_fixfile = join q{,}, @logfilelist;
     if (@filelist) {
         our ($PMATTACHLOG);
