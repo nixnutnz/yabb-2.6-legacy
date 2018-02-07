@@ -1,6 +1,6 @@
 checksum.txt
 Languages/Espanol/AddModerators.lng|2c9266639be35145b90f273119887722
-Languages/Espanol/Admin.lng|3d207cc693305738f3b816dc8945aaca
+Languages/Espanol/Admin.lng|b31b7d1e954095aeba5de2c194b3acab
 Languages/Espanol/Backup.lng|0ea878eb182d00dd12de0c33914e3848
 Languages/Espanol/BoardIndex.lng|5df909e40841c1a28733d8ee8bf01fee
 Languages/Espanol/Bookmarks.lng|d911a47922616cdfaaf922a9361f6d1b
@@ -10,7 +10,7 @@ Languages/Espanol/Credits.lng|32328ec328a6809982c95fe8bc5084db
 Languages/Espanol/Debug.lng|108fa638a08b84c89b6ffb8ff4b5ee28
 Languages/Espanol/Display.lng|c3fc0f50d9639d54e0daa98fcc0e696e
 Languages/Espanol/Email.lng|3964bb4bda79a23eecdbe8cf2c401af7
-Languages/Espanol/Error.lng|c954ef0c94f026a100ba716098f2e496
+Languages/Espanol/Error.lng|ee92d71f86f59cf6ff73c08083fead7f
 Languages/Espanol/EventCal.lng|f758a5059bbca0be550d1e77d907acb6
 Languages/Espanol/ExtendedProfiles.lng|46a81faa9c0d45ae17b11fc4dca9e107
 Languages/Espanol/FA.lng|149f8782592f631bc30624ecf360d4f7

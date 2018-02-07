@@ -10,7 +10,7 @@ Languages/French_CA/Credits.lng|af3cdcf22d5200c206730217f026609d
 Languages/French_CA/Debug.lng|8891f487cdeb05f24b8ee042327fd1e0
 Languages/French_CA/Display.lng|8216f8f83518b898bc10b13d2fcd5a37
 Languages/French_CA/Email.lng|35624810d8c153771deb0614b7030d10
-Languages/French_CA/Error.lng|796eb5b3715d7a946aa1df44e0623605
+Languages/French_CA/Error.lng|382b115aaddaebc482428e21f61a9b9d
 Languages/French_CA/EventCal.lng|1eef783f1be117469a6aec48b1776e0f
 Languages/French_CA/ExtendedProfiles.lng|2edb2473f945f10ac74b0133f5107ccc
 Languages/French_CA/FA.lng|8b0de0bcb6e89b9b26cf9d566b6eefdd
