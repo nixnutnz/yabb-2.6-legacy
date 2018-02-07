@@ -347,6 +347,10 @@ q~Yleisvalvoja ei voi muuttaa postiriippuvaisia käyttäjiä, koska muutos vaati
     'noextern' => q~No external board~,
     'section'  => q~No section has been selected~,
     'nogtalk'  => q~Cannot load Google Hangout~,
+
+## ban checking##
+    'badip'   => q~This does not appear to be a valid IP address.~,
+
 );
 
 1;

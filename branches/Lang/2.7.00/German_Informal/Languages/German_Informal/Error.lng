@@ -372,6 +372,10 @@ q~Sorry, Global-Moderatoren können keine Benutzer ändern, die einer beitragsab
     'nofile'   => q~Es wurde keine Datei zum Download ausgewählt~,
     'nogtalk'  => q~Google Hangout kann nicht geladen werden~,
     'noextern' => q~Kein externes Board~,
+
+## ban checking##
+    'badip'   => q~This does not appear to be a valid IP address.~,
+
 );
 
 1;

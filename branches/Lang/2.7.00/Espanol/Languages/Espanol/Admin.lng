@@ -1937,7 +1937,7 @@ q~When you have confirmed that the Language encoding has converted correctly, yo
     '10a'  => q~Language Conversion Back-up files deleted~,
     'conv' => q~To convert 1x or 2x files to 2.7.00~,
     'conv2' =>
-      qq~<strong><a href="$boardurl/Setup.pl">Go to Setup/Convert</a></strong>~,
+      qq~<strong><a href="$boardurl/Setup.pl?lang=Espanol">Go to Setup/Convert</a></strong>~,
     'fixn' =>
 qq~The 2x Import Utility detected potential problems with the imported/converted data. See <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> for more details.<br />~,
     'illmem1' =>

@@ -97,7 +97,7 @@ q~Das <strong>Modfile</strong>, welches Sie versuchen auf den Server hochzuladen
     'tag'    => q~Marker korrespondiert mit~,
     'no_tag' => q~Marker gefunden in Zeile~,
     'no_s_string' =>
-q~Keine Suchstr&auml;nge passend!<br /><br /><span class="under">Suchstränge</span>:<br />~,
+q~Keine Suchstr&auml;nge passend!<br /><br /><span class="under">Suchstr&auml;nge</span>:<br />~,
     'no_file'  => q~Datei nicht gefunden!<br />~,
     'no_write' => q~Datei konnte nicht geschrieben werden:<br />~,
     'no_open'  => q~Kann nicht ge&ouml;ffnet werden:<br />~,

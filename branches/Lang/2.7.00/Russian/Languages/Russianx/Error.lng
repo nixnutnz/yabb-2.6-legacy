@@ -374,6 +374,10 @@ q~Sorry but this file needs to be renamed with ASCII characters before it can be
     'nofile'   => q~No file has been selected for download~,
     'nogtalk'  => q~Cannot load Google Hangout~,
     'noextern' => q~No external board~,
+
+## ban checking##
+    'badip'   => q~This does not appear to be a valid IP address.~,
+
 );
 
 1;

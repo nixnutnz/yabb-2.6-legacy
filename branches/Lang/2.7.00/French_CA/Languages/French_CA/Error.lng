@@ -262,6 +262,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
     'nofile'   => q~Aucun fichier n'a été sélectionné pour le téléchargement~,
     'nogtalk'  => q~Impossible de charger Google Hangout~,
     'noextern' => q~Aucun forum externe~,
+
+## ban checking##
+    'badip'   => q~This does not appear to be a valid IP address.~,
+
 );
 
 1;
