@@ -2799,6 +2799,7 @@ sub manage_memberinfo {
     my ( $todo, $usr, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
       @myargs;
     my @adminlst = get_adminlst($todo);
+    require Variables::Memberinfo;
 
     if ( $todo eq 'add' ) {
         $memberinf{$usr} =
@@ -2837,8 +2838,7 @@ sub manage_memberinfo {
             }
         }
     }
-    if (   $todo eq 'save'
-        || $todo eq 'update'
+    if (   $todo eq 'update'
         || $todo eq 'delete'
         || $todo eq 'add' )
     {

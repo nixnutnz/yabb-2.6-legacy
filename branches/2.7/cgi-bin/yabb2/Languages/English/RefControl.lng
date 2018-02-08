@@ -77,6 +77,4 @@ q~View the recent topics on the whole forum or a category through the RSS feed~,
     'viewprofile'   => q~View a User Profile~,
 );
 
-## Mod Hook ##
-
 1;

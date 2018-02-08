@@ -167,7 +167,6 @@ q~<strong>Quote:</strong><br /><div class="quote" style="width: 90%; overflow: a
     '751' => q~Required information missing:~,
     '801' => q~Happy~,
     '802' => q~Evil smiley~,
-    '807' => q~(user's screen name not displayed in Preview)~,
     'delay'         => q~Wait...~,
     'sendmessguest' => q~Send Alert Message to the Administrator(s)~,
     'nojs'          => q~browser not compatible with these buttons~,

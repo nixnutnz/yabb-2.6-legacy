@@ -711,7 +711,6 @@ function tick() {
 
 var autoprev = false;
 
-post_txt_807 = "$post_txt{'807'}";
 function enabPrev() {
     if ( autoprev === false ) {
         autoprev = true;~;
