@@ -54,7 +54,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '139' => q~Pages~,
     '162' => q~Êtes-vous sûr de vouloir supprimer ce sujet?~,
     '199' => q~Double-cliquez sur cette case pour plus d'informations sur sa fonction.~,      # don't use " inside!
-    '200' => q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l'information d'où provient le fil et qui l'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~,      #Dans les JavaScript!
+    '200' => q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l\'information d'où provient le fil et qui l\'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~,      #Dans les JavaScript!
     '251'  => q~Sauter au forum~,
     '298'  => q~Modérateur~,
     '298a' => q~Groupe modérateur~,
