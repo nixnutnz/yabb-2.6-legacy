@@ -2799,7 +2799,6 @@ sub manage_memberinfo {
     my ( $todo, $usr, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
       @myargs;
     my @adminlst = get_adminlst($todo);
-    require Variables::Memberinfo;
 
     if ( $todo eq 'add' ) {
         $memberinf{$usr} =

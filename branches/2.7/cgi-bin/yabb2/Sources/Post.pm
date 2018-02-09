@@ -2349,7 +2349,7 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
         }
     }
     undef %theboard;
-    undef %memberinf;
+#    undef %memberinf;
     return;
 }
 
