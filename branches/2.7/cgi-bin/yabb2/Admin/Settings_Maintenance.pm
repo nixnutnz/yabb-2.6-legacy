@@ -64,11 +64,14 @@ qq~<input type="checkbox" name="maintenance" id="maintenance" value="1" ${ischec
             our ($MAINTTXT);
             fopen( 'MAINTTXT', '<', "$langdir/$_/maintenancetext.txt" )
               or croak "$croak{'open'} MAINTTXT";
-            ${ $_ . '_maintenancetext' } = <$MAINTTXT>;
+            ${ $_ . '_maintenancetext' } = do { local $INPUT_RECORD_SEPARATOR = undef; <$MAINTTXT> };
             fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
         }
         else { ${ $_ . '_maintenancetext' } = q{}; }
         my $lbl = $_ . '_maintenancetext';
+        ${$lbl} = to_html( ${$lbl} );
+        ${$lbl} = to_chars( ${$lbl} );
+
 
         push @{ $settings[0]{items} },
           {
@@ -88,7 +91,13 @@ qq~<textarea cols="30" rows="5" name="$lbl" id="$lbl" style="width: 98%">${$lbl}
 
     sub save_settings {
         my %settings = @_;
-
+        for ( sort keys %lngs ) {
+            my $lbl = $_ . '_maintenancetext';
+            $settings{$lbl} ||= q{};
+            $settings{$lbl} =~ tr/\r//d;
+            chomp $settings{$lbl};
+            $settings{$lbl} = from_chars( $settings{$lbl} );
+        }
         if ( $settings{'maintenance'} != 1 ) {
             unlink "$vardir/maintenance.lock"
               || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );

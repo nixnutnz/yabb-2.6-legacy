@@ -302,6 +302,7 @@ sub ipban_add {
     my $type   = $FORM{'type'};
 
     my @banin = split /\n/xsm, $ban_in;
+    chomp @banin;
     require Admin::AdminSubs;
     foreach my $i (@banin) {
         my $bad = chk_ip($i);

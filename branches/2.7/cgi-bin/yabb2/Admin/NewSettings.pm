@@ -638,13 +638,23 @@ sub save_settings_to {
         ${$key} = delete $settings{$key};
     }
     foreach my $i ( keys %lngs ) {
-        if ( ${ $i . '_maintenancetext' } ) {
-            our ($MAINT);
+        my $old_maint = q{};
+        our ($MAINT);
+        if ( -e "$langdir/$i/maintenancetext.txt" ) {
+            fopen( 'MAINT', '<', "$langdir/$i/maintenancetext.txt" )
+              or fatal_error( 'cannot_open', "$langdir/$i/maintenancetext.txt", 1 );
+            $old_maint = do { local $INPUT_RECORD_SEPARATOR = undef; <$MAINT> };
+            fclose('MAINT') or croak "$croak{'close'} MAINT";
+        }
+        if ( ${ $i . '_maintenancetext' } && ${ $i . '_maintenancetext' } ne $old_maint ) {
             fopen( 'MAINT', '>', "$langdir/$i/maintenancetext.txt" )
               or croak "$croak{'open'} MAINT";
             print {$MAINT} ${ $i . '_maintenancetext' }
               or croak "$croak{'print'} MAINT";
             fclose('MAINT') or croak "$croak{'close'} MAINT";
+        }
+        elsif ( $old_maint && !${ $i . '_maintenancetext' } ) {
+            unlink "$langdir/$i/maintenancetext.txt";
         }
         if ( ${ $i . '_news' } ) {
             our ($NEWS);

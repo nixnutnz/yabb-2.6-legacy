@@ -491,9 +491,14 @@ sub in_maintenance {
         our ($MAINTTXT);
         fopen( 'MAINTTXT', '<', "$langdir/$language/maintenancetext.txt" )
           or croak "$croak{'open'} MAINTTXT";
-        my $maintenancetext = <$MAINTTXT>;
+        my $maintenancetext = do { local $INPUT_RECORD_SEPARATOR = undef; <$MAINTTXT> };
         fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
-        if ( $maintenancetext ne q{} ) { $maintxt{'157'} = $maintenancetext; }
+        if ( $maintenancetext ne q{} ) {
+            $maintenancetext = to_html($maintenancetext);
+            $maintenancetext = to_chars($maintenancetext);
+            $maintenancetext =~ s/\n/<br \/>/gxsm;
+            $maintxt{'157'} = $maintenancetext;
+        }
     }
     $shared_login_title = $maintxt{'114'};
     $shared_login_text  = "<b>$maintxt{'156'}</b><br />$maintxt{'157'}";
