@@ -86,7 +86,8 @@ our (
     $faketruncation,          $enable_quickpost,
     $numposts,                $preregspan,
     $minlinkpost,             $minlinksig,
-    $yabbversion,             $year
+    $yabbversion,             $year,
+    $use_htaccess
 );
 ## system ##
 our (
@@ -1204,8 +1205,7 @@ sub fatal_error_logging {
                 && ( $erloga[1] - $erlogb[1] ) < $error_spd
                 && ( $date - $erloga[1] ) < $error_spd )
             {
-                require Admin::ErrorLog;
-                er_update_htaccess( 'add', $user_ip );
+                update_htaccess( 'add', $user_ip );
                 $tmperror .= q~<br />IP blocked~;
             }
         }
@@ -1228,6 +1228,50 @@ sub fatal_error_logging {
         }
     }
     fclose('ERRORLOG') or croak "$croak{'close'} errorlog.log";
+    return;
+}
+
+sub update_htaccess {
+    my ( $act, $value ) = @_;
+    if ( !$act || $act ne 'add' || !$use_htaccess || !$value ) { return 0; }
+    my ( @denies, @htout, @htlines );
+    if ( -e '.htaccess' ) {
+        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} .htaccess";
+        @htlines = <$HTA>;
+        close $HTA or croak "$croak{'close'} .htaccess";
+    }
+
+# header to determine only who has access to the main script, not the admin script
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
+    foreach my $chk (@htlines) {
+        chomp $chk;
+        if ( $chk =~ m/\QDeny from \E/gxsm ) {
+            push @denies, $chk;
+        }
+        elsif ($chk ne $htheader
+            && $chk !~ m/\x23/xsm
+            && $chk ne q{}
+            && $chk ne $htfooter )
+        {
+            push @htout, "$chk\n";
+        }
+    }
+    $value = "Deny from $value";
+    push @denies, $value;
+
+    my $erdate = ctbtime();
+    my $prhta  = '# Last modified by YaBB: ' . $erdate . " #\n\n";
+    $prhta .= join q{}, @htout;
+    $prhta .= "\n$htheader\n";
+    foreach my $ln (@denies) {
+        $prhta .= "$ln\n";
+    }
+    $prhta .= "$htfooter\n";
+
+    open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+    print {$HTA} $prhta or croak "$croak{'print'} HTA";
+    close $HTA or croak "$croak{'close'} HTA";
     return;
 }
 

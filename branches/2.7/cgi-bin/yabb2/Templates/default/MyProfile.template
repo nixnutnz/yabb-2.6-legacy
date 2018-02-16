@@ -94,7 +94,7 @@ $myprofile_edit = qq~<table class="pad_4px" style="border-spacing: 0 1px; border
             <br />{yabb my_name_not}
         </td>
         <td>
-             <input type="text" maxlength="30" onchange="checkAvail('$scripturl',this.value,'display')" name="name" id="name" size="30" value="{yabb user}" /><div id="displayavailability"></div>
+            <input type="text" maxlength="30" onchange="checkAvail('$scripturl',this.value,'display')" name="name" id="name" size="30" value="{yabb user}" /><div id="displayavailability"></div>
         </td>
     </tr><tr class="windowbg">
          <td><label for="gender"><b>{yabb profile_txt231}: </b>{yabb editGenderTxt}</label></td>

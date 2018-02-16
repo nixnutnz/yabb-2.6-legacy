@@ -653,9 +653,6 @@ sub save_settings_to {
               or croak "$croak{'print'} MAINT";
             fclose('MAINT') or croak "$croak{'close'} MAINT";
         }
-        elsif ( $old_maint && !${ $i . '_maintenancetext' } ) {
-            unlink "$langdir/$i/maintenancetext.txt";
-        }
         if ( ${ $i . '_news' } ) {
             our ($NEWS);
             fopen( 'NEWS', '>', "$langdir/$i/news.txt" )

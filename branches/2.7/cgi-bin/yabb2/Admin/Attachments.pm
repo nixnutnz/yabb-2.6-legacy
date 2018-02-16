@@ -1051,11 +1051,13 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
     my $numleft = @boardlist - $INFO{'boardnum'};
     if ( $numleft == 0 ) {
-        our ($NEWATM);
-        fopen( 'NEWATM', '<', "$vardir/newattachments.tmp" )
-          or croak "$croak{'open'} NEWATM";
-        @newattachments = <$NEWATM>;
-        fclose('NEWATM') or croak "$croak{'close'} NEWATM";
+        if ( -e "$vardir/newattachments.tmp" ) {
+            our ($NEWATM);
+            fopen( 'NEWATM', '<', "$vardir/newattachments.tmp" )
+              or croak "$croak{'open'} NEWATM";
+            @newattachments = <$NEWATM>;
+            fclose('NEWATM') or croak "$croak{'close'} NEWATM";
+        }
 
         our ($ATM);
         fopen( 'ATM', '>', "$vardir/attachments.db" )

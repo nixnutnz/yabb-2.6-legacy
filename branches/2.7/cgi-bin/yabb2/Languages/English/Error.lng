@@ -367,7 +367,7 @@ q~Sorry, Global Mods cannot modify Post-dependent users because the Maintenance-
 
 ## ban checking##
     'badip'   => q~This does not appear to be a valid IP address.~,
-
+    'illegal' => q~Invalid character in ~,
 );
 
 1;

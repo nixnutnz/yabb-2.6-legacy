@@ -306,7 +306,7 @@ sub ipban_add {
     require Admin::AdminSubs;
     foreach my $i (@banin) {
         my $bad = chk_ip($i);
-        if ( !$bad ) { fatal_error( 'badip', $i ); }
+        if ($bad) { fatal_error( 'badip', $i ); }
     }
     our ($BAN);
     fopen( 'BAN', '<', "$vardir/banlist.db" )
@@ -423,7 +423,7 @@ sub banlog {
                 if ( $banned_ip[0] ) {
                     $banned_ip[0] = qq~ ( $banned_ip[0] )~;
                 }
-                else { $banned_ip[0] = q~~; }
+                else { $banned_ip[0] = q{}; }
             }
             else { $banned_ip[1] = $banned[1] || q{}; }
             my $ip_block =

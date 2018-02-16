@@ -423,7 +423,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
             no strict qw(refs);
             my $mytimeselected = ${ $uid . $username }{'timeselect'} || 'UTC';
             if (   ( !$enabletz && $default_tz eq 'UTC' )
-                || ( $enabletz && ${ $uid . $username }{'user_tz'} eq 'UTC' )
+                || ( $enabletz && ${ $uid . $username }{'user_tz'} && ${ $uid . $username }{'user_tz'} eq 'UTC' )
                 || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
             {
                 $zone = qq~ $admin_txt{'UTC'} ~;

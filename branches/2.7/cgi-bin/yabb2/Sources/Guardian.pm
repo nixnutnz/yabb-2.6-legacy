@@ -15,6 +15,7 @@
 use strict;
 no strict qw(refs);
 use warnings;
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -687,49 +688,7 @@ sub str_replace {
     return $target;
 }
 
-sub update_htaccess {
-    my ( $act, $value ) = @_;
-    my ( @denies, @htout, @htlines );
-    if ( !$act ) { return 0; }
-    if ( -e '.htaccess' ) {
-        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} .htaccess";
-        @htlines = <$HTA>;
-        close $HTA or croak "$croak{'close'} .htaccess";
-    }
-
-# header to determine only who has access to the main script, not the admin script
-    my $htheader = q~<Files YaBB*>~;
-    my $htfooter = q~</Files>~;
-    my $start    = 0;
-    foreach my $chk (@htlines) {
-        chomp $chk;
-        if ( $chk eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $chk !~ m/\x23/xsm && $chk ne q{} ) {
-            push @htout, "$chk\n";
-        }
-        if ( $chk eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
-            push @denies, $chk;
-        }
-    }
-    if ( $use_htaccess && $act eq 'add' ) {
-        my $erdate = ctbtime();
-        my $prhta  = '# Last modified by The Guardian: ' . $erdate . " #\n\n";
-        $prhta .= join q{}, @htout;
-        if ($value) {
-            $prhta .= "\n$htheader\n";
-            push @denies, $value;
-            foreach my $ln (@denies) {
-                $prhta .= "Deny from $ln\n";
-            }
-            $prhta .= "$htfooter\n";
-        }
-        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
-        print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        close $HTA or croak "$croak{'close'} HTA";
-    }
-    return;
-}
+# sub update_htaccess  moved to Subs.pm{
 
 sub guardian_blck {
     is_admin_or_gmod();

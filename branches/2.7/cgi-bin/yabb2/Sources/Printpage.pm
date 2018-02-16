@@ -467,7 +467,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
 
 sub print_post {
     my $num    = $INFO{'num'};
-    my $post   = $INFO{'post'};
+    my $post   = $INFO{'post'} || 0;
     my $curcat = q{};
 
     # Determine category

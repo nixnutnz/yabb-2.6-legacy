@@ -156,7 +156,7 @@ sub set_image {
     }
     our ( $img_out, $helpstyle );
     if   ( $img_name eq 'help' ) { $helpstyle = q~ cursor: help;~; }
-    else                         { $helpstyle = q~~; }
+    else                         { $helpstyle = q{}; }
     if ( !$use_menu_t || $use_menu_t == 0 ) {
         $menusep = $my_sep;
         if ( $img_name eq 'gtalk' && $thegtalkuser ) {

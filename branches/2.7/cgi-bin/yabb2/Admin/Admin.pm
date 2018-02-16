@@ -40,7 +40,7 @@ our (
 ## paths ##
 our (
     $adminurl, $boardurl,  $convdir, $htmldir,
-    $langdir,  $memberdir, $vardir,  $templatesdir,
+    $langdir,  $memberdir, $vardir,  $templatesdir, $boardsdir,
 );
 ## settings ##
 our (
@@ -294,20 +294,12 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 
 # Sorts the threads to find the most recent post
 # No need to check for board access here because only admins have access to this page
-    get_forum_master();
-    my (@goodboards);
-    foreach my $catid (@categoryorder) {
-        foreach my $curboard ( @{ $cat{$catid} } ) {
-            push @goodboards, $curboard;
-        }
-    }
-
-    boardtotals( 'load', @goodboards );
 
     # &getlog; not used here !!?
     my ( %lastpostrealtime, %lastposttime, %lastposterguest );
     my ( $lsdatetime, $lsposter, $lssub, $lsreply, $lspostid );
-    foreach my $curboard (@goodboards) {
+    my $newlink ='N/A';
+    foreach my $curboard (@loadboards) {
         chomp $curboard;
         my $lastposttime = q{};
         {
@@ -344,26 +336,34 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
             $totalt += ${ $uid . $curboard }{'threadcount'};
         }
 
-        # determine the true last post on all the boards a user has access to
-        my $lastthreadtime = 0;
-        {
-            no strict qw(refs);
-            if (   ${ $uid . $curboard }{'lastposttime'}
-                && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime )
+        # determine the true last post on all the boards a user has access to (Admin has access to everything)
+        our %totals;
+        require "$boardsdir/forum.totals";
+        my %gettots = ();
+        foreach my $i ( keys %totals ) {
+            if ( ${$totals{$i}}[2] ne 'N/A' ) {
+                $gettots{$i} = ${$totals{$i}}[2];
+            }
+        }
+        my @newsort = reverse sort { $gettots{$a} <=> $gettots{$b} } keys %gettots;
+        if (@newsort) {
+            my $lastthreadtime = 0;
+            $lastposttime = ${$totals{$newsort[0]}}[2];
+            if ( $lastposttime > $lastthreadtime )
             {
                 $lsdatetime     = timeformat($lastposttime);
-                $lsposter       = ${ $uid . $curboard }{'lastposter'};
-                $lssub          = ${ $uid . $curboard }{'lastsubject'};
-                $lspostid       = ${ $uid . $curboard }{'lastpostid'};
-                $lsreply        = ${ $uid . $curboard }{'lastreply'};
-                $lastthreadtime = $lastposttime;
+                $lsposter       = ${$totals{$newsort[0]}}[3];
+                $lssub          = ${$totals{$newsort[0]}}[6];
+                $lspostid       = ${$totals{$newsort[0]}}[4];
+                $lsreply        = ${$totals{$newsort[0]}}[5];
+                ( $lssub, undef ) = split_splice_move( $lssub, 0 );
+                $lssub = to_chars($lssub);
+                $newlink = qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)~;
             }
         }
     }
-    ( $lssub, undef ) = split_splice_move( $lssub, 0 );
-    $lssub = to_chars($lssub);
     $yymain .=
-qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)</div>
+qq~$newlink</div>
                     <br />
                     <div class="admin-total-left">$admin_txt{'684'}</div>
                     <div class="admin-total-mid">$administrators</div>

@@ -3,7 +3,7 @@ Apache 2.4 fix for YaBB 2.7.00
 </id>
 
 <version>
-0.3 alpha
+0.4 alpha
 </version>
 
 <mod info>
@@ -13,6 +13,7 @@ Version History
 ---------------
 0.1 alpha - First release - Jan 16, 2016
 0.3 alpha - 2.7.0 - Sep 1, 2016
+0.4 alpha - 2.7.0 - Feb 15, 2018
 
 Instructions:
 
@@ -55,68 +56,9 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    my $apache24_a = q~Apache 2.4 fix for YaBB 2.7.00|Dandello|This mod updates code in Guardian that is deprecated in Apache 2.4.|0.2 alpha|09/01/15~;
+    my $apache24_a = q~Apache 2.4 fix for YaBB 2.7.00|Dandello|This mod updates code in Guardian that is deprecated in Apache 2.4.|0.4 alpha|02/15/18~;
     push @installed_mods, $apache24_a;
 </add before>
-
-<edit file>
-Admin/ErrorLog.pm
-</edit file>
-
-<search for>
-if (@errorlogpmmods) {
-</search for>
-
-<add before>
-push @errorlogpmmods, 'Apache 2.4 fix';
-</add before>
-
-<search for>
-    my $htheader = q~<Files YaBB*>~;
-    my $htfooter = q~</Files>~;
-</search for>
-
-<replace>
-    my $htheader = q~<Files YaBB*>
-<RequireAll>
-Require all granted~;
-    my $htfooter = q~</RequireAll>
-</Files>~;
-    my $htheader2 = q~<Files YaBB*>~;
-    my $htfooter2 = q~</Files>~;
-</replace>
-
-<search for>
-        if ( $ln eq $htheader ) { $start = 1; }
-</search for>
-
-<replace>
-        if ( $ln eq $htheader || $ln eq $htheader2 ) { $start = 1; }
-</replace>
-
-<search for>
-        if ( $ln eq $htfooter ) { $start = 0; }
-</search for>
-
-<replace>
-        if ( $ln eq $htfooter || $ln eq $htfooter2 ) { $start = 0; }
-</replace>
-
-<search for>
-        if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
-</search for>
-
-<replace>
-        if ( $start == 1 && ($ln =~ s/\QDeny from \E//gxsm || $ln =~ s/\QRequire not ip \Q//gxsm) ) {
-</replace>
-
-<search for>
-                    $prhta .= "Deny from $ln\n";
-</search for>
-
-<replace>
-                    $prhta .= "Require not ip $ln\n";
-</replace>
 
 <edit file>
 Admin/GuardianAdmin.pm
@@ -135,58 +77,84 @@ push @guardianadminpmmods, 'Apache 2.4 fix';
     my $htfooter = q~</Files>~;
 </search for>
 
-<replace>
-    my $htheader = q~<Files YaBB*>
-<RequireAll>
-Require all granted~;
-    my $htfooter = q~</RequireAll>
-</Files>~;
-    my $htheader2 = q~<Files YaBB*>~;
-    my $htfooter2 = q~</Files>~;
-</replace>
+<add after>
+    my $htheaderb = q~<RequireAll>~;
+    my $htheaderc = q~Require all granted~;
+    my $htfootera = q~</RequireAll>~;
+</add after>
 
 <search for>
-        if ( $chk eq $htheader ) { $start = 1; }
+        if ( $chk =~ s/\QDeny from \E//gxsm ) {
 </search for>
 
 <replace>
-        if ( $chk eq $htheader || $chk eq $htheader2 ) { $start = 1; }
+        if (   $chk =~ s/\QDeny from \E//gxsm
+            || $chk =~ s/\QRequire not ip \E//gxsm
+            || $chk =~ s/\QRequire not host \E//gxsm )
+        {
 </replace>
 
 <search for>
-        if ( $chk eq $htfooter ) { $start = 0; }
+        elsif ($chk ne $htheader
+            && $chk !~ m/\x23/xsm
+            && $chk ne q{}
+            && $chk ne $htfooter )
+        {
 </search for>
 
 <replace>
-        if ( $chk eq $htfooter || $chk eq $htfooter2 ) { $start = 0; }
+        elsif ($chk ne $htheader
+            && $chk ne $htheaderb
+            && $chk ne $htheaderc
+            && $chk !~ m/\x23/xsm
+            && $chk ne q{}
+            && $chk ne $htfootera
+            && $chk ne $htfooter )
+        {
 </replace>
 
 <search for>
-        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
+        $prhta .= "\n$htheader\n";
 </search for>
 
 <replace>
-        if ( $start == 1 && ($chk =~ s/\QDeny from \E//gxsm || $chk =~ s/\QRequire not ip \E//gxsm) ) {
+        $prhta .= "\n$htheader\n$htheaderb\n$htheaderc\n";
 </replace>
 
 <search for>
-                    $prhta .= "Deny from $ln\n";
+                    else { $prhta .= "Deny from $ln\n"; }
 </search for>
 
 <replace>
-                    $prhta .= "Require not ip $ln\n";
+                    else { $prhta .= "Require not host $ln\n"; }
+</replace>
+
+<search for>
+                else { $prhta .= "Deny from $ln\n"; }
+</search for>
+
+<replace>
+                else { $prhta .= "Require not ip $ln\n"; }
+</replace>
+
+<search for>
+        $prhta .= "$htfooter\n";
+</search for>
+
+<replace>
+        $prhta .= "$htfootera\n$htfooter\n";
 </replace>
 
 <edit file>
-Sources/Guardian.pm
+Sources/Subs.pm
 </edit file>
 
 <search for>
-if (@guardianpmmods) {
+if (@subspmmods) {
 </search for>
 
 <add before>
-push @guardianpmmods, 'Apache 2.4 fix';
+push @subspmmods, 'Apache 2.4 fix';
 </add before>
 
 <search for>
@@ -194,28 +162,28 @@ push @guardianpmmods, 'Apache 2.4 fix';
     my $htfooter = q~</Files>~;
 </search for>
 
-<replace>
-    my $htheader = q~<Files YaBB*>
-<RequireAll>
-Require all granted~;
-    my $htfooter = q~</RequireAll>
-</Files>~;
-</replace>
+<add after>
+    my $htheaderb = q~<RequireAll>~;
+    my $htheaderc = q~Require all granted~;
+    my $htfootera = q~</RequireAll>~;
+</add after>
 
 <search for>
-        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
+        if ( $chk =~ m/\QDeny from \E/gxsm ) {
 </search for>
 
 <replace>
-        if ( $start == 1 && $chk =~ s/\QRequire not ip \E//gxsm ) {
+        if (   $chk =~ /\QRequire not ip \E/xsm
+            || $chk =~ /\QRequire not host \E/xsm )
+        {
 </replace>
 
 <search for>
-                $prhta .= "Deny from $ln\n";
+    $value = "Deny from $value";
 </search for>
 
 <replace>
-                $prhta .= "Require not ip $ln\n";
+    $value = "Require not ip $value";
 </replace>
 
 <edit file>

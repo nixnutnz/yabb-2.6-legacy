@@ -407,19 +407,10 @@ sub setup_guardian2 {
     $banned_requests =~ s/post//igxsm;
     $banned_requests =~ s/get//igxsm;
     $banned_requests =~ s/[|]+/|/igxsm;    # Clean up extra pipes
-    require Admin::AdminSubs;
     my @whitelist = split /[|]/xsm, $whitelist;
-    foreach my $i (@whitelist) {
-        my $bad = chk_ip($i);
-        if ( !$bad ) { fatal_error( 'badip', $i ); }
-    }
     require Admin::NewSettings;
     save_settings_to('Settings.pm');
     my @access_denied = split /[\r\n]/xsm, $access_denied;
-    foreach my $i (@access_denied) {
-        my $bad = chk_ip($i);
-        if ( !$bad ) { fatal_error( 'badip', $i ); }
-    }
     gr_update_htaccess( 'save', @access_denied );
 
     $yysetlocation = qq~$adminurl?action=setup_guardian~;
@@ -440,40 +431,48 @@ sub gr_update_htaccess {
 # header to determine only who has access to the main script, not the admin script
     my $htheader = q~<Files YaBB*>~;
     my $htfooter = q~</Files>~;
-    my $start    = 0;
     foreach my $chk (@htlines) {
         chomp $chk;
-        if ( $chk eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $chk !~ m{#}xsm && $chk ne q{} ) {
-            push @htout, "$chk\n";
-        }
-        if ( $chk eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
+        if ( $chk =~ s/\QDeny from \E//gxsm ) {
             push @denies, $chk;
         }
+        elsif ($chk ne $htheader
+            && $chk !~ m/\x23/xsm
+            && $chk ne q{}
+            && $chk ne $htfooter )
+        {
+            push @htout, "$chk\n";
+        }
     }
-    if ( $act eq 'save' ) {
+    if ( $act eq 'save' && @values ) {
         my $erdate = ctbtime();
         my $prhta  = '# Last modified by The Guardian: ' . $erdate . " #\n\n";
         $prhta .= join q{}, @htout;
-        if (@values) {
-            $prhta .= "\n$htheader\n";
-            foreach my $ln (@values) {
-                if ($ln) {
-                    chomp $ln;
-                    $prhta .= "Deny from $ln\n";
+        $prhta .= "\n$htheader\n";
+        my %have = ();
+        my @sort = grep { !$have{$_}++ } @values;
+        require Admin::AdminSubs;
+        foreach my $ln (@sort) {
+            if ($ln) {
+                chomp $ln;
+                my $bad = chk_ip($ln);
+                if ($bad) {
+                    if (   $ln !~ /[\w\-.*]/xsm
+                        || $ln =~ /^\-/xsm
+                        || $ln =~ /(?:\-.)/xsm )
+                    {
+                        fatal_error( 'illegal', $ln );
+                    }
+                    else { $prhta .= "Deny from $ln\n"; }
                 }
+                else { $prhta .= "Deny from $ln\n"; }
             }
-            $prhta .= "$htfooter\n";
         }
+        $prhta .= "$htfooter\n";
+
         open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
         close $HTA or croak "$croak{'close'} HTA";
-        return;
-    }
-    elsif ( $act eq 'add' ) {
-        push @denies, @values;
-        gr_update_htaccess( 'save', @denies );
         return;
     }
     else {
@@ -486,7 +485,7 @@ sub guardian_block {
 
     if ( $use_guardian && $use_htaccess ) {
         my $block_ip = $INFO{'ip'};
-        gr_update_htaccess( 'add', $block_ip );
+        update_htaccess( 'add', $block_ip );
         $yysetlocation = qq~$adminurl?action=$INFO{'return'}~;
         redirectexit();
     }

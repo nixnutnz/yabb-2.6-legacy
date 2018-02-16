@@ -510,63 +510,10 @@ sub yabb_sort {
     return 1;
 }
 
-sub er_update_htaccess {
-    my ( $act, @values ) = @_;
-    my ( @denies, @htout, @htlines );
-    if ( !$act ) { return 0; }
-    if ( -e '.htaccess' ) {
-        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
-        @htlines = <$HTA>;
-        close $HTA or croak "$croak{'close'} HTA";
-    }
-
-# header to determine only who has access to the main script, not the admin script
-    my $htheader = q~<Files YaBB*>~;
-    my $htfooter = q~</Files>~;
-    my $start    = 0;
-    foreach my $ln (@htlines) {
-        chomp $ln;
-        if ( $ln eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $ln !~ m{#}xsm && $ln ne q{} ) {
-            push @htout, "$ln\n";
-        }
-        if ( $ln eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
-            push @denies, $ln;
-        }
-    }
-    if ( $act eq 'load' ) {
-        return @denies;
-    }
-    elsif ( $act eq 'save' ) {
-        my $erdate = ctbtime();
-        my $prhta  = '# Last modified by YaBB: ' . $erdate . " #\n\n";
-        $prhta .= join q{}, @htout;
-        if (@values) {
-            $prhta .= "\n$htheader\n";
-            foreach my $ln (@values) {
-                if ($ln) {
-                    chomp $ln;
-                    $prhta .= "Deny from $ln\n";
-                }
-            }
-            $prhta .= "$htfooter\n";
-        }
-        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
-        print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        close $HTA or croak "$croak{'close'} HTA";
-    }
-    elsif ( $act eq 'add' ) {
-        push @denies, @values;
-        er_update_htaccess( 'save', @denies );
-    }
-    return;
-}
-
 sub blockip {
     is_admin_or_gmod();
     my $block_ip = $INFO{'ip'};
-    er_update_htaccess( 'add', $block_ip );
+    update_htaccess( 'add', $block_ip );
     $yysetlocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;

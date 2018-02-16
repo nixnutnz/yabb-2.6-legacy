@@ -32,7 +32,7 @@ if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
 
 my $back_url = "$boardurl/YaBB.$yyext";
-if ( !-e 'Variables/backup.lock' ) {
+if ( !-e "$vardir/backup.lock" ) {
     print "Location: $back_url\n\n" or croak 'cannot find location';
     exit;
 }
@@ -51,7 +51,7 @@ my $username = 'Guest';
 my $password = q{};
 
 if ( $job && $job == 1 && $iamadmin && $iamadmin == 1 ) {
-    unlink 'Variables/backup.lock';
+    unlink "$vardir/backup.lock";
     print "Location: $back_url\n\n" or croak 'cannot find location';
     exit;
 }
@@ -88,7 +88,7 @@ elsif ( $job == 2 ) {
 }
 
 my $delbackuplock = q{};
-my $ver_age       = ( stat('Variables/backup.lock')->mtime );
+my $ver_age       = ( stat("$vardir/backup.lock")->mtime );
 my $time          = time;
 my $timelog       = q{};
 my $timelogp      = q{};

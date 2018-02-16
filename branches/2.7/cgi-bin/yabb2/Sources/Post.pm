@@ -194,9 +194,12 @@ sub post {
             user_account( $username, 'update' );
         }
     }
+    $threadid = $INFO{'num'};
+    if ( $threadid && !-e "$datadir/$threadid.txt" ) {
+        fatal_error( 'cannot_open', $threadid );
+    }
     if ( !$currentboard && !$iamguest ) { fatal_error('no_access'); }
     $quotemsg = $INFO{'quote'};
-    $threadid = $INFO{'num'};
 
     my (
         $mnum, $msub,      $mname, $memail, $mdate,
@@ -285,9 +288,9 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
         if ( !ref $thread_arrayref{$threadid} ) {
             our ($FILE);
             fopen( 'FILE', '<', "$datadir/$threadid.txt" )
-              or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+              or fatal_error( 'cannot_open', $threadid );
             @{ $thread_arrayref{$threadid} } = <$FILE>;
-            fclose('FILE') or croak "$croak{'close'} $threadid.txt";
+            fclose('FILE') or croak "$croak{'close'} $threadid";
         }
         $nscheck = q{};
         my $msubject = q{};
@@ -1989,24 +1992,24 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         # This is a new thread. Save it.
         our ($FILE);
         fopen( 'FILE', '<', "$boardsdir/$currentboard.txt", 1 )
-          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', $currentboard );
         my @buffer = <$FILE>;
-        fclose('FILE') or croak "$croak{'close'} $currentboard.txt";
+        fclose('FILE') or croak "$croak{'close'} $currentboard";
 
         unshift @buffer,
 qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~;
         fopen( 'FILE', '>', "$boardsdir/$currentboard.txt", 1 )
-          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', $currentboard );
         my $prnbuff = join q{}, @buffer;
         print {$FILE} $prnbuff or croak "$croak{'print'} FILE";
-        fclose('FILE') or croak "$croak{'close'} $currentboard.txt";
+        fclose('FILE') or croak "$croak{'close'} $currentboard";
 
         fopen( 'FILE', '>', "$datadir/$newthreadid.txt" )
-          or fatal_error( 'cannot_open', "$datadir/$newthreadid.txt", 1 );
+          or fatal_error( 'cannot_open', $newthreadid );
         print {$FILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
           or croak "$croak{'print'} FILE";
-        fclose('FILE') or croak "$croak{'close'} $newthreadid.txt";
+        fclose('FILE') or croak "$croak{'close'} $newthreadid";
 
         if (@filelist) {
             my $prnfile = q{};
@@ -2032,9 +2035,9 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             my $prnpolldat = join q{}, @poll_data;
             our ($POLL);
             fopen( 'POLL', '>', "$datadir/$newthreadid.poll" )
-              or croak "$croak{'close'} $newthreadid.txt";
+              or croak "$croak{'close'} $newthreadid.poll";
             print {$POLL} $prnpolldat or croak "$croak{'print'} POLL";
-            fclose('POLL') or croak "$croak{'close'} $newthreadid.txt";
+            fclose('POLL') or croak "$croak{'close'} $newthreadid.poll";
         }
         ## write the ctb file for the new thread
         ${$newthreadid}{'board'}        = $currentboard;
@@ -2113,9 +2116,9 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         }
         our ($BOARDFILE);
         fopen( 'BOARDFILE', '<', "$boardsdir/$currentboard.txt", 1 )
-          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', $currentboard );
         my @buffer = <$BOARDFILE>;
-        fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
+        fclose('BOARDFILE') or croak "$croak{'close'} $currentboard";
 
         foreach my $i ( 0 .. $#buffer ) {
             if ( $buffer[$i] =~ m{\A$mnum[|]}oxsm ) { $buffer[$i] = q{}; last; }
@@ -2124,17 +2127,17 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
 qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~;
         my $prnbuff = join q{}, @buffer;
         fopen( 'BOARDFILE', '>', "$boardsdir/$currentboard.txt", 1 )
-          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-        print {$BOARDFILE} $prnbuff or croak "$croak{'print'} BOARDFILE";
-        fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
+          or fatal_error( 'cannot_open', $currentboard );
+        print {$BOARDFILE} $prnbuff or croak "$croak{'print'} $currentboard";
+        fclose('BOARDFILE') or croak "$croak{'close'} $currentboard";
 
         our ($THREADFILE);
         fopen( 'THREADFILE', '>>', "$datadir/$threadid.txt", 1 )
-          or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+          or fatal_error( 'cannot_open', $threadid );
         print {$THREADFILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
-          or croak "$croak{'print'} THREADFILE";
-        fclose('THREADFILE') or croak "$croak{'close'} THREADFILE";
+          or croak "$croak{'print'} $threadid ";
+        fclose('THREADFILE') or croak "$croak{'close'} $threadid ";
 
         if (@filelist) {
             my $prnfix = q{};
@@ -2226,13 +2229,13 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     }
 
     my $rts = $FORM{'return_to'};
-    if ( $rts == 3 ) {
+    if ( $rts && $rts == 3 ) {
         $yysetlocation = $scripturl;
         dumplog( $currentboard, $date );
         dumplog( $thread,       $date );
         if ( !$INFO{'num'} ) { message_totals( 'incview', $thread ); }
     }
-    elsif ( $rts == 2 ) {
+    elsif ( $rts && $rts == 2 ) {
         $yysetlocation = qq~$scripturl?board=$currentboard~;
         dumplog( $thread, $date );
         if ( !$INFO{'num'} ) { message_totals( 'incview', $thread ); }
@@ -2495,9 +2498,9 @@ sub doshowthread {
     if ( !ref( $thread_arrayref{$threadid} ) && $threadid ) {
         our ($THREADFILE);
         fopen( 'THREADFILE', '<', "$datadir/$threadid.txt" )
-          or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+          or fatal_error( 'cannot_open', $threadid );
         @{ $thread_arrayref{$threadid} } = <$THREADFILE>;
-        fclose('THREADFILE') or croak "$croak{'close'} $threadid.txt";
+        fclose('THREADFILE') or croak "$croak{'close'} $threadid";
     }
     my @messages = @{ $thread_arrayref{$threadid} };
 
@@ -2865,9 +2868,9 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/gxsm;
         if ( !ref $thread_arrayref{$threadid} ) {
             our ($FILE);
             fopen( 'FILE', '<', "$datadir/$threadid.txt" )
-              or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+              or fatal_error( 'cannot_open', $threadid );
             @{ $thread_arrayref{$threadid} } = <$FILE>;
-            fclose('FILE') or croak "$croak{'close'} $threadid.txt";
+            fclose('FILE') or croak "$croak{'close'} $threadid";
         }
         my $msubject = q{};
         if ( $quotemsg ne q{} ) {

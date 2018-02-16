@@ -762,7 +762,7 @@ sub mark_read {    # Mark all threads in this board as read.
     # Look for any threads marked unread in the current board and remove them
     our ($BRDTXT);
     fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
-      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', $currentboard );
     my @threadlist = map { /^(\d+)[|]/xsm } <$BRDTXT>;
     fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
     chomp @threadlist;
@@ -1838,7 +1838,7 @@ sub get_mess_lastposter {
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
             our ($EXMEMBERTHREAD);
             fopen( 'EXMEMBERTHREAD', '<', "$datadir/$mnum.txt" )
-              or fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
+              or fatal_error( 'cannot_open', $mnum );
             my @x = <$EXMEMBERTHREAD>;
             fclose('EXMEMBERTHREAD')
               or croak "$croak{'close'} EXMEMBERTHREAD";

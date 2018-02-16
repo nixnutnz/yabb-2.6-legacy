@@ -761,15 +761,15 @@ sub ipban_gip {
             {
                 $ihave = 1;
             }
-            my $add_ban = q{};
-            if (   $banned
-                && $ihave != 1
-                && $banned ne '127.0.0.1'
-                && $banned ne '::1' )
-            {
-                $add_ban =
+        }
+         
+        if (   $banned
+            && $ihave != 1
+            && $banned ne '127.0.0.1'
+            && $banned ne '::1' )
+        {
+            my $add_ban =
 qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|p|\n~;
-            }
             our ($BAN2);
             fopen( 'BAN2', '>>', "$vardir/banlist.db" )
               or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
@@ -921,7 +921,7 @@ sub get_brd_access {
         fatal_error( 'invalid_character', "$maintxt{'board'}" );
     }
     if ( !-e "$boardsdir/$curbrd.txt" ) {
-        fatal_error( 'cannot_open', "$boardsdir/$curbrd.txt" );
+        fatal_error( 'no_board_found', $curbrd );
     }
     my ( $boardname, $boardperms, $boardview ) = @{ $board{$curbrd} };
     my $access = access_check( $currentboard, q{}, $boardperms );

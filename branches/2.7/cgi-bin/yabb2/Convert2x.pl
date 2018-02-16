@@ -2095,16 +2095,18 @@ sub movevariables {
     my @mvvar = ( 'Movedthreads.pm', 'registration.log', );
     my @oldvar = ();
     foreach my $varfl (@mvvar) {
-        open my $OLDVAR, '<', "$convvardir/$varfl"
-          or croak 'cannot open OLDVAR';
-        @oldvar = <$OLDVAR>;
-        close $OLDVAR or croak 'cannot close OLDVAR';
+        if ( -e "$convvardir/$varfl" ) {
+            open my $OLDVAR, '<', "$convvardir/$varfl"
+              or croak 'cannot open OLDVAR';
+            @oldvar = <$OLDVAR>;
+            close $OLDVAR or croak 'cannot close OLDVAR';
 
-        open my $NEWVAR, '>', "$vardir/$varfl"
-          or croak 'cannot open NEWVAR';
-        print {$NEWVAR} @oldvar
-          or croak "cannot print $vardir/$varfl";
-        close $NEWVAR or croak 'cannot close NEWVAR';
+            open my $NEWVAR, '>', "$vardir/$varfl"
+              or croak 'cannot open NEWVAR';
+            print {$NEWVAR} @oldvar
+              or croak "cannot print $vardir/$varfl";
+            close $NEWVAR or croak 'cannot close NEWVAR';
+        }
     }
     if ( -e "$convvardir/allow.txt" ) {
         open my $OLDVAR, '<', "$convvardir/allow.txt"
@@ -3043,11 +3045,13 @@ sub checkattach {
             }
         }
     }
-
-    open my $PMATTACHLOG, '<', "$vardir/pmattachments.db"
+    my @pmattachments = ();
+    if ( -e "$vardir/pmattachments.db" ) {
+        open my $PMATTACHLOG, '<', "$vardir/pmattachments.db"
       or croak 'cannot open pmattach';
-    my @pmattachments = <$PMATTACHLOG>;
+    @pmattachments = <$PMATTACHLOG>;
     close $PMATTACHLOG or croak 'cannot close pmattach';
+
     my $chkpmatt1 = q{};
     my %hashpmatt = ();
     my %hashpmlng = ();
@@ -3098,6 +3102,7 @@ sub checkattach {
             }
         }
     }
+	}
     opendir DIR, "$uploaddir/";
     my @attfiles =
       grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;

@@ -614,7 +614,7 @@ sub mycookie {
 
 sub backuplock {
     my ($maction) = @_;
-    my $maintfile = 'Variables/backup.lock';
+    my $maintfile = "$vardir/backup.lock";
     if ( lc($maction) eq 'on' ) {
         open my $MAINT, '>', $maintfile or croak 'cannot create backup.lock';
         close $MAINT or croak 'cannot close backup.lock';
