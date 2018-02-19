@@ -14,7 +14,7 @@
 $defaultregistertemver = 'YaBB 2.7.00 $Revision$';
 @defaultregistermods = ();
 if (@defaultregistermods) {
-    $defaultregister = 1;
+    $defaultregistermods = 1;
 }
 if ( $action eq 'detailedversion' ) { return 1; }
 

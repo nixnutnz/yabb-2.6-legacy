@@ -503,7 +503,7 @@ sub trackadminlogins {
         close $ADMINLOG or croak "cannot close $vardir/adminlog.log";
         @adminlog = reverse sort @adminlog;
     }
-    $maxadminlog = $maxadminlog || 5;
+    $maxadminlog ||= 5;
     open my $ADMINLOG, '>', "$vardir/adminlog.log"
       or croak "cannot open $vardir/adminlog.log";
     print {$ADMINLOG} qq~$date|$username|$user_ip\n~

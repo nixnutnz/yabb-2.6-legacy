@@ -73,7 +73,7 @@ sub print_im {
         }
     }
     our ($THREADS);
-    fopen( 'THREADS', '<', "$memberdir/$im_file" ) or donoopen();
+    fopen( 'THREADS', '<', "$memberdir/$im_file" ) or fatal_error( 'cannot_open', $username );
     my @threads = <$THREADS>;
     fclose('THREADS') or croak "$croak{'close'} $im_file";
 
@@ -467,6 +467,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
 
 sub print_post {
     my $num    = $INFO{'num'};
+    if ( !$num ) { fatal_error( 'bad_postnumber' ) }
     my $post   = $INFO{'post'} || 0;
     my $curcat = q{};
 
@@ -500,7 +501,7 @@ sub print_post {
     # Lets open up the thread file itself
     if ( !ref $thread_arrayref{$num} ) {
         our ($THREADS);
-        fopen( 'THREADS', '<', "$datadir/$num.txt" ) || donoopen();
+        fopen( 'THREADS', '<', "$datadir/$num.txt" ) or fatal_error( 'no_topic_found', $num );
         @{ $thread_arrayref{$num} } = <$THREADS>;
         fclose('THREADS') or croak "$croak{'close'} $num.txt";
     }
@@ -651,6 +652,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
 
 sub print_thread {
     my $num = $INFO{'num'};
+    if ( !$num ) { fatal_error( 'bad_postnumber' ) }
     our ( $message, $displayname, );
     my ($curcat);
 
@@ -685,7 +687,7 @@ sub print_thread {
     # Lets open up the thread file itself
     if ( !ref $thread_arrayref{$num} ) {
         our ($THREADS);
-        fopen( 'THREADS', '<', "$datadir/$num.txt" ) || donoopen();
+        fopen( 'THREADS', '<', "$datadir/$num.txt" ) or fatal_error( 'no_topic_found', $num );
         @{ $thread_arrayref{$num} } = <$THREADS>;
         fclose('THREADS') or croak "$croak{'close'} $num.txt";
     }
