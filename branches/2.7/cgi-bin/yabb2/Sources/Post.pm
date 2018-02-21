@@ -2698,12 +2698,12 @@ sub send_guest_pm2 {
     ${ $uid . $username }{'spamcount'} = 0;
     my $postspeed = $date - $posttime;
     if ( ( $speedpostdetection && $postspeed < $min_post_speed )
-        || $spamdetected == 1 )
+        || $spamdetected )
     {
         ${ $uid . $username }{'spamcount'}++;
         $spam_hits_left_count =
           $post_speed_count - ${ $uid . $username }{'spamcount'};
-        if ( $spamdetected == 1 ) { fatal_error( 'tsc_alert', $spamword ); }
+        if ($spamdetected) { fatal_error( 'tsc_alert', $spamword ); }
         else                      { fatal_error('speed_alert'); }
     }
 
@@ -3001,14 +3001,14 @@ sub mod_alert2 {
     my $postspeed = $date - $posttime;
     if ( !$staff ) {
         if ( ( $speedpostdetection && $postspeed < $min_post_speed )
-            || $spamdetected == 1 )
+            || $spamdetected )
         {
             ${ $uid . $username }{'spamcount'}++;
             ${ $uid . $username }{'spamtime'} = $date;
             user_account( $username, 'update' );
             $spam_hits_left_count =
               $post_speed_count - ${ $uid . $username }{'spamcount'};
-            if ( $spamdetected == 1 ) { fatal_error( 'tsc_alert', $spamword ); }
+            if ($spamdetected) { fatal_error( 'tsc_alert', $spamword ); }
             else                      { fatal_error('speed_alert'); }
         }
     }
@@ -3232,7 +3232,7 @@ sub get_chk_err {
     my @filelist = @{$filelist};
     my ( $spamdetected, $spamword ) = spamcheck($fixname);
     if ( !$staff ) {
-        if ( $spamdetected == 1 ) {
+        if ($spamdetected) {
             ${ $uid . $username }{'spamcount'}++;
             ${ $uid . $username }{'spamtime'} = $date;
             user_account( $username, 'update' );

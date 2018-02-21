@@ -3142,7 +3142,7 @@ sub get_avatar2 {
     require Sources::SpamCheck;
     my ( $spamdetected, $spamword ) = spamcheck($fixfile);
     if ( !$staff ) {
-        if ( $spamdetected == 1 ) {
+        if ($spamdetected) {
             ${ $uid . $username }{'spamcount'}++;
             ${ $uid . $username }{'spamtime'} = $date;
             user_account( $username, 'update' );

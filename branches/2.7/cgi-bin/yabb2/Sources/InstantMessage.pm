@@ -2520,17 +2520,17 @@ sub get_filelist {
             if ( $fixchck eq q{} ) {
                 fatal_error( 'rename', "$fixfile" );
             }
-            my $spamdetected         = spamcheck($fixname);
+            my ( $spamdetected, $spamword ) = spamcheck($fixname);
             my $spam_hits_left_count = 0;
             if ( !$staff ) {
-                if ( $spamdetected == 1 ) {
+                if ($spamdetected) {
                     ${ $uid . $username }{'spamcount'}++;
                     ${ $uid . $username }{'spamtime'} = $date;
                     user_account( $username, 'update' );
                     $spam_hits_left_count =
                       $post_speed_count - ${ $uid . $username }{'spamcount'};
                     foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
-                    fatal_error('tsc_alert');
+                    fatal_error('tsc_alert', $spamword );
                 }
             }
             if ( $use_guardian && $string_on ) {
