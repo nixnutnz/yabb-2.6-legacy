@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$russianxbookmarkslngbase = 1964;
+##  Based on English Rev 1964 ##
 
 $russianxbookmarkslngver  = 'YaBB 2.7.00 $Revision$';
 @russianxbookmarkslngmods = ();
@@ -48,4 +49,3 @@ q~- This is the order which bookmarks will be displayed in.<br />- Lower numbers
 );
 
 1;
- 

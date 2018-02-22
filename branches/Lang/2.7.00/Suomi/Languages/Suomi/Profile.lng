@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$suomiprofilelngbase = 1973;
+##  Based on English Rev 1973 ##
 
 $suomiprofilelngver  = 'YaBB 2.7.00 $Revision$';
 @suomiprofilelngmods = ();
@@ -102,8 +103,8 @@ q~Jos vaihdat uuteen kuvaan saatta vanha kuva silti näkyä profiilissasi. Mikä
     '474' =>
       q~- Valitse yksi kuvan nimi oikealla sijaitsevasta listasta.<br />~,
     '475' =>
-q~- Tai anna osoite omaan kuvaasi.<br />Osoitteen tulee olla muodoltaan seuraavanlainen:<br /><i>http:&thinsp;//&thinsp;www.mypage.com&thinsp;/&thinsp;mypic.gif</i><br />Kuvasi tulee olla <i>.gif</i>, <i>.png</i>, <i>.jpg</i> tai <i>.jpeg</i>.~
-    , # use &thinsp; (small space) or your layout will get messed with IE and low monitor resolution
+q~- Tai anna osoite omaan kuvaasi.<br />Osoitteen tulee olla muodoltaan seuraavanlainen:<br /><i>http:&thinsp;//&thinsp;www.mypage.com&thinsp;/&thinsp;mypic.gif</i><br />Kuvasi tulee olla <i>.gif</i>, <i>.png</i>, <i>.jpg</i> tai <i>.jpeg</i>.~,
+# use &thinsp; (small space) or your layout will get messed with IE and low monitor resolution
     '476' =>
 q~- Tai valitse palvelimelle ladattava kuvatiedosto.<br />Kuvamuodon tulee olla yksi seuraavista: <i>.gif</i>, <i>.png</i>, <i>.jpg</i> tai <i>.jpeg</i><br />Suurin sallittu koko on:~,
     '477' => q~<b>Huom: Kuvaasi voidaan skaalata.</b>~,

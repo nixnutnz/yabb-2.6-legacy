@@ -14,8 +14,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$german_formalpostlngbase = 1992;
+##  Based on English Rev 1992 ##
 
 $german_formalpostlngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalpostlngmods = ();
@@ -174,8 +175,6 @@ q~Sind Sie sicher, dass Sie das Mitglied von der Liste entfernen möchten?~,
     '751' => q~Erforderliche Informationen fehlen:~,
     '801' => q~Fröhlich~,
     '802' => q~Böse~,
-    '807' =>
-q~(Der angezeigte Name des Benutzers wird nicht in der Live Vorschau dargestellt)~,
     'delay'         => q~Warten...~,
     'sendmessguest' => q~Nachricht zum Forum Administrator senden~,
     'nojs'          => q~Browser nicht kompatibel mit diesen Buttons~,

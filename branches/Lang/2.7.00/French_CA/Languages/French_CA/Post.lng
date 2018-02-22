@@ -15,8 +15,9 @@
 # Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$french_capostlngbase = 1992;
+##  Based on English Rev 1992 ##
 
 $french_capostlngver  = 'YaBB 2.7.00 $Revision$';
 @french_capostlngmods = ();
@@ -160,7 +161,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '751'   => q~Informations manquantes requises:~,
     '801'   => q~Content~,
     '802'   => q~Smiley maléfique~,
-    '807'   => q~(le nom de l'utilisateur ne s'affiche pas dans l'aperçu)~,
     'delay' => q~Attendre...~,
     'sendmessguest' => q~Envoyer une alerte aux administrateurs~,
     'nojs'          => q~Navigateur non compatible avec ces boutons~,

@@ -15,8 +15,9 @@
 # Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$french_caadminlngbase = 2004;
+##  Based on English Rev 2004 ##
 
 $french_caadminlngver  = 'YaBB 2.7.00 $Revision$';
 @french_caadminlngmods = ();
@@ -36,7 +37,7 @@ $abbr_lang = 'fr-ca';
     '3' => q~Ajouter/éditer Catégories~,
     '4' => q~Garder épinglé?~,
     '5' => q~Vous devez sélectionner quelque chose à éditer ou à supprimer. Veuillez réessayer.~,
-'6' => q~Envoyer un courriel aux membres~,
+    '6' => q~Envoyer un courriel aux membres~,
     '7'  => q~Éditer les nouvelles du forum~,
     '8'  => q~Éditer les groupes de membres~,
     '9'  => q~Voir tous les membres~,
@@ -52,7 +53,7 @@ $abbr_lang = 'fr-ca';
     '22' => q~Autoriser les environnements permalien simple?<span class="small">Publier les messages uniquement avec un lien permanent séparé.</span>~,
     '22a' => q~Permettre les environnements premaliens Complet?<br /><span class="small">Tous les liens de accessibles aux visiteurs comme permaliens.</span>~,
     '22r' => q~Autoriser les environnements permalien RSS?<br /><span class="small">Liens vers le flux RSS comme permaliens.</span>~,
-'23' => q~Domaine permalien<br /><span class="small">(incluez "http://") Note: ceci est aussi le domaine pour votre permalien RSS(ci-dessous)</span>~,
+    '23' => q~Domaine permalien<br /><span class="small">(incluez "http://") Note: ceci est aussi le domaine pour votre permalien RSS(ci-dessous)</span>~,
     '23a' => q~Texte permalien pour .htaccess: (Simple)~,
     '23b' => q~Texte permalien pour .htaccess: (Complet)~,
     '24'  => q~Configuration des liens permaliens~,

@@ -12,8 +12,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1920 ##
 our $VERSION = '2.7.00';
+$russianxerrorlngbase = 2000;
+##  Based on English Rev 2000 ##
 
 $russianxerrorlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxerrorlngmods = ();
@@ -377,7 +378,7 @@ q~Sorry but this file needs to be renamed with ASCII characters before it can be
 
 ## ban checking##
     'badip'   => q~This does not appear to be a valid IP address.~,
-
+    'illegal' => q~Invalid character in ~,
 );
 
 1;

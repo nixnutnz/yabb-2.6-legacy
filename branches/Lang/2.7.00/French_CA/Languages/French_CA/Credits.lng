@@ -15,8 +15,9 @@
 # Modifié le     : 8 Décembre, 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$french_cacreditslngbase = 2004;
+##  Based on English Rev 2004 ##
 
 $french_cacreditslngver = 'YaBB 2.7.00 $Revision$';
 @french_cacreditslngmods = ();

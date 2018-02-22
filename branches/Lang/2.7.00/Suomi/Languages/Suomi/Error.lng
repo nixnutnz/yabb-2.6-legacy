@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1920 ##
 our $VERSION = '2.7.00';
+$suomierrorlngbase = 2000;
+##  Based on English Rev 2000 ##
 
 $suomierrorlngver  = 'YaBB 2.7.00 $Revision$';
 @suomierrorlngmods = ();
@@ -350,7 +351,7 @@ q~Yleisvalvoja ei voi muuttaa postiriippuvaisia käyttäjiä, koska muutos vaati
 
 ## ban checking##
     'badip'   => q~This does not appear to be a valid IP address.~,
-
+    'illegal' => q~Invalid character in ~,
 );
 
 1;

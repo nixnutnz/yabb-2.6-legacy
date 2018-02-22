@@ -13,8 +13,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1867 ##
 our $VERSION = '2.7.00';
+$dutchfalngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $dutchfalngver  = 'YaBB 2.7.00 $Revision$';
 @dutchfalngmods = ();
@@ -150,8 +151,8 @@ q~Het PM Bijlagen log laat alle informatie zien van elke bijlage op uw forum. U 
     '61a' => q~... voltooid.~,
     '61b' => q~Verwijder nu ongebruikte bijlagen~,
     '61c' => q~Verwijder nu ongebruikte PM bijlagen~,
-    '62'  => q~Bijlagen logbestand (attachments.txt) is opnieuw opgebouwd~,
-    '62a' => q~PM Bijlagen logbestand (pm.attachments) is opnieuw opgebouwd~,
+    '62'  => q~Bijlagen logbestand (attachments.db) is opnieuw opgebouwd~,
+    '62a' => q~PM Bijlagen logbestand (pmattachments.db) is opnieuw opgebouwd~,
     '63'  => q~Opnieuw opgebouwde Bijlagen~,
     '63a' => q~Opnieuw opgebouwde PM Bijlagen~,
     '64'  => q~Pagina's~,

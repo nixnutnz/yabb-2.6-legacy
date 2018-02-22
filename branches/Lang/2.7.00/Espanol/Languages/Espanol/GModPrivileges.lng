@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1950 ##
 our $VERSION = '2.7.00';
+$espanolgmodprivilegeslngbase = 1950;
+##  Based on English Rev 1950 ##
 
 $espanolgmodprivilegeslngver  = 'YaBB 2.7.00 $Revision$';
 @espanolgmodprivilegeslngmods = ();

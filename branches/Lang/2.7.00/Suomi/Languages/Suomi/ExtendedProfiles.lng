@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$suomiextendedprofileslngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $suomiextendedprofileslngver  = 'YaBB 2.7.00 $Revision$';
 @suomiextendedprofileslngmods = ();
@@ -160,8 +161,6 @@ q~Vain ylläpitäjä voi muokata, näytä \'Ylläpidon profiilimuokkaukset\'-siv
     'allowed_extensions' => q~Sallitut päätteet~,
     'allowed_extensions_description' =>
 q~Rajaa kenttä tietyille tiedostopäätteille listaamalla päätteet eroteltuna välilyönnillä. Esimerkiksi 'jpg jpeg gif png bmp'. Jätä tyhjäksi poistaaksesi rajoitus käytöstä.~,
-    'path_old_members_folder'   => q~Polku vanhaan \'Members\'-hakemistoon~,
-    'path_old_variables_folder' => q~Polku vanhaan \'Variables\'-hakemistoon~,
     'radiounselect'             => q~Ei valintaa~,
     'radiounselect_description' =>
 q~Valitse tämä, jos et halua ensimmäisen radiopainikkeen olevan valittuna oletuksena.~,

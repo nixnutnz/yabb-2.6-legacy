@@ -15,8 +15,9 @@
 # Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$french_caboardindexlngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $french_caboardindexlngver  = 'YaBB 2.7.00 $Revision$';
 @french_caboardindexlngmods = ();

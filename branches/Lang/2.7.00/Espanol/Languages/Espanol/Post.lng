@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$espanolpostlngbase = 1992;
+##  Based on English Rev 1992 ##
 
 $espanolpostlngver  = 'YaBB 2.7.00 $Revision$';
 @espanolpostlngmods = ();
@@ -168,7 +169,6 @@ q~<b>Quote:</b><br /><div class="quote" style="width: 90%; overflow: auto">QUOTE
     '751'   => q~Información requerida:~,
     '801'   => q~Feliz~,
     '802'   => q~Sonrisa diabólica~,
-    '807'   => q~(El seudónimo no aparece el Previsualización)~,
     'delay' => q~Espera...~,
     'sendmessguest' => q~Enviar mensaje al administrador~,
     'nojs'          => q~Navegador no compatible con estos botones~,

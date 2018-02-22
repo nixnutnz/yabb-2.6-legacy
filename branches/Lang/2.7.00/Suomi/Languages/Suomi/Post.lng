@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$suomipostlngbase = 1992;
+##  Based on English Rev 1992 ##
 
 $suomipostlngver  = 'YaBB 2.7.00 $Revision$';
 @suomipostlngmods = ();
@@ -170,7 +171,6 @@ q~Rastita tämä, jos haluat saada sähköpostitse ilmoituksen tähän aiheeseen
     '772'           => q~Vieras~,
     '801'           => q~Onnellinen~,
     '802'           => q~Pirullinen~,
-    '807'           => q~(käyttäjän nimi ei näy reaaliesikatselussa)~,
     'delay'         => q~Odota...~,
     'sendmessguest' => q~Lähetä viesti foorumin ylläpitäjälle~,
     'nojs'          => q~selain ei ole yhteensopiva näiden nappien kanssa~,

@@ -16,8 +16,9 @@
 # Mod created by XTC: http://www.yabbserver.com                               #
 #                and added to YaBB core in Version 2.5.4 /Version 3.0         #
 ###############################################################################
-##  Based on English Rev 1925 ##
 our $VERSION = '2.7.00';
+$dutcheventcallngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $dutcheventcallngver  = 'YaBB 2.7.00 $Revision$';
 @dutcheventcallngmods = ();

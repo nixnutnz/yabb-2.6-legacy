@@ -12,8 +12,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$russianxprofilelngbase = 1973;
+##  Based on English Rev 1973 ##
 
 $russianxprofilelngver  = 'YaBB 2.7.00 $Revision$';
 @russianxprofilelngmods = ();

@@ -17,8 +17,9 @@
 #                and added to YaBB core in Version 2.5.4                      #
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+##  Based on English Rev 1938 ##
+$dutchlivepreviewlngbase = 1938;
 
 $dutchlivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchlivepreviewlngmods = ();

@@ -13,8 +13,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$dutchextendedprofileslngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $dutchextendedprofileslngver  = 'YaBB 2.7.00 $Revision$';
 @dutchextendedprofileslngmods = ();
@@ -166,6 +167,7 @@ q~Stel een waarde in als u de breedte van de afbeelding op een specifieke waarde
     'allowed_extensions' => q~Toegestane extensies~,
     'allowed_extensions_description' =>
 q~Beperk dit veld voor specifieke bestandsextensies door het invoeren van een lijst van extensies gescheiden door spaties. E.g. \"jpg jpeg gif png bmp\". Laat leeg om limiet uit te schakelen.~,
+    'radiounselect'             => q~Niets geselecteerd~,
     'radiounselect_description' =>
 q~Schakel dit in als u niet wilt dat het eerste keuzerondje standaard worden geselecteerd.~,
 );

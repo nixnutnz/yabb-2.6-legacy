@@ -13,8 +13,9 @@
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
 # for his contribution to the YaBB community                                  #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$espanolcontexthelplngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $espanolcontexthelplngver  = 'YaBB 2.7.00 $Revision$';
 @espanolcontexthelplngmods = ();

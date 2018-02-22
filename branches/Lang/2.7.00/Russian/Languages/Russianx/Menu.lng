@@ -12,8 +12,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$russianxmenulngbase = 1941;
+##  Based on English Rev 1941 ##
 
 $russianxmenulngver  = 'YaBB 2.7.00 $Revision$';
 @russianxmenulngmods = ();

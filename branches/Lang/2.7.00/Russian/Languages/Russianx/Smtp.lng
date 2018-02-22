@@ -12,8 +12,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$russianxsmtplngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $russianxsmtplngver  = 'YaBB 2.7.00 $Revision$';
 @russianxsmtplngmods = ();
@@ -24,7 +25,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %smtp_txt = (
-    '1' => qq~SERVER ERROR: Не могу найти {yabb smtpaddr} !~,
+    '1' => q~SERVER ERROR: Не могу найти {yabb smtpaddr} !~,
     '2' => q~SERVER ERROR: Невозможно осуществить соединение !~,
     '3' =>
       q~SERVER ERROR: Невозможно подключиться к {yabb smtpaddr} на порт {yabb port}!~,

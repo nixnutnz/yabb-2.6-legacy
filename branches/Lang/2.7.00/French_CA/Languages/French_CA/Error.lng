@@ -15,8 +15,9 @@
 # Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$french_caerrorlngbase = 2000;
+##  Based on English Rev 2000 ##
 
 $french_caerrorlngver  = 'YaBB 2.7.00 $Revision$';
 @french_caerrorlngmods = ();
@@ -265,7 +266,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## ban checking##
     'badip'   => q~This does not appear to be a valid IP address.~,
-
+    'illegal' => q~Invalid character in ~,
 );
 
 1;

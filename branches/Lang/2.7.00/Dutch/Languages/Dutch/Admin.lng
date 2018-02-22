@@ -13,8 +13,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1928 ##
 our $VERSION = '2.7.00';
+$dutchadminlngbase = 2004;
+##  Based on English Rev 2004 ##
 
 $dutchadminlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchadminlngmods = ();
@@ -799,7 +800,6 @@ q~This is the RSSboard Permalink Symlink URL part<br />(e.g. http://www.yourdoma
     '25a' => q~RSS Permalink text for .htaccess:~,
     '501a' =>
 q~Here you can set Maintenance Mode and create/change your custom Maintenance Notice.~,
-
     'UTC' => q~(UTC)~,
 ## email settings test ##
     '355b'        => q~Test webmaster email instellingen en sla op~,
@@ -1963,6 +1963,5 @@ q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span><
 $iFrameSupport =
 q~Sorry, om het laatste nieuws te zien, moet u een browser gebruiken die iframes ondersteund~;
 $rna = q~Externe Server niet beschikbaar.~;
-
 
 1;

@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
+$russianxextendedprofileslngbase = 1938;
+##  Based on English Rev 1938 ##
 
 $russianxextendedprofileslngver  = 'YaBB 2.7.00 $Revision$';
 @russianxextendedprofileslngmods = ();
@@ -161,9 +162,6 @@ q~Set Extended Profile Image width in <a href="{yabb adminurl}?action=newsetting
     'allowed_extensions' => q~Допускаемые расширения~,
     'allowed_extensions_description' =>
 q~Укажите допускаемые расширеня для файлов изображений, разделяя их пробелами. Например: &quot;jpg jpeg gif png bmp&quot;. Если ничего не указано, ограничения на расширения отсутствуют.~,
-    'path_old_members_folder' => q~Путь до старой папки &quot;Members&quot;~,
-    'path_old_variables_folder' =>
-      q~Путь до старой папки &quot;Variables&quot;~,
     'radiounselect' => q~None selected~,
     'radiounselect_description' =>
 q~Check this if you do not want the first radio button to be selected by default.~,

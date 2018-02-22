@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1928 ##
 our $VERSION = '2.7.00';
+$suomiadminlngbase = 2004;
+##  Based on English Rev 2004 ##
 
 $suomiadminlngver  = 'YaBB 2.7.00 $Revision$';
 @suomiadminlngmods = ();
@@ -773,7 +774,7 @@ q~Enable Style Switcher Dropdown Field?<br /><span class="small">If enabled, sel
     '813b' =>
       q~Select the membergroups allowed to use the Style Switcher:</span>~,
     '10bak' => q~*.bak files deleted~,
-    'UTC' => q~(UTC)~,
+    'UTC'   => q~(UTC)~,
 
 ## email settings test ##
     '355b'        => q~Test webmaster e-mail settings on Save~,
