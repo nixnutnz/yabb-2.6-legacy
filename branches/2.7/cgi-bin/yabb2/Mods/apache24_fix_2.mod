@@ -186,6 +186,22 @@ push @subspmmods, 'Apache 2.4 fix';
     $value = "Require not ip $value";
 </replace>
 
+<search for>
+    $prhta .= "\n$htheader\n";
+</search for>
+
+<replace>
+    $prhta .= "\n$htheader\n$htheaderb\n$htheaderc\n";
+</replace>
+
+<search for>
+    $prhta .= "$htfooter\n";
+</search for>
+
+<replace>
+    $prhta .= "$htfootera\n$htfooter\n";
+</replace>
+
 <edit file>
 Admin/.htaccess
 </edit file>
