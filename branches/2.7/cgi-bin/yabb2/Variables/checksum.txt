@@ -31,7 +31,7 @@ Quick-Guide_27/images/setup.png|d1197fdcf287c82eeeb42de7feaf7fe9
 Quick-Guide_27/images/shebang.gif|5485da454926baf32edd9bced750ffb9
 Quick-Guide_27/images/yabb254.png|b29b45bb099c6b93f01069ffcb4b294c
 Quick-Guide_27/images/yabblogo_26.png|5c05168471096a5abd0a90d41b530794
-cgi-bin/yabb2/Admin/Admin.pm|ec0059547209d465f47d1dd5f6c5239b
+cgi-bin/yabb2/Admin/Admin.pm|13668ff37d664fdd5c839d2f259f61e2
 cgi-bin/yabb2/Admin/AdminEdit.pm|e6c831df08d087e2d71d3892f20088b9
 cgi-bin/yabb2/Admin/AdminSubList.pm|b2ed1b876844bbf75dcaa2603788ed11
 cgi-bin/yabb2/Admin/AdminSubs.pm|697b9cbe1c3576723731b4de450406cb
@@ -130,7 +130,7 @@ cgi-bin/yabb2/Sources/SetStatus.pm|bdf9389874df981bebbe3ce83c956fee
 cgi-bin/yabb2/Sources/Smtp.pm|9ed7b311818ec9e222b2000c8e7a962e
 cgi-bin/yabb2/Sources/SpamCheck.pm|a145bacc671bda84f9b3b9a072faaef1
 cgi-bin/yabb2/Sources/SubList.pm|b52bf70764f7cd63fa718a6294a66832
-cgi-bin/yabb2/Sources/Subs.pm|40b97e59000ec36c4a2a44756f92d4c1
+cgi-bin/yabb2/Sources/Subs.pm|78d2e8ab32c9b84040e823fb3cc070d5
 cgi-bin/yabb2/Sources/System.pm|902e23dbf8e6f61b27c21053a03a620e
 cgi-bin/yabb2/Sources/TabMenu.pm|fc6aa043213d5ecbf2141f7f62a20dbd
 cgi-bin/yabb2/Sources/UserSelect.pm|22194cdd45ce5aff11466c4346fe2e86
