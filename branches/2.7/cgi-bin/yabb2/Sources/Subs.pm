@@ -3810,6 +3810,11 @@ sub get_userpmchk {
 sub do_clicklog {
     my ($field) = @_;
     my $onlinetime = $date - ( $click_logtime * 60 );
+    if ( !-e "$vardir/clicklog.log" ) {
+        fopen( 'LOG', '>', "$vardir/clicklog.log" )
+          or croak "$croak{'open'} clicklog.log";
+        fclose('LOG') or croak "$croak{'close'} clicklog.log";
+    }
     our $LOG;
     fopen( 'LOG', '<', "$vardir/clicklog.log" )
       or croak "$croak{'open'} clicklog.log";

@@ -210,34 +210,43 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
     my $yyclicklink = q{};
     my $yyclicks    = q{};
     if ($enableclicklog) {
-        our ($LOG);
-        fopen( 'LOG', '<', "$vardir/clicklog.log" )
-          or croak "$croak{'open'} clicklog.log";
-        my @log = <$LOG>;
-        fclose('LOG') or croak "$croak{'close'} clicklog.log";
-        $yyclicks    = @log;
-        $yyclicks    = number_format($yyclicks);
         $yyclicktext = $admin_txt{'692'};
-        $yyclicktext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm;
-        $yyclicklink =
+        if ( -e "$vardir/clicklog.log" ) {
+            our ($LOG);
+            fopen( 'LOG', '<', "$vardir/clicklog.log" )
+              or croak "$croak{'open'} clicklog.log";
+            my @log = <$LOG>;
+            fclose('LOG') or croak "$croak{'close'} clicklog.log";
+            $yyclicks    = @log;
+            $yyclicks    = number_format($yyclicks);
+            $yyclicktext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm;
+            $yyclicklink =
 qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
+        }
+        else {
+            $yyclicklink = q{};
+            $yyclicks    = q{};
+        }
     }
     else {
         $yyclicktext = $admin_txt{'692a'};
         $yyclicklink = q{};
         $yyclicks    = q{};
     }
-    our ($ELOG);
-    fopen( 'ELOG', '<', "$vardir/errorlog.log" )
-      or croak "$croak{'open'} error.log";
-    my @elog = <$ELOG>;
-    fclose('ELOG') or croak "$croak{'close'} error.log";
-    my $errorslog = @elog;
-    $memcount  = number_format($memcount);
-    $totalt    = number_format($totalt);
-    $totalm    = number_format($totalm);
-    $avgm      = number_format($avgm);
-    $errorslog = number_format($errorslog);
+    my $errorslog = q{};
+    if ( -e "$vardir/errorlog.log" ){
+        our ($ELOG);
+        fopen( 'ELOG', '<', "$vardir/errorlog.log" )
+          or croak "$croak{'open'} error.log";
+        my @elog = <$ELOG>;
+        fclose('ELOG') or croak "$croak{'close'} error.log";
+        $errorslog = @elog;
+        $memcount  = number_format($memcount);
+        $totalt    = number_format($totalt);
+        $totalm    = number_format($totalm);
+        $avgm      = number_format($avgm);
+        $errorslog = number_format($errorslog);
+    }
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -429,6 +438,11 @@ sub showclicklog {
     }
     else { $logtimetext = $admin_txt{'698a'}; }
 
+    if ( !-e "$vardir/clicklog.log" ) {
+        fopen( 'LOG', '>', "$vardir/clicklog.log" )
+      or croak "$croak{'open'} clicklog.log";
+        fclose('LOG') or croak "$croak{'close'} clicklog.log";
+    }
     our ($LOG);
     fopen( 'LOG', '<', "$vardir/clicklog.log" )
       or croak "$croak{'open'} clicklog.log";
