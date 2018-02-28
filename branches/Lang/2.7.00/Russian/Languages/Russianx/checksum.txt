@@ -1,6 +1,6 @@
 checksum.txt
 Languages/Russianx/AddModerators.lng|385b1d81fdc80477039c1894fc76e0b7
-Languages/Russianx/Admin.lng|c8074ab7254f5b83eb454a266ecbae4c
+Languages/Russianx/Admin.lng|13417834d04130c57e68a0ae8f2ff497
 Languages/Russianx/Backup.lng|4a3fdf385782cb697c6e15ef8e76133c
 Languages/Russianx/BoardIndex.lng|812e25f20dcdb392242e02b9b5450a91
 Languages/Russianx/Bookmarks.lng|531189e069c6a306648c7e5073d59473

@@ -1,6 +1,6 @@
 checksum.txt
 Languages/German_Formal/AddModerators.lng|6625e9f440318537a41e3c23f1546be1
-Languages/German_Formal/Admin.lng|ad8a2e55bae26a54e82d2847e67bd80a
+Languages/German_Formal/Admin.lng|94c56e30c8a26ff398c370ba7c026226
 Languages/German_Formal/Backup.lng|a5d43bcd30bf98994fd1e836a5ceb838
 Languages/German_Formal/BoardIndex.lng|627cb4327f0f5fd4f550dd0d17302f5c
 Languages/German_Formal/Bookmarks.lng|85a23043286f821466509c834c73c71c
