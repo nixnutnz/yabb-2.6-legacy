@@ -15,8 +15,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.7.00';
-$german_informaladminlngbase = 2004;
-##  Based on English Rev 2004 ##
+$german_informaladminlngbase = 2011;
+##  Based on English Rev 2011 ##
 
 $german_informaladminlngver  = 'YaBB 2.7.00 $Revision$';
 @german_informaladminlngmods = ();
@@ -1739,6 +1739,9 @@ q~Benötigt für erweitertes Backup.<br />Dieses Modul ist notwendig. Ohne diese
 q~Benötigt für YaBMod.<br />Wenn dieses Modul nicht installiert ist, kannst Du YaBMod nicht verwenden. Ansonsten benötigst Du dieses Modul nicht.~,
     'noserver'          => q~Keine Serverinformation verfügbar.~,
     'mod_access_compat' => q~Kein Modzugriff~,
+    'Locale::Country' => q~Wird verwendet, um die Namen der Zeitzone abzurufen.<br />Dieses Modul wird benötigt, wenn Forum und Mitglieder eine andere Zeitzone als UTC haben wollen/sollen.<br /><span class="important">Dieses Modul muss aktuell gehalten werden, da es zeitkritische Daten der Zeitzonen enthält.~,
+    'Locale::Country2' =>
+q~<br /><span class="important">Dieses Modul muss aktuell gehalten werden, da es zeitkritische Daten der Zeitzonen enthält. Prüfen Sie dies mit Ihrem Server-Betreiber, um dies sicherzustellen.</span><br /><b>Ihre Version</b>:~,
 );
 
 %settings_txt = (

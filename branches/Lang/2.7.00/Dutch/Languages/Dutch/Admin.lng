@@ -14,8 +14,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.7.00';
-$dutchadminlngbase = 2004;
-##  Based on English Rev 2004 ##
+$dutchadminlngbase = 2011;
+##  Based on English Rev 2011 ##
 
 $dutchadminlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchadminlngmods = ();
@@ -1731,12 +1731,15 @@ q~Gebruikt door de verbeterde email-checker. Als deze module niet geïnstalleerd
     'Mail::CheckUser' =>
 q~Gebruikt door de verbeterde email-checker. Deze module wordt van YaBB geïnstalleerd.~,
     'Module::Load' =>
-q~Used by Advanced Backup.<br />This module is essential. Without it, the Backup functions will not work.~,
+q~Gebruikt door Advanced Backup.<br />Deze module is essentieel. Zonder dit werkt de back-upfunctie niet.~,
     'server' => q~Your Server~,
     'LWP::Simple' =>
-q~Used by YaBMod.<br />If this module is not installed, you will be unable to use YaBMod. Otherwise you do not need this module.~,
+q~Gebruikt door YaBMod.<br />Als deze module niet is geïnstalleerd, kunt u YaBMod niet gebruiken. Anders hebt u deze module niet nodig.~,
     'noserver'          => q~no server information available~,
     'mod_access_compat' => q~No Mod Access~,
+    'Locale::Country' => q~Gebruikt om de tijdzone-namen te krijgen.<br />Deze module is nodig als u forum/gebruiker timezones ingesteld wilt hebben op iets anders dan UTC.<br /><span class="important">Deze Module moet worden bijgewerkt omdat het tijd gevoelige tijdzonegegevens bevat.~,
+    'Locale::Country2' =>
+q~<br /><span class="important">Deze Module moet worden bijgewerkt omdat het tijd gevoelige tijdzonegegevens bevat. Controleer met uw server host om er zeker van te zijn dat deze module de huidige houdt.</span><br /><b>Uw versie</b>:~,
 );
 
 %settings_txt = (

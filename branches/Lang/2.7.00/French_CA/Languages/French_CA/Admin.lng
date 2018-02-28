@@ -16,8 +16,8 @@
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 our $VERSION = '2.7.00';
-$french_caadminlngbase = 2004;
-##  Based on English Rev 2004 ##
+$french_caadminlngbase = 2011;
+##  Based on English Rev 2011 ##
 
 $french_caadminlngver  = 'YaBB 2.7.00 $Revision$';
 @french_caadminlngmods = ();
@@ -1698,12 +1698,15 @@ q~Utilisé par le vérificateur de courrier électronique amélioré. Ce module 
     'server' => q~Votre Serveur~,
     'LWP::Simple' =>
 q~Utilisé par YaBMod.<br />Si ce module n'est pas installé, vous ne pourez pas utiliser YaBMod. Sinon vous n'avez pas besoin de ce module.~,
-    'noserver'          => q~aucune information serveur de disponible~,
-    'mod_access_compat' => q~Aucun acces au Mods~,
     'DateTime' =>
 q~Requis par DateTime::TimeZone.<br />Ce module est requis seulement si vous désires avoir un fuseau horraire forum/utilisateur dans une zone autre que UTC.~,
     'Module::Load' =>
 q~Utilisé par la Sauvegarde avancée.<br />Ce module est essentiel. Sans ce module, les fonctions de sauvegarde ne fonctionneront pas.~,
+    'noserver'          => q~aucune information serveur de disponible~,
+    'mod_access_compat' => q~Aucun acces au Mods~,
+    'Locale::Country' => q~Utilisé pour obtenir les noms des fuseaux horaires.<br />Ce module est nécessaire si vous souhaitez que les fuseaux horaires du forum/utilisateur soient autres que UTC .<br /><span class="important">Ce module doit être tenu à jour car il contient des données de fuseau horaire sensibles au temps.~,
+    'Locale::Country2' =>
+q~<br /><span class="important"> Ce module doit être tenu à jour car il contient des données de fuseau horaire sensibles au temps. Vérifiez avec votre hôte serveur pour vous assurer que ce module est maintenu à jour.</span><br /><b>Votre version</b>:~,
 );
 
 %settings_txt = (

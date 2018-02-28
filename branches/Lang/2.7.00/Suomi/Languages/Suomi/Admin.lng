@@ -11,8 +11,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.7.00';
-$suomiadminlngbase = 2004;
-##  Based on English Rev 2004 ##
+$suomiadminlngbase = 2011;
+##  Based on English Rev 2011 ##
 
 $suomiadminlngver  = 'YaBB 2.7.00 $Revision$';
 @suomiadminlngmods = ();
@@ -1700,6 +1700,9 @@ q~Used by Advanced Backup.<br />This module is essential. Without it, the Backup
 q~Used by YaBMod.<br />If this module is not installed, you will be unable to use YaBMod. Otherwise you do not need this module.~,
     'noserver'          => q~no server information available~,
     'mod_access_compat' => q~No Mod Access~,
+    'Locale::Country' => q~Käytetään aikavyöhykkeiden nimet.<br />Moduulia tarvitaan, jos haluat foorumin/käyttäjän aikavyöhykkeen asettavaksi miksi tahansa muuksi kuin UTC.<br /><span class="important">Tämä moduuli täytyy olla ajantasalla, koska se sisältää aikaherkkiä aikavyöhyketietoja.~,
+    'Locale::Country2' =>
+q~<br /><span class="important">Tämä moduuli täytyy pitää ajantasalla koska se sisältää aikaherkkiä aikavyöhyketietoja. Tarkista palvelimen ylläpitäjältä varmistaaksesi moduuli pidetään ajantasalla.</span><br /><b>Sinun versiosi</b>:~,
 );
 
 %settings_txt = (
