@@ -2258,13 +2258,10 @@ qq~<textarea cols="30" rows="2" name="$lbl_imtxt" id="$lbl_imtxt" style="width: 
 qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstart_hour:$forumstart_minute:$forumstart_secund~;
 
         # Validate Timezone
-        if ($enabletz) {
-            if ( $FORM{'default_tz'} eq q{-} ) {
-                $default_tz = 'UTC';
-            }
-            else { $default_tz = $FORM{'default_tz'}; }
+        if ( $FORM{'default_tz'} eq q{-} ) {
+            $default_tz = 'UTC';
         }
-        else { $default_tz = 'UTC'; }
+        else { $default_tz = $FORM{'default_tz'}; }
 
         $FORM{'usertimesign'} ||= q{};
         $FORM{'usertimehour'} ||= 0;

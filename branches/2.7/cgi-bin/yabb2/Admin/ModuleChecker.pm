@@ -38,7 +38,7 @@ if ( !$script_root ) {
 our ($dont_continue_setup);    # Setup.pl;
 
 my @modules =
-  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
+  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
 
 @modules = sort @modules;
 my $checker_output = q{};
@@ -47,7 +47,7 @@ my ($i);
 foreach my $module (@modules) {
     $dont_continue_setup = q{};
     if ( eval { load($module); 1 } ) {
-        if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
+        if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' || $module eq 'Locale::Country' ) {
             my $myversion = $module->VERSION || '<NO $VERSION>';
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>

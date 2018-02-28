@@ -68,6 +68,7 @@ sub toffs {
         eval {
             require DateTime;
             require DateTime::TimeZone;
+            require Locale::Country;
         }
       )
     {

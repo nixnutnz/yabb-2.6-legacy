@@ -1695,6 +1695,9 @@ q~Used by Advanced Backup.<br />This module is essential. Without it, the Backup
 q~Used by YaBMod.<br />If this module is not installed, you will be unable to use YaBMod. Otherwise you do not need this module.~,
     'noserver'          => q~no server information available~,
     'mod_access_compat' => q~No Mod Access~,
+    'Locale::Country' => q~Used to get the timezone names.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data.</span>~,
+    'Locale::Country2' =>
+q~<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.</span><br /><strong>Your version</strong>:~,
 );
 
 %settings_txt = (

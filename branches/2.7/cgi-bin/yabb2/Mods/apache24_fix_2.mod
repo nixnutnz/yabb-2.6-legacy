@@ -22,7 +22,7 @@ Apply the mod and upload (in ASCII mode):
 cgi-bin/yabb2/Admin/Modlist.pm
 cgi-bin/yabb2/Admin/ErrorLog.pm
 cgi-bin/yabb2/Admin/GuardianAdmin.pm
-cgi-bin/yabb2/Sources/Guardian.pm
+cgi-bin/yabb2/Sources/Subs.pm
 cgi-bin/yabb2/Admin/.htaccess
 cgi-bin/yabb2/Backup/.htaccess
 cgi-bin/yabb2/Boards/.htaccess
@@ -167,6 +167,22 @@ push @subspmmods, 'Apache 2.4 fix';
     my $htheaderc = q~Require all granted~;
     my $htfootera = q~</RequireAll>~;
 </add after>
+
+<search for>
+        elsif ($chk ne $htheader
+            && $chk !~ m/\x23/xsm
+            && $chk ne q{}
+</search for>
+
+<replace>
+        elsif ($chk ne $htheader
+            && $chk ne $htheaderb
+            && $chk ne $htheaderc
+            && $chk !~ m/\x23/xsm
+            && $chk ne q{}
+            && $chk ne $htfootera
+</replace>
+
 
 <search for>
         if ( $chk =~ m/\QDeny from \E/gxsm ) {
