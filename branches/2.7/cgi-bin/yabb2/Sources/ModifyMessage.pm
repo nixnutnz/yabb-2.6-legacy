@@ -1171,24 +1171,6 @@ sub get_fixtime {
     my $timeset = 86400;
     if ($tlnomodday) { $timeset = 60; }
     my $modtopic_chk = 0;
-    my $fixtime      = $tlnomodtime;
-    no strict qw(refs);
-    if (   $tlnomodflag
-        && ${ $uid . $currbrd }{'modtopic'}
-        && ${ $uid . $currbrd }{'modtopic'} ne $tlnomodtime )
-    {
-        $fixtime = ${ $uid . $currbrd }{'modtopic'};
-        if (
-            (
-                ${ $uid . $currbrd }{'modtopic'} == 0
-                || $date <
-                $mdate + ( ${ $uid . $currbrd }{'modtopic'} * $timeset )
-            )
-          )
-        {
-            $modtopic_chk = 1;
-        }
-    }
     if ( $mstate =~ /l/ixsm ) {
         my ($icanbypass);
         if ($bypass_lock_perm) { $icanbypass = checkuser_lockbypass(); }
@@ -1199,7 +1181,13 @@ sub get_fixtime {
         && $tlnomodflag
         && $date > $mdate + ( $tlnomodtime * $timeset ) )
     {
-        fatal_error( 'time_locked', "$fixtime$timelocktxt{'02'}" );
+        my $dayset = $timelocktxt{'time_min_days'};
+        if ( $tlnomodtime == 1 ) { $dayset = $timelocktxt{'time_min_day'}; }
+        if ($tlnomodday) {
+            $dayset = $timelocktxt{'time_min_mins'};
+            if ( $tlnomodtime == 1 ) { $dayset = $timelocktxt{'time_min_min'}; }
+        }
+        fatal_error( 'time_locked', "$tlnomodtime$timelocktxt{'02'} $dayset" );
     }
     return;
 }
