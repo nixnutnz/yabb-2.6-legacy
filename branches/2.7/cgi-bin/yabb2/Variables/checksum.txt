@@ -79,7 +79,7 @@ cgi-bin/yabb2/Messages/index.html|896403d044f96766877f301db04b0930
 cgi-bin/yabb2/Mods/index.html|a06fd6f219b2fa270b40978bf88ed585
 cgi-bin/yabb2/Modules/index.html|44e502ab684d3a32b5b89b688724533d
 cgi-bin/yabb2/Sources/AddModerators.pm|2c8b88942ebf271e893c5e27c6b8b778
-cgi-bin/yabb2/Sources/AdvancedTabs.pm|e06605f46700921903295bce28eaa70b
+cgi-bin/yabb2/Sources/AdvancedTabs.pm|3b1127afe742c9c06f8888dff6df95ac
 cgi-bin/yabb2/Sources/BoardIndex.pm|7b1abcf606469f5471e09892b7676559
 cgi-bin/yabb2/Sources/Captcha.pm|eb0da40c0eefe14703bf2003fb6379ac
 cgi-bin/yabb2/Sources/ContextHelp.pm|7959beaca632635c0d1ac7b05c85d5ae
