@@ -180,7 +180,7 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
         }
         foreach my $i (@advanced_tabs) {
             push @new_tabs_order, $i;
-            if (/^$tabafter[|]?/xsm) {
+            if ( $i =~ /^$tabafter[|]?/xsm ) {
                 push @new_tabs_order,
 qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
             }
