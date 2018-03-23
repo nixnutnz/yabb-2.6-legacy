@@ -3468,8 +3468,11 @@ sub chk_profile_bday {
     }
     if (
         $edit_agelimit
-        && (  !${ $uid . $user }{'bday'} && $member{'bday'} ne q{}
-            || ${ $uid . $user }{'bday'} ne $member{'bday'} )
+        && (
+            $member{'bday'}
+            && (  !${ $uid . $user }{'bday'}
+                || ${ $uid . $user }{'bday'} ne $member{'bday'} )
+        )
       )
     {
         if ( !${ $uid . $user }{'disableage'} ) {
@@ -4043,7 +4046,6 @@ sub get_profile_lastposts {
         $userlastpost = usersrecentposts(1);
     }
     $userlastpost ||= $profile_txt{'470'};
-    ####
     my $lastonline = $profile_amv_txt{'mylastonline'};
     my $lastpost   = $profile_amv_txt{'mylastpost'};
     my $last_pm    = $profile_amv_txt{'mylastpm'};

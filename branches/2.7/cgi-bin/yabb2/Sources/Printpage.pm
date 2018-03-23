@@ -642,6 +642,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
     $output =~ s/\Q{yabb pagetitle}\E/$mbname - $page_title/gxsm;
     $output =~ s/\Q{yabb printthread}\E/$printthread/gxsm;
     $output =~ s/\Q{yabb cat}\E/$cat/gxsm;
+## post mod hook ##
 
     image_resize();
 
@@ -827,6 +828,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
     $output =~ s/\Q{yabb pagetitle}\E/$mbname - $page_title/gxsm;
     $output =~ s/\Q{yabb printthread}\E/$printthread/gxsm;
     $output =~ s/\Q{yabb cat}\E/$cat/gxsm;
+## thread mod hook ##
 
     image_resize();
 

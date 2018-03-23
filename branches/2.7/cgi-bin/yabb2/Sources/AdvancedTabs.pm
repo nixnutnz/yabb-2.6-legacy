@@ -100,13 +100,13 @@ sub add_new_tab2 {
         $taburl =~ s/\x22/\%22/gxsm;
         my $tabwin         = $FORM{'tabwin'} ? 1 : 0;
         my $tabview        = $FORM{'showto'};
-        my $tabafter       = $FORM{'addafter'};
+        my $tabafter       = $FORM{'addafter'} || 'thefront';
         my $tmpusernamereq = 0;
         my ($tabaction);
         my $tmpisaction = 0;
 
-        #Carsten's fix - nice and neat/';#
-        if ( $taburl !~ m{[ht|f]tps?://}xsm ) {
+        #Carsten's fix - nice and neat;#
+        if ( $taburl !~ m{(?:ht|f)tps?://}xsm ) {
             $taburl = qq~http://$taburl~;
         }
         if (   $taburl =~ /$boardurl\/$yyexec[.]$yyaext/ixsm
@@ -173,7 +173,7 @@ sub add_new_tab2 {
             close $TABTXT or croak "$croak{'close'} TABTXT";
         }
 
-        my @new_tabs_order;
+        my @new_tabs_order = ();
         if ( $tabafter eq 'thefront' ) {
             push @new_tabs_order,
 qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
