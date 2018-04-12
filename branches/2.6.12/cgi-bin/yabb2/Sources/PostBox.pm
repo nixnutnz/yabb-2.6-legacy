@@ -172,8 +172,11 @@ sub postbox2 {
         ( $pheight, $pwidth, $textsize, $col_row ) =
           split /\|/xsm, ${ $uid . $username }{'postlayout'};
     }
-    $col_row ||= 0;
-    if ( !$textsize || $textsize < 6 ) { $textsize = 6; }
+    $col_row  ||= 0;
+    $textsize ||= 10;
+    $pheight  ||= 130;
+    $pwidth   ||= 448;
+    if ( $textsize < 6 ) { $textsize = 6; }
     if ( $textsize > 16 ) { $textsize = 16; }
     if ( $pheight > 400 ) { $pheight  = 400; }
     if ( $pheight < 130 ) { $pheight  = 130; }

@@ -1663,13 +1663,11 @@ sub SaveSettings {
     $forumstart = qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstart_hour:$forumstart_minute:$forumstart_secund~;
 
     # Validate Timezone
-    if ( $enabletz ) {
-        if ( $FORM{'default_tz'} eq '-') {
+    if ( $FORM{'default_tz'} eq q{-} ) {
             $default_tz = 'UTC';
         }
         else { $default_tz = $FORM{'default_tz'}; }
-    }
-    else { $default_tz = 'UTC'; }
+
 
     $timeoffset  = $FORM{'usertimesign'} =~ /^-$/sm ? q{-} : q{};
     $timeoffset .= $FORM{'usertimehour'} =~ /^\d+$/sm ? $FORM{'usertimehour'} : '0';
