@@ -702,7 +702,10 @@ sub ban_page_b {
             $add_ban =
 qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|$ban_reason|\n~;
             if ( $lev eq 'p' ) {
-                my @ubanned = split /[|]/xsm, ${ $uid . $user }{'banned'};
+                my @ubanned = ( 0, 0 );
+                if ( ${ $uid . $user }{'banned'} ) {
+                    @ubanned = split /[|]/xsm, ${ $uid . $user }{'banned'};
+                }
                 if ($ban_email) {
                     $ubanned[0] = 1;
                 }

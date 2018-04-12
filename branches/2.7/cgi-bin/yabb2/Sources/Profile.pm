@@ -1730,23 +1730,24 @@ sub modify_profile_admin2 {
         fatal_error('cannot_kill_admin');
     }
 
-    if (
-        !$iamadmin
-        && (   $member{'settings7'} eq 'Administrator'
-            || $member{'settings7'} eq 'Global Moderator' )
-      )
-    {
-        $member{'settings7'} = ${ $uid . $user }{'position'};
-    }
-
     if ( !$member{'settings6'} ) { $member{'settings6'} = 0; }
     if ( $member{'settings6'} !~ /\A\d+\Z/xsm ) {
         fatal_error('invalid_postcount');
     }
+
     if (   $member{'username'} eq 'admin'
         && $member{'settings7'} ne 'Administrator' )
     {
         fatal_error('cannot_regroup_admin');
+    }
+    if (
+        !$iamadmin
+        && (   $member{'settings7'} eq 'Administrator'
+            || $member{'settings7'} eq 'Global Moderator'
+            || $member{'settings7'} eq 'Mid Moderator' )
+      )
+    {
+        $member{'settings7'} = ${ $uid . $user }{'position'};
     }
 
     admin_chk_regdate();
@@ -1773,8 +1774,9 @@ sub modify_profile_admin2 {
     }
 
     my %groups;
+
     map { $groups{$_} = 1; } split /,\s/xsm, $member{'addgroup'};
-    my @nopostmember;
+    my @nopostmember = ();
     for ( keys %grp_nopost ) {
         next if $member{'settings7'} eq $_;
         if ( $groups{$_} ) { push @nopostmember, $_; }
@@ -2673,7 +2675,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
                 }
             }
         }
-        my ($pic);
+        my $pic     = q{};
         my $s       = q{};
         my $checked = q{};
         my $tmp     = $facesurl;

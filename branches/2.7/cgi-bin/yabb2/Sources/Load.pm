@@ -725,7 +725,7 @@ sub load_miniuser {
         @memstat   = @{ $grp_staff{$tempgroupcheck} };
         $temptitle = $memstat[0];
         $tempgroup = $grp_staff{$tempgroupcheck};
-        if ( $memstat[4] == 0 ) { $bold = 1; }
+        if ( !$memstat[4] ) { $bold = 1; }
         $memberunfo{$usr} = $tempgroupcheck;
     }
     elsif ( $moderators{$usr} ) {
