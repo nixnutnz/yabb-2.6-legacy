@@ -36,20 +36,17 @@ sub ManageBoardNotify {
         }
     }
     if ( $todo eq 'add' ) {
-        if ( !$maxtnote ) { $maxtnote = 10; }
         $theboard{$user} = "$userlang|$notetype|$noteview";
         LoadUser($user);
         my %bb;
         my @oldnote = split /,/xsm,
           ${ $uid . $username }{'board_notifications'};
-        if ( @oldnote < ( $maxtnote || 10 ) ) {
-            foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
-                $bb{$_} = 1;
-           }
-            $bb{$theboard} = 1;
-            ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
-            UserAccount($user);
+        foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
+            $bb{$_} = 1;
         }
+        $bb{$theboard} = 1;
+        ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
+        UserAccount($user);
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $theboard{$user} ) {
@@ -325,7 +322,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     # Show Javascript for 'check all' notifications
 
     ( $board_notify, $thread_notify ) = NotificationAlert();
-    my ( $num, $new );
+    my $num = 0;
+    my $new = q{};
     getlog();
     my $dmax = $date - ( $max_log_days_old * 86400 );
 
