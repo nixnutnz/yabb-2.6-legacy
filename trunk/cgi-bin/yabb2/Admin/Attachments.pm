@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$attachmentspmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$attachmentspmver = 'YaBB 2.6.12 $Revision: 1914 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {

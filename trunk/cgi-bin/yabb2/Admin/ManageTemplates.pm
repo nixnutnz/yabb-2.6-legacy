@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$managetemplatespmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$managetemplatespmver = 'YaBB 2.6.12 $Revision: 1914 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');

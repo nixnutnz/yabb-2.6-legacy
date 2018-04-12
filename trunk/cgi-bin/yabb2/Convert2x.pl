@@ -24,7 +24,7 @@ use English qw(-no_match_vars);
 
 our $VERSION = '2.6.12';
 
-$convert2xplver = 'YaBB 2.6.12 $Revision: 1667 $';
+$convert2xplver = 'YaBB 2.6.12 $Revision: 1914 $';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;

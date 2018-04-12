@@ -17,7 +17,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 1710 $';
+our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 2021 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -1663,13 +1663,11 @@ sub SaveSettings {
     $forumstart = qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstart_hour:$forumstart_minute:$forumstart_secund~;
 
     # Validate Timezone
-    if ( $enabletz ) {
-        if ( $FORM{'default_tz'} eq '-') {
+    if ( $FORM{'default_tz'} eq q{-} ) {
             $default_tz = 'UTC';
         }
         else { $default_tz = $FORM{'default_tz'}; }
-    }
-    else { $default_tz = 'UTC'; }
+
 
     $timeoffset  = $FORM{'usertimesign'} =~ /^-$/sm ? q{-} : q{};
     $timeoffset .= $FORM{'usertimehour'} =~ /^\d+$/sm ? $FORM{'usertimehour'} : '0';

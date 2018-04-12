@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$postboxpmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$postboxpmver = 'YaBB 2.6.12 $Revision: 2021 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -173,7 +173,10 @@ sub postbox2 {
           split /\|/xsm, ${ $uid . $username }{'postlayout'};
     }
     $col_row ||= 0;
-    if ( !$textsize || $textsize < 6 ) { $textsize = 6; }
+    $textsize ||= 10;
+    $pheight  ||= 130;
+    $pwidth   ||= 448;
+    if ( $textsize < 6 ) { $textsize = 6; }
     if ( $textsize > 16 ) { $textsize = 16; }
     if ( $pheight > 400 ) { $pheight  = 400; }
     if ( $pheight < 130 ) { $pheight  = 130; }
