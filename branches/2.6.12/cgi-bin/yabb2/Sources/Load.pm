@@ -269,12 +269,12 @@ sub LoadUser {
     return 0 if $user eq q{} || $user eq 'Guest';
 
     if ( !$userextension ) {
-    if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
-        $userextension = 'pre';
-    }
-    elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
-        $userextension = 'wait';
-    }
+        if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
+            $userextension = 'pre';
+        }
+        elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
+            $userextension = 'wait';
+        }
         else { $userextension = 'vars';}
     }
 

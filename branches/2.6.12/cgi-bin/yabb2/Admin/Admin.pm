@@ -1041,7 +1041,7 @@ sub Refcontrol2 {
                 $counter++;
     }
 
-    for my $actfound (@actfound) {
+    foreach my $actfound (@actfound) {
         if ( $FORM{$actfound} ) { push @outfile, "$actfound\n"; }
     }
 

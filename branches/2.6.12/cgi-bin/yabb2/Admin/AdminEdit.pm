@@ -805,7 +805,7 @@ sub EditPaths {
                 </div>
                 <br />
                 <div class="setting-cell">
-                        <label for="admindir">$edit_paths_txt{'9'}</label>
+                    <label for="admindir">$edit_paths_txt{'9'}</label>
                 </div>
                 <div class="setting-cell2">
                     <input type="text" name="admindir" id="admindir" size="50" value="$admindir" />

@@ -604,19 +604,22 @@ sub my_check_prev {
             if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError === 0) isError = 1; }
             if (document.postmodify.email.value === "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError === 0) isError = 1; }
             else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
-        : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
+        : qq~
+            if (livepostas == "imsend" || livepostas == "imsend2") {
             if (document.postmodify.toshow.options.length === 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
             }~
       )
       . (
         $iamguest && $gpvalid_en && $post ne 'imsend' && $post ne 'imsend2'
-        ? qq~if (document.postmodify.verification.value === "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
+        ? qq~
+            if (document.postmodify.verification.value === "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
         : q~~
       )
       . (
         $iamguest
-          && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
-        ? qq~if (document.postmodify.verification_question.value === "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
+          && $spam_questions_gp && -e "$langdir/$language/spam.questions" && $post ne 'imsend' && $post ne 'imsend2'
+        ? qq~
+            if (document.postmodify.verification_question.value === "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
         : q~~
       )
       . (

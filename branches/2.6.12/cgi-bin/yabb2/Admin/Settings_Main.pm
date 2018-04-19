@@ -219,7 +219,7 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 # googiespell end
 
 $qcksearchtype ||= 'allwords';
-$qckage    = defined $qckage ? $qckage : 31;
+$qckage    ||= 31;
 
 # List of settings
 
