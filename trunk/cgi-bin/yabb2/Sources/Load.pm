@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$loadpmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$loadpmver = 'YaBB 2.6.12 $Revision: 2025 $';
 
 sub LoadBoardControl {
     $binboard = q{};
@@ -269,12 +269,12 @@ sub LoadUser {
     return 0 if $user eq q{} || $user eq 'Guest';
 
     if ( !$userextension ) {
-    if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
-        $userextension = 'pre';
-    }
-    elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
-        $userextension = 'wait';
-    }
+        if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
+            $userextension = 'pre';
+        }
+        elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
+            $userextension = 'wait';
+        }
         else { $userextension = 'vars';}
     }
 

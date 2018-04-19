@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$subspmver = 'YaBB 2.6.12 $Revision: 1914 $';
+$subspmver = 'YaBB 2.6.12 $Revision: 2025 $';
 
 use subs 'exit';
 
@@ -262,6 +262,7 @@ sub template {
 
     if (
            $INFO{'num'}
+        || ( $INFO{'board'} && $enable_quickpost )
         || $action eq 'post'
         || $action eq 'modify'
         || $action eq 'preview'
@@ -271,6 +272,7 @@ sub template {
         || $action eq 'myviewprofile'
         || $action eq 'eventcal'
         || $action eq 'help'
+        || $action eq 'guestpm'
         || $action eq 'recenttopics'
         || $action eq 'recent'
         || $action eq 'usersrecentposts'
@@ -1311,7 +1313,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                 if ( $indent > 0 ) { $dash = q{-}; }
 
                 my ( $boardname, $boardperms, $boardview ) =
-                  split /\|/xsm, $board{"$board"};
+                  split /\|/xsm, $board{$board};
                 ToChars($boardname);
                 my $access = AccessCheck( $board, q{}, $boardperms );
                 if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {

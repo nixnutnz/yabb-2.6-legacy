@@ -17,7 +17,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 2021 $';
+our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 2025 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -219,7 +219,7 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 # googiespell end
 
 $qcksearchtype ||= 'allwords';
-$qckage    = defined $qckage ? $qckage : 31;
+$qckage    ||= 31;
 
 # List of settings
 

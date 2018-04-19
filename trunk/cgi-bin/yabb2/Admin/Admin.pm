@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.12';
 
-$adminpmver = 'YaBB 2.6.12 $Revision: 1676 $';
+$adminpmver = 'YaBB 2.6.12 $Revision: 2025 $';
 LoadLanguage('Credits');
 
 get_template('AdminCentre');
@@ -1041,7 +1041,7 @@ sub Refcontrol2 {
                 $counter++;
     }
 
-    for my $actfound (@actfound) {
+    foreach my $actfound (@actfound) {
         if ( $FORM{$actfound} ) { push @outfile, "$actfound\n"; }
     }
 
