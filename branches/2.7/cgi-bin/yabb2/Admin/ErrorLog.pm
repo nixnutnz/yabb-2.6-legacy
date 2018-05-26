@@ -32,7 +32,7 @@ our ( %admin_img, %admin_txt, %admintxt, %croak, %errorlog );
 ## paths ##
 our ( $adminurl, $boardurl, $vardir, $scripturl, $yyhtml_root, );
 ## settings ##
-our ( $ip_lookup, $use_guardian, $use_htaccess, $yymycharset );
+our ( $ip_lookup, $use_guardian, $use_htaccess, $yymycharset, $numposts, $preregspan, $minlinkpost, $minlinksig );
 ## other ##
 our (
     $action_area, $date,     $OS_ERROR, $yyaext,
@@ -342,6 +342,11 @@ qq~                <td class="windowbg center"><input type="checkbox" name="erro
     $yymain .= qq~
 $print_errorlog
     ~;
+    $yymain =~ s/\Q{yabb numposts}\E/$numposts/gxsm;
+    $yymain =~ s/\Q{yabb preregspan}\E/$preregspan/gxsm;
+    $yymain =~ s/\Q{yabb minlinkpost}\E/$minlinkpost/gxsm;
+    $yymain =~ s/\Q{yabb minlinksig}\E/$minlinksig/gxsm;
+
     my $errmember = q{};
     my @userlist =
       reverse sort { $userlist{$a} <=> $userlist{$b} } keys %userlist;
