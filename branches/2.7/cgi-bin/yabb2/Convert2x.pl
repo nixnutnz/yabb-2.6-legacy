@@ -1318,7 +1318,7 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                                 $storemessline++;
                             }
                             if ( $storeupdated == 1 ) {
-                                open my $STRMESS, '<',
+                                open my $STRMESS, '>',
                                   "$memberdir/$user.imstore"
                                   or fatal_error( 'cannot_open',
                                     "$memberdir/$user.imstore", 1 );
