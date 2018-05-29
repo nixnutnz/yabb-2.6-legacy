@@ -70,9 +70,9 @@ our (
     $mysymrecent,      $mysymboard,         %bot_name,
     %catcol,           %childcnt,           %INFO,
     %lastposterguest,  %lastpostrealtime,   %lastposttime,
-    %moderatorgroups,  %moderators,         %new_icon,
+    %new_icon,
     %newload,          %sub_new_cnt,        %yy_cookies,
-    %yyuserlog,        @all_bots,           @logentries,
+    %yyuserlog,        @logentries,
 );
 ## templates ##
 our (
@@ -613,7 +613,7 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                     $bddescr = to_chars($bddescr);
                 }
                 $iammod     = q{};
-                %moderators = ();
+                my %moderators = ();
                 my $curmods = ${ $uid . $crboard }{'mods'} || q{};
 
                 foreach my $curuser ( split /\//xsm, $curmods || q{} ) {
@@ -1427,17 +1427,19 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
     }
 }
 
-sub get_botlist {
-    if ( -e "$vardir/BotsHosts.pm" ) {
-        require Variables::BotsHosts;
-    }
-    return;
-}
-
 sub is_bot {
     my ($bothost) = @_;
-    foreach my $i (@all_bots) { return $bot_name{$i} if $bothost =~ /$i/ixsm; }
-    return;
+    my $return = q{};
+    if ( -e "$vardir/BotsHosts.pm" ) {
+        our (%botname);
+        require Variables::BotsHosts;
+        foreach my $i (keys %botname) {
+            if ($bothost =~ m/$i/ixsm ) {
+                if ($botname{$i} ){ $return = $botname{$i}; last; }
+            }
+        }
+    }
+    return $return;
 }
 
 sub collapse_write {
@@ -2042,11 +2044,9 @@ sub get_info {
     my %bvusers = ();
     my @tmplist = ();
     if ( !$subboard_sel ) {
-        get_botlist();
-
         my $lastonline = $date - ( $online_logtime * 60 );
         my %bot_count;
-        my ( $is_a_bot, $lookup_ip );
+        my ( $is_a_bot, $lookup_ip ) = ( q{}, q{} );
         my ( $name, $date1, $last_ip, $last_host, $boardv ) =
           ( q{}, q{}, q{}, q{}, q{} );
         foreach my $i (@logentries) {
@@ -2286,7 +2286,7 @@ sub get_newmess {
 sub getbrdmods {
     my ( $usr, $crboard ) = @_;
     load_user($usr);
-    %moderatorgroups = ();
+    my %moderatorgroups = ();
     my $iamod    = 0;
     my $showmods = q{};
     foreach

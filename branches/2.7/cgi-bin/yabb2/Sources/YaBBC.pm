@@ -378,8 +378,11 @@ sub imagemsg {
     $attribut =~ s/(.*?)alt=(.+?)(\s\S+=|\Z)/ altconv($1,$2,$3)/eigxsm;
     foreach ( split /[ ]+/xsm, $attribut ) {
         my ( $key, $value ) = split /=/xsm;
-        $value =~ s/[\x22\x27]//gxsm;
-        $parameter{$key} = $value;
+        if ($key) {
+            $value ||= q{};
+            $value =~ s/[\x22\x27]//gxsm;
+            $parameter{$key} = $value;
+        }
     }
 
     my $use_greybox = $img_greybox;

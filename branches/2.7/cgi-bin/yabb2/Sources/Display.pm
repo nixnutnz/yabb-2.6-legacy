@@ -144,12 +144,11 @@ sub display_thread {
         no warnings;
         my $user_host =
           ( gethostbyaddr pack( 'C4', split /[.]/xsm, $user_ip ), 2 )[0];
-        our (%botname);
         if ( -e "$vardir/BotsHosts.pm" ) {
+            our (%botname);
             require Variables::BotsHosts;
-            my @botlist = keys %botname;
-            foreach my $i (@botlist) {
-                if ( $botname{$i} && $user_host =~ /$botname{$i}/ixsm ) {
+            foreach my $i (keys %botname) {
+                if ( $botname{$i} && $user_host =~ /$i/ixsm ) {
                     $iambot = 1;
                     last;
                 }
