@@ -99,15 +99,17 @@ if ( !$INFO{'tsort'} ) {
 else {
     $tsort = $INFO{'tsort'};
     $tsort =~ s/[^a-h]//gxsm;
-    my $cookiename = "$cookietsort$currentboard$username";
-    my $expiration = 'Sunday, 17-Jan-2038 00:00:00 GMT';
-    push @other_cookies,
-      write_cookie(
-        -name    => $cookiename,
-        -value   => $tsort,
-        -path    => q{/},
-        -expires => $expiration
-      );
+    if ($tsort) {
+        my $cookiename = "$cookietsort$currentboard$username";
+        my $expiration = 'Sunday, 17-Jan-2038 00:00:00 GMT';
+        push @other_cookies,
+          write_cookie(
+            -name    => $cookiename,
+            -value   => $tsort,
+            -path    => q{/},
+            -expires => $expiration
+          );
+    }
 }
 
 my $permbrd = q{};
@@ -1237,7 +1239,7 @@ sub get_mess_sort {
 
     our ($BRDTXT);
     fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
-      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$currentboard", 1 );
     our @threadlist = <$BRDTXT>;
     fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
     my %starter;
@@ -1261,14 +1263,27 @@ qq~<a href="$scripturl?board=$currentboard;tsort=h" rel="nofollow">$messageindex
     my $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a>~;
 
+    if (!$tsort) {
+        if ($ttsreverse) { $tsort = 'a'; }
+        else {$tsort = 'b';}
+    }
     if ($tsort) {
-        if ( $tsort eq 'b' ) {
-            $sort_lastpostim =
+        if ( $tsort =~ /[ab]/xsm ) {
+            if ( $tsort eq 'a' ) { 
+                $sort_lastpostim =
+qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_last'}~;
+                @threadlist =
+                  reverse
+                  sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+                  @temp_list;
+            }
+            else {
+                $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
-            @threadlist =
-              reverse
-              sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
-              @temp_list;
+                @threadlist =
+                    sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+                  @temp_list;
+            }
         }
         elsif ( $tsort =~ /[cd]/xsm ) {
             if ( $tsort eq 'c' ) {
@@ -1335,7 +1350,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=g" rel="nofollow">$messageindex
             $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
             @threadlist =
-              sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+              reverse sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
               @temp_list;
         }
     }
@@ -1343,7 +1358,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex
         $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
         @threadlist =
-          sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+          reverse sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
           @temp_list;
     }
     undef @temp_list;

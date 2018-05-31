@@ -102,7 +102,9 @@ qq~<img src="$imgdir/tabedit.gif" alt="$tabmenu_txt_m{'edittab'}" title="$tabmen
     'new' =>
 qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
     'sort_first' =>
-qq~<img src="$imgdir/sort_down.gif" alt="$messageindex_sort_m{'sort_first'}" title="$messageindex_sort_m{'sort_first'}" />~,
+qq~<img src="$imgdir/sort_up.gif" alt="$messageindex_sort_m{'sort_first'}" title="$messageindex_sort_m{'sort_first'}" />~,
+    'sort_last' =>
+qq~<img src="$imgdir/sort_down.gif" alt="$messageindex_sort_m{'sort_last'}" title="$messageindex_sort_m{'sort_last'}" />~,
     'sort_up' =>
 qq~<img src="$imgdir/sort_up.gif" alt="$messageindex_sort_m{'sort_za'}" title="$messageindex_sort_m{'sort_za'}" />~,
     'sort_down' =>

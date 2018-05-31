@@ -376,13 +376,15 @@ sub imagemsg {
         $attfirst . qq~ alt=$attalt $attlast~;
     };
     $attribut =~ s/(.*?)alt=(.+?)(\s\S+=|\Z)/ altconv($1,$2,$3)/eigxsm;
-    foreach ( split /[ ]+/xsm, $attribut ) {
-        my ( $key, $value ) = split /=/xsm;
-        if ($key) {
-            $value ||= q{};
-            $value =~ s/[\x22\x27]//gxsm;
-            $parameter{$key} = $value;
-        }
+    foreach my $i ( split /[ ]+/xsm, $attribut ) {
+        if ( $i =~ /=/xsm ) {
+            my ( $key, $value ) = split /=/xsm, $i;
+            if ($key) {
+                $value ||= q{};
+                $value =~ s/[\x22\x27]//gxsm;
+                $parameter{$key} = $value;
+            }
+        } 
     }
 
     my $use_greybox = $img_greybox;
