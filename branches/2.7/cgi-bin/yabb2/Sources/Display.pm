@@ -1050,7 +1050,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                 }
                 my $filesize = -s "$uploaddir/$i";
                 $urlname = $i;
-                $urlname =~ s/([[:^alnum]])/sprintf('%%%02X', ord($1))/egxsm;
+                $urlname =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
                 $attach_count{$i} ||= 0;
                 my $download_txt =
                   ( $attach_count{$i} == 1 )
@@ -1815,7 +1815,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             my $cliped     = 0;
             ( $bm_subject, $cliped ) = count_chars( $bm_subject, $bm_subcut );
             if ($cliped) { $bm_subject .= '...'; }
-            $bm_subject =~ s/([[:^alnum]])/sprintf('%%%02X', ord($1))/egxsm;
+            $bm_subject =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
             $bm_url =~ s/&/&amp;/gxsm;

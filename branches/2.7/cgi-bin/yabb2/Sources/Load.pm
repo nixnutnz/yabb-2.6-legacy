@@ -1095,7 +1095,7 @@ sub make_tools {
 sub load_cookie {
     if ( $ENV{'HTTP_COOKIE'} ) {
         foreach ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
-            s/%([[:alnum]][[:alnum]])/pack('C', hex($1))/egxsm;
+            s/%([[:alnum:]][[:alnum:]])/pack('C', hex($1))/egxsm;
             my ( $cookie, $value ) = split /=/xsm;
             $yy_cookies{$cookie} = $value;
         }
