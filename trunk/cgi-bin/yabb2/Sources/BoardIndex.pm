@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$boardindexpmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$boardindexpmver = 'YaBB 2.6.12 $Revision: 2035 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -593,9 +593,6 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                     my $testcat;
                     ( $testcat, $curboard ) = split /\|/xsm, $boardinfo;
                     if ( $testcat ne $catid ) { next; }
-                    else { find_latest_data( $curboard, split /\|/xsm,
-                        $subboard{$curboard} );
-                    }
 
 # as we fill the vars based on all boards we need to skip any cat already shown before
                     if ( $new_icon{$curboard} ) {
