@@ -68,7 +68,9 @@ if (  !${ $uid . $username }{'lastips'}
     my $getips = ${ $uid . $username }{'lastips'} || q{};
     $check .= "|$getips";
     ${ $uid . $username }{'lastips'} = $check;
-    ${ $uid . $username }{'lastips'} =~ s/^(.*?[|].*?[|].*?)[|].*/$1/xsm;
+    if(${ $uid . $username }{'lastips'} =~ m/^(.*?[|].*?[|].*?)[|].*/xsm) {
+        ${ $uid . $username }{'lastips'} =~ s/^(.*?[|].*?[|].*?)[|].*/$1/xsm;
+    }
 }
 
 our $scripturl = "$boardurl/$yyexec.$yyext";
@@ -325,8 +327,10 @@ sub check_icon {
     $icon ||= q{};
 
     # Check the icon so HTML cannot be exploited.
-    $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
-    $icon =~ s/[[:^alpha]]//gxsm;
+    if ( $icon =~ m/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/xsm) {
+        $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
+    }
+    $icon =~ s/[[:^alpha:]]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
 
@@ -765,7 +769,7 @@ sub ipban_gip {
                 $ihave = 1;
             }
         }
-         
+
         if (   $banned
             && $ihave != 1
             && $banned ne '127.0.0.1'

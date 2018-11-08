@@ -108,7 +108,7 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
 
-if ( -e './Paths.pm' ) { require Paths; }
+if ( -e "$script_root/Paths.pm" ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
 my $thisscript = $ENV{'SCRIPT_NAME'};
@@ -2340,7 +2340,7 @@ sub convert_settings {
     my $ret     = 0;
     my $setset  = 0;
     my $setfile = "$convvardir/Settings.pm";
-    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.$yyext" ) {
+    if ( $convertdir ne "$boarddir/Convert" && -e "$convertdir/Settings.$yyext" ) {
         $setfile = "$convertdir/Settings.$yyext";
         $setset  = 1;
     }
@@ -2785,7 +2785,7 @@ sub tempstarter {
     if ( -e 'Variables/ConvSettings.txt' ) {
         require 'Variables/ConvSettings.txt';
     }
-    else { $convertdir = './Convert'; }
+    else { $convertdir = "$boarddir/Convert"; }
 
     return;
 }

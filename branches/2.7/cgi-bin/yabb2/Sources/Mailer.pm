@@ -104,25 +104,36 @@ sub sendmail {
         use_smtp();
     }
     elsif ( $mailtype == 2 || $mailtype == 3 ) {
-        my $port = 25;
-        if ( $smtp_server =~ s/:(\d+)$//xsm ) { $port = $1; }
+        my ( $smtp_server, $port ) = split /[:]/xsm, $smtp_server;
+        $port ||= 25;
+        $mailer{'smtp'} =~ s/\Q{yabb smtp_server}\E/$smtp_server/gxsm;
+        $mailer{'smtps1'} =~ s/\Q{yabb smtp_server}\E/$smtp_server/gxsm;
+        $mailer{'smtps1'} =~ s/\Q{yabb port}\E/$port/gxsm;
         my @arg = ( "$smtp_server", Hello => "$helloserv", Timeout => 30 );
         if ( $mailtype == 2 ) {
             if ( eval { require Net::SMTP } ) {
                 if ($port)     { push @arg, Port     => $port; }
                 if ($authuser) { push @arg, User     => "$authuser"; }
                 if ($authpass) { push @arg, Password => "$authpass"; }
+                if ( $port == 587 ) {
+                    push @arg, doSSL => 'starttls';
+                }
                 push @arg, Debug => 0;
                 $smtp = Net::SMTP->new(@arg)
                   or croak $mailer{'smtp'} . $OS_ERROR;
+                if ( $authuser && $authpass ) {
+                    $smtp->auth( $authuser, $authpass )
+                        or croak $mailer{'smtps2'};
+                }
             }
         }
-        elsif ( eval { require Net::SMTPS } ) {
+        elsif ( eval { require Net::SMTP::SSL } ) {
             my $ssl = 'starttls';    # 'ssl' / 'starttls' / undef
             if ( $port == 465 ) { $ssl = 'ssl'; }
             push @arg, Port  => $port;
             push @arg, doSSL => $ssl;
-            $smtp = Net::SMTPS->new(@arg)
+
+            $smtp = Net::SMTP::SSL->new(@arg)
               or croak $mailer{'smtps1'} . $OS_ERROR;
             $smtp->auth( $authuser, $authpass )
               or croak $mailer{'smtps2'};

@@ -954,9 +954,10 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
         my %img_locs;
-
-        $output =~
+        if ( $output =~ m/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ixsm) {
+            $output =~
 s/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ "$1$2$3" . img_loc($4) . $3 /eigxsm;
+        }
     }
 
     # add formsession to each <form ..>-tag
@@ -1017,10 +1018,12 @@ sub image_resize {
         }
         return qq~"$x[0]"$x[2]~;
     };
-    $output =~
+    if ( $output =~ m/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/xsm ) {
+        $output =~
 s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /egxsm;
+    }
 
-    if ($extendedprofiles) {
+    if ($extendedprofiles && $output =~ m/"((ext)_img_resize)"([^>]*>)/xsm ) {
         $output =~
           s/"((ext)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /egxsm;
     }
@@ -1086,8 +1089,9 @@ s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_r
     resize_images();
     // resize image end
 </script>~;
-
-        $output =~ s/(<\/body>)/$resize_js\n$1/xsm;
+        if ( $output =~ m/(<\/body>)/xsm ) {
+            $output =~ s/(<\/body>)/$resize_js\n$1/xsm;
+        }
     }
     return;
 }
@@ -1474,9 +1478,13 @@ sub split_string {
     foreach my $pair (@pairs) {
         my ( $name, $value ) = split /=/xsm, $pair;
         $name =~ tr/+/ /;
-        $name =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
+        if ( $name =~ m/%([a-fA-F\d][a-fA-F\d])/xsm ) {
+            $name =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
+        }
         $value =~ tr/+/ /;
-        $value =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
+        if ( $value =~ m/%([a-fA-F\d][a-fA-F\d])/xsm ) {
+            $value =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
+        }
         if ($debug) {
             load_language('Debug');
             $getpairs .=
@@ -1784,7 +1792,7 @@ sub count_chars {
       CHECKAGAIN:
 
         # jump over HTML-tags
-        if ( $curstring =~ /<[\/[:lower]][^>]*$/ixsm ) {
+        if ( $curstring =~ /<[\/[:lower:]][^>]*$/ixsm ) {
             if ( $string =~ /^([^>]*>)(.*)/xsm ) {
                 $curstring .= $1;
                 $convertcut += length $1;
@@ -1798,7 +1806,7 @@ sub count_chars {
         }
 
         # jump over YaBBC-tags if YaBBC is allowed
-        if ( $enable_ubbc && $curstring =~ /\[[\/[:lower]][^\]]*$/ixsm ) {
+        if ( $enable_ubbc && $curstring =~ /\[[\/[:lower:]][^\]]*$/ixsm ) {
             if ( $string =~ /^([^\]]*\])(.*)/xsm ) {
                 $curstring .= $1;
                 $convertcut += length $1;
@@ -1826,10 +1834,10 @@ sub count_chars {
         $curstring .= "$string ";
         $curstring =~ s/\s+<br $/<br /ixsm;
 
-        if ( $curstring =~ /(<[\/[:lower]][^>]*)$/ixsm ) {
+        if ( $curstring =~ /(<[\/[:lower:]][^>]*)$/ixsm ) {
             $convertcut += length $1;
         }
-        if ( $enable_ubbc && $curstring =~ /(\[[\/[:lower]][^\]]*)$/ixsm ) {
+        if ( $enable_ubbc && $curstring =~ /(\[[\/[:lower:]][^\]]*)$/ixsm ) {
             $convertcut += length $1;
         }
 
@@ -1838,15 +1846,15 @@ sub count_chars {
             last;
         }
     }
-    if ( $curstring =~ /([ ]*<[\/[:lower][^>]*)$/ixsm
-        || ( $enable_ubbc && $curstring =~ /([ ]*\[[\/[:lower]][^\]]*)$/ixsm ) )
+    if ( $curstring =~ /([ ]*<[\/[:lower:][^>]*)$/ixsm
+        || ( $enable_ubbc && $curstring =~ /([ ]*\[[\/[:lower:]][^\]]*)$/ixsm ) )
     {
         $convertcut -= length $1;
     }
     $convertstr = substr $curstring, 0, $convertcut;
 
     # eliminate spaces, broken HTML-characters or special characters at the end
-    $convertstr =~ s/(\[(ch\d*)?|&[[:lower]]*|[ ]+)$//xsm;
+    $convertstr =~ s/(\[(ch\d*)?|&[[:lower:]]*|[ ]+)$//xsm;
     $convertstr = encode_utf8($convertstr);
     return ( $convertstr, $cliped );
 }
@@ -1860,7 +1868,7 @@ sub wrap_chars {
         $length  = 0;
         $curword = q{};
         while ($char) {
-            if ( $char =~ s/^(&\x23?[[:lower]\d]+;)//ixsm ) { $curword .= $1; }
+            if ( $char =~ s/^(&\x23?[[:lower:]\d]+;)//ixsm ) { $curword .= $1; }
             elsif ( $char =~ s/^(.)//xsm ) { $curword .= $1; }
             $length++;
             if ( $length >= $wrapcut ) {
@@ -1913,10 +1921,14 @@ sub enc_email {
         $subject = uri_escape($subject);
         $body    = uri_escape($body);
         $subbody = "?subject=$subject&body=$body";
-        $subbody =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_email_x($1,$2,$3) /egxsm;
+        if ( $subbody =~ m/(((<.+?>)|&\x23\d+;)|.)/xsm ) {
+            $subbody =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_email_x($1,$2,$3) /egxsm;
+        }
     }
     my $titlesp = $title;
-    $titlesp =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_email_x($1,$2,$3) /egxsm;
+    if ( $titlesp =~ m/(((<.+?>)|&\x23\d+;)|.)/xsm ) {
+        $titlesp =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_email_x($1,$2,$3) /egxsm;
+    }
     if ($src) { $titlesp = $title; }
 
     return
@@ -1941,13 +1953,17 @@ sub generate_code {
 
 sub from_chars {
     my @x = @_;
-    $x[0] =~ s/&\x23(\d{3,});/ $1>127 ? "[ch$1]" : $& /egixsm;
+    if ($x[0] =~ m/&\x23(\d{3,});/ixsm ) {
+        $x[0] =~ s/&\x23(\d{3,});/ $1>127 ? "[ch$1]" : $& /egixsm;
+    }
     return $x[0];
 }
 
 sub to_chars {
     my @x = @_;
-    $x[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&\x23$1;" : q{} /egixsm;
+    if ($x[0] =~ m/\[ch(\d{3,})\]/ixsm) {
+        $x[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&\x23$1;" : q{} /egixsm;
+    }
     return $x[0];
 }
 
@@ -1991,7 +2007,7 @@ sub split_splice_move {
         $s_s_m =~ s/^(Re: )?\[m.*?\]/$maintxt{'758'}/xsm;
         return $s_s_m;
     }
-    elsif ( $s_s_m =~ /\[m\s by=(.+?)\s destboard=(.+?)\s dest=(.+?)\]/xsm )
+    elsif ( $s_s_m =~ m/\[m\s by=(.+?)\s destboard=(.+?)\s dest=(.+?)\]/xsm )
     {                   # 'This Topic has been moved to' a different board
         my ( $mover, $destboard, $dest ) = ( $1, $2, $3 );
 
@@ -2004,7 +2020,7 @@ qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a>
             $dest
         );
     }
-    elsif ( $s_s_m =~ /\[m\s by=(.+?)\sdest=(.+?)\]/xsm )
+    elsif ( $s_s_m =~ m/\[m\s by=(.+?)\sdest=(.+?)\]/xsm )
     {    # 'The contents of this Topic have been moved to''this Topic'
         my ( $mover, $dest ) =
           ( $1, $2 );    # Who moved the topic; destination id number
@@ -2047,12 +2063,20 @@ qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}
     $ssm += $s_s_m =~ s/\[move by\]/$maintxt{'525'}/gxsm;    # by
 
     if ($ssm) {    # only if it was an internal s_s_m info
-        $s_s_m =~
+        if ( $s_s_m =~ m/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/xsm) {
+            $s_s_m =~
 s/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/<a href="$1">$2<\/a>/gxsm;
+        }
+        if ( $s_s_m =~ m/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/xsm) {
         $s_s_m =~
 s/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/<a href="http:\/\/$1">$2<\/a>/gxsm;
-        $s_s_m =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/gxsm;
-        $s_s_m =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/gxsm;
+        }
+        if ( $s_s_m =~ m/\[b\](.*?)\[\/b\]/xsm ) {
+            $s_s_m =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/gxsm;
+        }
+        if ( $s_s_m =~ m/\[i\](.*?)\[\/i\]/xsm ) {
+            $s_s_m =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/gxsm;
+        }
     }
     return ( $s_s_m, $ssm );
 }
@@ -2076,7 +2100,9 @@ sub wrap {
     if ($newswrap) { $linewrap = $newswrap; }
     $message =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\[tab\]/igxsm;
     $message =~ s/<br.*?>/\n/gxsm;
-    $message =~ s/((\[ch\d{3,}?\]){$linewrap})/$1\n/igxsm;
+    if ($message =~ m/((\[ch\d{3,}?\]){$linewrap})/ixsm) {
+        $message =~ s/((\[ch\d{3,}?\]){$linewrap})/$1\n/igxsm;
+    }
 
     $message = from_html($message);
     $message =~ s/[\r\n]/ {yabbbr} /gxsm;
@@ -2087,14 +2113,16 @@ sub wrap {
             && $cur !~ m/[ht|f]tps?[s ]{0,1}:\/\//xsm
             && $cur !~ m{\[\S*\]}xsm
             && $cur !~ m{\[\S*\s?\S*?\]}xsm
-            && $cur !~ m{\[\/\S*\]}xsm )
+            && $cur !~ m{\[\/\S*\]}xsm
+            && $cur =~ m/(\S{$linewrap})/ixsm )
         {
             $cur =~ s/(\S{$linewrap})/$1\n/igxsm;
         }
         if (   $cur !~ m{\[table(?:\S*)\](?:\S*)\[\/table\]}xsm
             && $cur !~ m{\[url(?:\S*)\](?:\S*)\[\/url\]}xsm
             && $cur !~ m{\[flash(?:\S*)\](?:\S*)\[\/flash\]}xsm
-            && $cur !~ m{\[img(?:\S*)\](?:\S*)\[\/img\]}xsm )
+            && $cur !~ m{\[img(?:\S*)\](?:\S*)\[\/img\]}xsm
+            && $cur =~ m/(\[\S*?\])/xsm )
         {
             $cur =~ s/(\[\S*?\])/ $1 /gxsm;
             my @splitword = split /\s/xsm, $cur;
@@ -2102,7 +2130,8 @@ sub wrap {
             foreach my $splitcur (@splitword) {
                 if (   $splitcur !~ m{www[.](?:\S+?)[.]}xsm
                     && $splitcur !~ m{[ht|f]tp?://}xsm
-                    && $splitcur !~ m{\[\S*\]}xsm )
+                    && $splitcur !~ m{\[\S*\]}xsm
+                    && $splitcur =~ m/(\S{$linewrap})/ixsm )
                 {
                     $splitcur =~ s/(\S{$linewrap})/$1{yabbwrap}/igxsm;
                 }
@@ -2111,7 +2140,9 @@ sub wrap {
         }
         $message .= "$cur ";
     }
-    $message =~ s/\[code((?:\s*).*?)\](.*?)\[\/code\]/unwrap($1,$2)/eigxsm;
+    if ( $message =~ m/\[code((?:\s*).*?)\](.*?)\[\/code\]/ixsm ) {
+        $message =~ s/\[code((?:\s*).*?)\](.*?)\[\/code\]/unwrap($1,$2)/eigxsm;
+    }
     $message =~ s/\s {yabbbr} /\n/gxsm;
     $message =~ s/{yabbwrap}/\n/gxsm;
 
@@ -2123,8 +2154,10 @@ sub wrap {
 
 sub wrap2 {
     my ($message) = @_;
-    $message =~
+    if ( $message =~ m/\Q<a href=\E(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ixsm ) {
+        $message =~
 s/\Q<a href=\E(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ my ($mes,$out,$i) = ($3,q{},1); { while ($mes) { if ($mes =~ s\/^(<.+?>)\/\/) { $out .= $1; } elsif ($mes =~ s\/^(&.+?;|\[ch\d{3,}\]|.)\/\/) { last if $i > $linewrap; $i++; $out .= $1; if (!$mes) { $i--; last; } } } } "<a href=$1$2>$out" . ($i > $linewrap ? q{...} : q{}) . '<\/a>' /eigxsm;
+    }
     return $message;
 }
 
@@ -2478,7 +2511,9 @@ sub do_censor {
     foreach my $censor (@censored) {
         my ( $tmpa, $tmpb, $tmpc ) = @{$censor};
         if ($tmpc) {
-            $string =~ s/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/$1$tmpb/igxsm;
+            if ( $string =~ m/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/ixsm) {
+                $string =~ s/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/$1$tmpb/igxsm;
+            }
         }
         else {
             $string =~ s/\Q$tmpa\E/$tmpb/igxsm;
@@ -3263,45 +3298,7 @@ sub enable_yabbc {
     return;
 }
 ## moved from YaBBC and Printpage DAR 2/7/2012 ##
-sub format_url {
-    my ( $txtfirst, $txturl ) = @_;
-    my $lasttxt = q{};
-    if (
-        $txturl =~ m{(.*?)([.!,;)]|\&quot;|<\/)\Z}xsm
-
-#m{(.*?)(\.|\.\)|\)\.|\!|\!\)|\)\!|\,|\)\,|\)|\;|\&quot\;|\&quot\;\.|\.\&quot\;|\&quot\;\,|\,\&quot\;|\&quot\;\;|\<\/)\Z}xsm
-      )
-    {
-        $txturl  = $1;
-        $lasttxt = $2;
-    }
-    my $realurl = $txturl;
-    $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igxsm;
-    $txturl =~ s/\[/&\x2391;/gxsm;
-    $txturl =~ s/\]/&\x2393;/gxsm;
-    $txturl =~ s/\<.+?\>//igxsm;
-    my $formaturl = qq~$txtfirst\[url\=$txturl\]$realurl\[\/url\]$lasttxt~;
-    return $formaturl;
-}
-
-sub format_url2 {
-    my ( $txturl, $txtlink ) = @_;
-    $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igxsm;
-    $txturl =~ s/\<.+?\>//igxsm;
-    my $formaturl = qq~[url=$txturl]$txtlink\[/url]~;
-    return $formaturl;
-}
-
-sub format_url3 {
-    my ($txturl) = @_;
-    my $txtlink = $txturl;
-    $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igxsm;
-    $txturl =~ s/\[/&\x2391;/gxsm;
-    $txturl =~ s/\]/&\x2393;/gxsm;
-    $txturl =~ s/\<.+?\>//igxsm;
-    my $formaturl = qq~\[url\=$txturl\]$txtlink\[\/url\]~;
-    return $formaturl;
-}
+## moved back to YaBBC DAR 11/5/2018 ##
 
 sub sizefont {
     ## limit minimum and maximum font pitch as CSS does not restrict it at all. ##
@@ -3331,8 +3328,12 @@ sub regex_1 {
 sub regex_2 {
     my ($messge) = @_;
     $messge =~ s/\cM//gxsm;
-    $messge =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
-    $messge =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+    if ( $messge =~ m/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm) {
+        $messge =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
+    }
+    if ($messge =~ m/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
+        $messge =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+    }
     return $messge;
 }
 
@@ -3531,7 +3532,9 @@ sub upload_file {
     if ($cgi_query) { $file = $cgi_query->upload($file_upload); }
     if ($file) {
         $fixfile = $file;
-        $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+        if ( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm) {
+            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+        }
         if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
             my %translist = loadtranlist();
             @uploadtranlist = keys %translist;
@@ -3876,7 +3879,9 @@ sub check_file {
         }
     }
 
-    $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+    if ( $fixext =~ m/[.](pl|pm|cgi|php)/ixsm ) {
+        $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+    }
     $fixname =~ s/[.](?!tar$)/_/gxsm;
     $fixfile = qq~$fixname$fixext~;
     if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) {

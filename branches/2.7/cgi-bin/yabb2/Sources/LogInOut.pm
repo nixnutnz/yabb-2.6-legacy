@@ -436,7 +436,7 @@ sub reminder3 {
     if   ($do_scramble_id) { $user = decloak( $INFO{'user'} ); }
     else                   { $user = $INFO{'user'}; }
 
-    if ( $id =~ /[^[:alnum:]]/xsm ) {
+    if ( $id =~ /[[:^alnum:]]/xsm ) {
         fatal_error( 'invalid_character', "ID $loginout_txt{'241'}" );
     }
     if ( $user =~ /$invaluser/xsm ) {

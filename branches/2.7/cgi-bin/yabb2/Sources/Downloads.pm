@@ -223,8 +223,10 @@ sub download_filecounter {
     fclose('ATM') or croak "$croak{'close'} ATM";
 
     foreach my $i ( 0 .. $#attachments ) {
-        $attachments[$i] =~
+        if ($attachments[$i] =~ m/(.+[|])(.+)[|](\d+)(\s+)$/xsm) {
+            $attachments[$i] =~
 s/(.+[|])(.+)[|](\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
+        }
     }
     my $prnatt = join q{}, @attachments, qq~\n~;
     fopen( 'ATM', '>', "$vardir/attachments.db", 1 )

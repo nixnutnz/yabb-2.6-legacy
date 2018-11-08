@@ -67,8 +67,7 @@ sub dolive_message {
         $message = to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
-        $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
-        $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+
         $message =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
         $message =~ s/\n/<br \/>/gxsm;
         $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
@@ -134,8 +133,12 @@ sub dolive_pm {
         $message = to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
-        $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
-        $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+        if ( $message =~ m/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm) {
+            $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
+        }
+        if( $message =~ m/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
+            $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+        }
         $message =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
         $message =~ s/\n/<br \/>/gxsm;
         $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
@@ -216,8 +219,12 @@ sub dolive_cal {
         $message = to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
-        $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
-        $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+        if ( $message =~ m/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm) {
+            $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
+        }
+        if( $message =~ m/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
+            $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+        }
         $message =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
         $message =~ s/\n/<br \/>/gxsm;
         $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
@@ -286,8 +293,11 @@ sub liveimage_resize {
         $x[0] = "post_liveimg_resize_$resize_num";
         return qq~"$x[0]"$x[1]~;
     };
-    $message =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;
+    if ($message =~
+      m/"(post_liveimg_resize)"([^>]*>)/xsm) {
+        $message =~
+      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /egxsm;
+    }
 
     return $message;
 }

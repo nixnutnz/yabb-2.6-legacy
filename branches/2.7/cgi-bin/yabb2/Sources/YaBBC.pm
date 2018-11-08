@@ -14,6 +14,7 @@
 ###############################################################################
 use strict;
 use warnings;
+## regex warning issues with Perl 5.024+ disable above line if using 5.024+ ##
 our $VERSION = '2.7.00';
 
 our $yabbcpmver  = 'YaBB 2.7.00 $Revision$';
@@ -60,12 +61,14 @@ sub make_smileys {
     my @html_tags;
     while ( $message =~ s/(<.+?>)/[HTML$i]/xsm ) { push @html_tags, $1; $i++; }
     my ($smileydesc);
-    if ( $message =~ /\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/igxsm ) {
+    if ( $message =~ m/\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/ixsm ) {
         ( $smileydesc, undef ) = split /[.]/xsm, $2;
     }
     my $smiledir = qq~$yyhtml_root/Smilies~;
-    $message =~
+    if ( $message =~ m/(\W|^)\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/ixsm ) {
+        $message =~
 s/(\W|^)\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/$1<img class="smil" data-rel="\[smil$2=$3\]" src="$smiledir\/$3" alt="$post_txt{'287'}" title="$smileydesc" \/>/igxsm;
+    }
     $message =~
 s/(\W|^);-?[)]/$1<img class="smil" data-rel=";&#45;&#41;" src="$smiledir\/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gxsm;
     $message =~
@@ -192,8 +195,10 @@ sub quotemsg {
             }
         }
         $fqauthor ||= 'the author';
-        $qmessage =~
+		if ( $qmessage =~ m/\/me\s+(.*?)(\n|\Z)(.*?)/ixsm) {
+            $qmessage =~
 s/\/me\s+(.*?)(\n|\Z)(.*?)/<i><span class="my_me">* $fqauthor <\/span> $1<\/i>$2$3/igxsm;
+         }
     }
 
     # next 2 lines: for display names in Quotes in LivePreview
@@ -234,8 +239,10 @@ s/AUTHOR2/$scripturl?action=viewprofile;username=$useraccount{$qauthor}/gxsm;
 
 sub parseimgflash {
     my ($tmp_message) = @_;
-    $tmp_message =~
+	if ($tmp_message =~ m/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/xsm) {
+        $tmp_message =~
 s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b> <a href="$3" target="_blank" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3<\/a>/gxsm;
+	}
     my $char_160  = chr 160;
     my $hardspace = q~&nbsp;~;
     {
@@ -244,8 +251,10 @@ s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b
             || ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) )
         {
             $tmp_message =~ s/\Q[img \E(.+?)\]/[img\]/igxsm;
-            $tmp_message =~
+			if($tmp_message =~ m/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hardspace|$char_160)*\[\/img\]/ixsm) {
+                $tmp_message =~
 s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hardspace|$char_160)*\[\/img\]/\[url\]$1$2\[\/url\]/igxsm;
+            }
         }
     }
     return $tmp_message;
@@ -293,9 +302,14 @@ s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hard
         }
         $code = to_chars($code);
         if ( $code !~ /&\S*;/gxsm ) { $code =~ s/;/&\x23059;/gxsm; }
-        $code =~ s/([()\-:\\\/?!\]\[.\^[.]D])/$killhash{$1}/gxsm;
-        $code =~
+		if( $code =~ m/([()\-:\\\/?!\]\[.\^[.]D])/xsm) {
+		    $code =~ s/([()\-:\\\/?!\]\[.\^[.]D])/$killhash{$1}/gxsm;
+        }
+		if($code =~
+m/\&\#91;highlight\&\#93;(.*?)\&\#91;\&\#47;highlight\&\#93;/ixsm) {
+            $code =~
 s/\&\#91;highlight\&\#93;(.*?)\&\#91;\&\#47;highlight\&\#93;/<span class="highlight">$1<\/span>/igxsm;
+		}
         $_ = $post_txt{'602'};
 
         # Thx. to Michael Prager for the improved Code boxes
@@ -342,7 +356,9 @@ qq~<pre class="$insclass" id="code$codecnt">$code\[code_br][code_br]</pre>~;
 
     sub noparse {
         my ($noubbc) = @_;
-        $noubbc =~ s/([!()\-.\/:?\[\\\]\^D])/$killhash{$1}/gxsm;
+		if ( $noubbc =~ m/([!()\-.\/:?\[\\\]\^D])/xsm) {
+            $noubbc =~ s/([!()\-.\/:?\[\\\]\^D])/$killhash{$1}/gxsm;
+		}
         return $noubbc;
     }
 }
@@ -375,7 +391,9 @@ sub imagemsg {
         $attalt =~ s/\s/_/gxsm;
         $attfirst . qq~ alt=$attalt $attlast~;
     };
-    $attribut =~ s/(.*?)alt=(.+?)(\s\S+=|\Z)/ altconv($1,$2,$3)/eigxsm;
+	if( $attribut =~ m/(.*?)alt=(.+?)(\s\S+=|\Z)/ixsm) {
+        $attribut =~ s/(.*?)alt=(.+?)(\s\S+=|\Z)/ altconv($1,$2,$3)/eigxsm;
+	}
     foreach my $i ( split /[ ]+/xsm, $attribut ) {
         if ( $i =~ /=/xsm ) {
             my ( $key, $value ) = split /=/xsm, $i;
@@ -384,7 +402,7 @@ sub imagemsg {
                 $value =~ s/[\x22\x27]//gxsm;
                 $parameter{$key} = $value;
             }
-        } 
+        }
     }
 
     my $use_greybox = $img_greybox;
@@ -456,33 +474,50 @@ sub do_ubbc {
         }
     }
     $message ||= q{};
-    $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eigxsm;
+	if ( $message =~ m/\[noparse\](.*?)(\[\/noparse\]|$)/ixsm) {
+        $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eigxsm;
+	}
     $message =~ s/\[reason\](.+?)\[\/reason\]//igxsm;
     $message =~ s/\[code\]/ \[code\]/igxsm;
     $message =~ s/\[\/code\]/ \[\/code\]/igxsm;
     $message =~ s/\[quote\]/ \[quote\]/igxsm;
     $message =~ s/\[\/quote\]/ \[\/quote\]/igxsm;
-    $message =~ s/\[glow\]/ \[glow\]/igxsm;
-    $message =~ s/\[\/glow\]/ \[\/glow\]/igxsm;
     $message =~ s/<br>|<br\s\/>/\n/igxsm;
     $message =~ s/<br>\x1f|<br\s\/>\x1f/\n/igxsm;
-    $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/codemsg($2,$1)/eigxsm;
+	if($message =~ m/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/ixsm) {
+        $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/codemsg($2,$1)/eigxsm;
+	}
 
     # [code] must come at first! At least before image transformation!
-    $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
-    $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+    if( $message =~ m/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
+        $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
+	}
+	if($message =~ m/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm) {
+        $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+	}
 
     #$message =~ s~(\w+://[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)~$1\n$2~g;
-    $message =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/igxsm;
-    $message =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/igxsm;
-    $message =~
+	if($message =~ m/\[b\](.*?)\[\/b\]/ixsm) {
+        $message =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/igxsm;
+	}
+	if($message =~ m/\[i\](.*?)\[\/i\]/ixsm) {
+        $message =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/igxsm;
+	}
+	if($message =~ m/\[u\](.*?)\[\/u\]/ixsm) {
+        $message =~
       s/\[u\](.*?)\[\/u\]/<span class="under">$1<\/span><!--underline-->/igxsm;
-    $message =~
+    }
+	if($message =~ m/\[s\](.*?)\[\/s\]/ixsm) {
+        $message =~
 s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span><!--linethrough-->/igxsm;
-    $message =~ s/\[glb\](.*?)\[\/glb\]/<div class="glb">$1<\/div>/igxsm;
-
-    $message =~
+    }
+	if($message =~ m/\[glb\](.*?)\[\/glb\]/ixsm) {
+        $message =~ s/\[glb\](.*?)\[\/glb\]/<div class="glb">$1<\/div>/igxsm;
+	}
+    if($message =~ m/(\s|&nbsp;)*\[move\](.*?)\[\/move\]/ixsm) {
+        $message =~
 s/(\s|&nbsp;)*\[move\](.*?)\[\/move\]/<div class="marquee"><span>$2<\/span><\/div>/igxsm;
+	}
 
     # Quote message
     while ( $message =~
@@ -498,21 +533,28 @@ s/(\[url[^\[]*\]\s*)?\[img(.*?)\](.*?)\[\/img\]/ imagemsg($1,$2,$3,$image_type) 
     {
     }
 
-    $message =~
+	if ( $message =~
+m/\[color=([[:alnum:]# ]+)\](.+?)\[\/color\]/ixsm) {
+        $message =~
 s/\[color=([[:alnum:]# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span><!--color-->/igxsm;
-    $message =~
+        $message =~
       s/\[black\](.*?)\[\/black\]/<span style="color:#000000;">$1<\/span>/igxsm;
-    $message =~
+        $message =~
       s/\[white\](.*?)\[\/white\]/<span style="color:#FFFFFF;">$1<\/span>/igxsm;
-    $message =~
+        $message =~
       s/\[red\](.*?)\[\/red\]/<span style="color:#FF0000;">$1<\/span>/igxsm;
-    $message =~
+        $message =~
       s/\[green\](.*?)\[\/green\]/<span style="color:#00FF00;">$1<\/span>/igxsm;
-    $message =~
+        $message =~
       s/\[blue\](.*?)\[\/blue\]/<span style="color:#0000FF;">$1<\/span>/igxsm;
-    $message =~ s/\[timestamp\=([\d]{9,10})\]/timeformat($1)/eigxsm;
-    $message =~
+    }
+	if ($message =~ m/\[timestamp\=([\d]{9,10})\]/ixsm) {
+        $message =~ s/\[timestamp\=([\d]{9,10})\]/timeformat($1)/eigxsm;
+	}
+	if ($message =~ m/\[font=([\w# -]+)\](.+?)\[\/font\]/ixsm) {
+        $message =~
 s/\[font=([\w# -]+)\](.+?)\[\/font\]/<span style="font-family: $1;">$2<\/span><!--font-->/igxsm;
+	}
 
 ## Mod Hook YaBBC ##
     while ( $message =~
@@ -542,10 +584,15 @@ s/\[fixed\](.*?)\[\/fixed\]/<span style="display:inline; font-family: Courier Ne
     $message =~
 s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highlight-->/igxsm;
 
-    $message =~
-      s/\[url=\s*(.+?)\s*\]\s*(.+?)\s*\[\/url\]/format_url2($1, $2)/eigxsm;
-    $message =~ s/\[url\]\s*(\S+?)\s*\[\/url\]/format_url3($1)/eigxsm;
-    $message =~ s/(dereferer\;url\=http\:\/\/.*?)\x23(\S+?\")/$1;anch=$2/igxsm;
+    if ( $message =~ m/\[url=\s*(.+?)\s*\]\s*(.+?)\s*\[\/url\]/ixsm ) {
+        $message =~ s/\[url=\s*(.+?)\s*\]\s*(.+?)\s*\[\/url\]/format_url2($1, $2)/eigxsm;
+    }
+    if ( $message =~ m/\[url\]\s*(\S+?)\s*\[\/url\]/ixsm ) {
+        $message =~ s/\[url\]\s*(\S+?)\s*\[\/url\]/format_url3($1)/eigxsm;
+    }
+    if ($message =~ /(dereferer\;url\=http\:\/\/.*?)\x23(\S+?\")/ixsm) {
+        $message =~ s/(dereferer\;url\=http\:\/\/.*?)\x23(\S+?\")/$1;anch=$2/igxsm;
+    }
 
     if ($autolinkurls) {
         $message =~ s/\[url\]\s*([^\[]+)\s*\[\/url\]/[url]$1\[\/url]/gxsm;
@@ -768,6 +815,46 @@ sub do_ubbc_to {
     my ( $mess, undef, $displayname ) = @_;
     $mess = do_ubbc( $mess, q{}, $displayname );
     return $mess;
+}
+
+sub format_url {
+    my ( $txtfirst, $txturl ) = @_;
+    my $lasttxt = q{};
+    if (
+        $txturl =~ m{(.*?)([.!,;)]|\&quot;|<\/)\Z}xsm
+
+#m{(.*?)(\.|\.\)|\)\.|\!|\!\)|\)\!|\,|\)\,|\)|\;|\&quot\;|\&quot\;\.|\.\&quot\;|\&quot\;\,|\,\&quot\;|\&quot\;\;|\<\/)\Z}xsm
+      )
+    {
+        $txturl  = $1;
+        $lasttxt = $2;
+    }
+    my $realurl = $txturl;
+    $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igxsm;
+    $txturl =~ s/\[/&\x2391;/gxsm;
+    $txturl =~ s/\]/&\x2393;/gxsm;
+    $txturl =~ s/\<.+?\>//igxsm;
+    my $formaturl = qq~$txtfirst\[url\=$txturl\]$realurl\[\/url\]$lasttxt~;
+    return $formaturl;
+}
+
+sub format_url2 {
+    my ( $txturl, $txtlink ) = @_;
+    $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igxsm;
+    $txturl =~ s/\<.+?\>//igxsm;
+    my $formaturl = qq~[url=$txturl]$txtlink\[/url]~;
+    return $formaturl;
+}
+
+sub format_url3 {
+    my ($txturl) = @_;
+    my $txtlink = $txturl;
+    $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igxsm;
+    $txturl =~ s/\[/&\x2391;/gxsm;
+    $txturl =~ s/\]/&\x2393;/gxsm;
+    $txturl =~ s/\<.+?\>//igxsm;
+    my $formaturl = qq~\[url\=$txturl\]$txtlink\[\/url\]~;
+    return $formaturl;
 }
 
 1;

@@ -51,8 +51,7 @@ if ( !$script_root ) {
 $script_root =~ s/\\/\//gxsm;
 $script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
 
-if    ( -e './Paths.pm' )            { require Paths; }
-elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
+if ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
 
 our (
     $lastsaved,    $boardsdir,   $sourcedir,   $memberdir, $vardir,
@@ -78,12 +77,12 @@ our (
 
 # Check if it's blank Paths.pm or filled in one
 if ( !$lastsaved ) {
-    $boardsdir = './Boards';
-    $sourcedir = './Sources';
-    $memberdir = './Members';
-    $vardir    = './Variables';
-    $datadir   = './Messages';
-    $langdir   = './Languages';
+    $boardsdir = "$script_root/Boards";
+    $sourcedir = "$script_root/Sources";
+    $memberdir = "$script_root/Members";
+    $vardir    = "$script_root/Variables";
+    $datadir   = "$script_root/Messages";
+    $langdir   = "$script_root/Languages";
 }
 my $date = time;
 $boardurl    ||= q{};
@@ -100,7 +99,7 @@ if   ($boardurl) { $set_cgi = "$boardurl/Setup.$yyext"; }
 else             { $set_cgi = "Setup.$yyext"; }
 
 # Make sure the module path is present
-push @INC, './Modules';
+push @INC, "$script_root/Modules";
 
 require Sources::Subs;
 require Sources::System;
@@ -587,6 +586,7 @@ if (\$ENV{'HTTPS'}) {
     \$facesurl =~ s\/http:\/https:\/ixsm;
     \$pmuploadurl =~ s\/http:\/https:\/ixsm;
     \$modimgurl =~ s\/http:\/https:\/ixsm;
+    \$uploadurl =~ s\/http:\/https:\/ixsm;
 }
 
 1;
@@ -1479,7 +1479,7 @@ sub tempstarter {
     $yabbversion = 'YaBB 2.7.00';
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$boarddir/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
         $yy_iis = 1;

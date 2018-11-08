@@ -426,7 +426,9 @@ qq~<img src="$imagesdir/$ml_bar" width="$barwidth" height="10" alt="" />~;
             no strict qw(refs);
             if ( ${ $uid . $user }{'regtime'} ) {
                 $dr_regdate = timeformat( ${ $uid . $user }{'regtime'} );
-                $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
+                if( $dr_regdate =~ m/(.*)(, 1?\d):\d\d.*/xsm) {
+                    $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
+                }
                 if ( $iamadmin && ${ $uid . $user }{'regtime'} < $forumstart ) {
                     $dr_regdate =
                       qq~<span class="important">$dr_regdate *</span>~;

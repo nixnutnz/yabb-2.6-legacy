@@ -1050,7 +1050,9 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                 }
                 my $filesize = -s "$uploaddir/$i";
                 $urlname = $i;
-                $urlname =~ s/([^[:alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
+                if ( $urlname =~ m/([[:^alnum:]])/xsm) {
+                    $urlname =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
+                }
                 $attach_count{$i} ||= 0;
                 my $download_txt =
                   ( $attach_count{$i} == 1 )
@@ -1259,7 +1261,9 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 $dr_regdate =
                   timeformat( ${ $uid . $musername }{'regtime'}, 0, 0, 0, 0 );
                 $dr_regdate = dtonly($dr_regdate);
-                $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
+                if ($dr_regdate =~ m/(.*)(, 1?\d):\d\d.*/xsm) {
+                    $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
+                }
                 $template_regdate =
                   qq~$display_txt{'regdate'} $dr_regdate<br />~;
             }
@@ -1615,9 +1619,11 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         }
         else {
             $outside_posttools_tmp =~ s/\Q$menusep\E//ixsm;
-            $outside_posttools_tmp =~
+            if ( $outside_posttools_tmp =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
+                $outside_posttools_tmp =~
               s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
-            $posthandelblock =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+                $posthandelblock =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+            }
         }
 
         # Post and Thread Tools
@@ -1815,7 +1821,9 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             my $cliped     = 0;
             ( $bm_subject, $cliped ) = count_chars( $bm_subject, $bm_subcut );
             if ($cliped) { $bm_subject .= '...'; }
-            $bm_subject =~ s/([^[:alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
+            if ( $bm_subject =~ m/([[:^alnum:]])/xsm) {
+                $bm_subject =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
+            }
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
             $bm_url =~ s/&/&amp;/gxsm;
@@ -1945,10 +1953,13 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
         $outside_threadtools = q{};
     }
     else {
-        $outside_threadtools =~
+        if ( $outside_threadtools =~
+          m/\[tool=(.+?)\](.+?)\[\/tool\]/gxsm) {
+            $outside_threadtools =~
           s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
-        $threadhandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
-        $threadhandellist2 =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+            $threadhandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+            $threadhandellist2 =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        }
     }
 
     # Thread Tools #
@@ -2091,8 +2102,11 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $yytitle = $msubthread;
     my ($message);
     if ( $replybutton && $enable_quickreply ) {
+        if ($yymain =~
+m/(\Q<!-- Threads Admin Button Bar start -->\E.*?<\/td>)/xsm) {
         $yymain =~
 s/(\Q<!-- Threads Admin Button Bar start -->\E.*?<\/td>)/$1<td class="right">{yabb forumjump}<\/td>/xsm;
+        }
         require Sources::Post;
         $action        = 'post';
         $INFO{'title'} = 'PostReply';
@@ -2259,8 +2273,11 @@ sub get_quote {
                 $tmpqda ||= q{};
                 $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
             }
-            $outblock =~
+            if ($outblock =~
+m/(<div)(\Q class="$messageclass getcounter">\E)/ixsm) {
+                $outblock =~
 s/(<div)(\Q class="$messageclass getcounter">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
+            }
 
             $template_quote =
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;

@@ -2584,7 +2584,9 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
     if ( $showregdate && ${ $uid . $usr }{'regtime'} ) {
         $dr_regdate = timeformat( ${ $uid . $usr }{'regtime'}, 1 );
         $dr_regdate = dtonly($dr_regdate);
-        $dr_regdate =~ s/(.*)(, 1?[\d]):[\d][\d].*/$1/xsm;
+        if ( $dr_regdate =~ m/(.*)(, 1?[\d]):[\d][\d].*/xsm) {
+            $dr_regdate =~ s/(.*)(, 1?[\d]):[\d][\d].*/$1/xsm;
+        }
         $template_regdate = qq~$profile_txt{'regdate'} $dr_regdate<br />~;
     }
     my $userlocation;

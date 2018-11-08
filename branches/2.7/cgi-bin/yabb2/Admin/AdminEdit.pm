@@ -1237,6 +1237,7 @@ if (\$ENV{'HTTPS'}) {
     \$facesurl =~ s\/http:\/https:\/ixsm;
     \$pmuploadurl =~ s\/http:\/https:\/ixsm;
     \$modimgurl =~ s\/http:\/https:\/ixsm;
+    \$uploadurl =~ s\/http:\/https:\/ixsm;
 }
 
 1;

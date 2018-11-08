@@ -35,8 +35,8 @@ if (@yabbmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
-our ( %error_txt, %maintxt,  %reg_txt );
-our ( $vardir,    $boardurl, $sourcedir, );
+our ( %error_txt, %maintxt, %reg_txt );
+our ( $vardir, $boardurl, $sourcedir, $boarddir );
 our (
     $debug,       $checkspace,   $maintenance,      $masterkey,
     $mbname,      $use_guardian, $accept_permalink, $regtype,
@@ -55,7 +55,8 @@ our (
 BEGIN {
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    require Paths;
+    push @INC, "$boarddir/Modules";
     if ( $ENV{'SERVER_SOFTWARE'} && $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyiis = 1;
         my ($yypath);
@@ -74,7 +75,6 @@ BEGIN {
     }
     $script_root =~ s/\/$yyexec[.](pl|cgi)//igxsm;
 
-    require Paths;
     my $yyext = 'pl';
     if   ( -e ("$yyexec.cgi") ) { $yyext = 'cgi'; }
     else                        { $yyext = 'pl'; }
@@ -94,7 +94,7 @@ BEGIN {
         }
     }
     our $START_TIME = time;
-    require './Sources/Subs.pm';
+    require "$boarddir/Sources/Subs.pm";
     require Sources::System;
     require Sources::DateTime;
     require Sources::Load;

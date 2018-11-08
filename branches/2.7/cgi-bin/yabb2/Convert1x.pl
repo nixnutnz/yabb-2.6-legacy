@@ -92,7 +92,7 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/Convert1x[.](pl|cgi)//igxsm;
 
-if ( -e './Paths.pm' ) { require Paths; }
+if ( -e "$boarddir/Paths.pm" ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
 my $thisscript = $ENV{'SCRIPT_NAME'};
@@ -3220,7 +3220,7 @@ sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$boarddir/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
         $yyiis = 1;
@@ -3237,7 +3237,7 @@ sub tempstarter {
     if ( -e "$vardir/ConvSettings.txt" ) {
         require "$vardir/ConvSettings.txt";
     }
-    else { $convertdir = './Convert'; }
+    else { $convertdir = "$boarddir/Convert"; }
 
     return;
 }
@@ -3497,7 +3497,7 @@ sub setinstall2 {
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
     my $setfile = q{};
-    if ( $convertdir ne './Convert' ) {
+    if ( $convertdir ne "$boarddir/Convert" ) {
         if ( -e "$convertdir/Settings.pl" ) {
             $setfile = "$convertdir/Settings.pl";
         }

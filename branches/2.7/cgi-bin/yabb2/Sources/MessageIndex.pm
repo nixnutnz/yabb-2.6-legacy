@@ -563,9 +563,14 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         $outside_threadtools = q{};
     }
     else {
-        $outside_threadtools =~
+        if ( $outside_threadtools =~
+          m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
+            $outside_threadtools =~
           s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
-        $topichandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        }
+        if ( $topichandellist =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
+            $topichandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        }
     }
 
     my $topichandellist2 = $topichandellist;
@@ -716,8 +721,11 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt
         $yytitle      = $curboardname;
 
         if ( $postlink && $enable_quickpost && !$mindex_postpopup ) {
-            $yymain =~
+            if( $yymain =~
+m/\Q(<!-- Icon and access info end -->)\E/xsm) {
+                $yymain =~
 s/\Q(<!-- Icon and access info end -->)\E/$1\n<div class="q_post_space">{yabb forumjump}<\/div>/xsm;
+            }
             require Sources::Post;
             $action        = 'post';
             $INFO{'title'} = 'StartNewTopic';
@@ -1095,7 +1103,9 @@ sub get_mess_top1 {
       s/\[img\].*?\[\/img\]/[b][$messageindex_tp{'image_tp'}][\/b]/igxsm;
     $themessage =~
       s/\[media].*?\[\/media]/[b][$messageindex_tp{'media_tp'}][\/b]/igxsm;
-    $themessage =~ s/\[code(.*?)].*?\[\/code]/[b][XCODE$1][\/b]/igxsm;
+    if( $themessage =~ m/\[code(.*?)].*?\[\/code]/ixsm) {
+        $themessage =~ s/\[code(.*?)].*?\[\/code]/[b][XCODE$1][\/b]/igxsm;
+    }
     $themessage =~ s/<br.*?>/<br \/>/igxsm;
     $themessage =~ s/(<br.*?>\s?<br.*?>)/<br \/>/igxsm;
     $themessage =~ s/^<br.*?>//igxsm;
@@ -1108,9 +1118,13 @@ sub get_mess_top1 {
         $testmessage =~ s/\<.*?\>//gxsm;
         $testlength    = length $testmessage;
         $pretextlength = length $pretext;
-        $pretext =~ s/\[(.*?\])/|$1/gxsm;
+        if($pretext =~ m/\[(.*?\])/xsm) {
+            $pretext =~ s/\[(.*?\])/|$1/gxsm;
+        }
         $pretag =~ s/\[/|/xsm;
-        $tagtext =~ s/\[(.*?\])/|$1/gxsm;
+        if($tagtext =~ m/\[(.*?\])/xsm) {
+            $tagtext =~ s/\[(.*?\])/|$1/gxsm;
+        }
         $posttag =~ s/\[/|/xsm;
 
         if ( $pretextlength > $msglength ) {
@@ -1133,7 +1147,9 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eig
       )
     {
     }
-    $themessage =~ s/[|](.*?\])/[$1/gxsm;
+    if($themessage =~ m/[|](.*?\])/xsm) {
+        $themessage =~ s/[|](.*?\])/[$1/gxsm;
+    }
     $themessage = substr $themessage, 0, $msglength;
     if ( length($themessage) > ( $msglength - 1 ) && !$clip ) {
         $themessage .= '...';
@@ -1269,7 +1285,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex
     }
     if ($tsort) {
         if ( $tsort =~ /[ab]/xsm ) {
-            if ( $tsort eq 'a' ) { 
+            if ( $tsort eq 'a' ) {
                 $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_last'}~;
                 @threadlist =
@@ -1853,7 +1869,7 @@ sub get_mess_lastposter {
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
             our ($EXMEMBERTHREAD);
             fopen( 'EXMEMBERTHREAD', '<', "$datadir/$mnum.txt" )
-              or fatal_error( 'cannot_open', $mnum );
+              or fatal_error( 'cannot_open', "$mnum", 1 );
             my @x = <$EXMEMBERTHREAD>;
             fclose('EXMEMBERTHREAD')
               or croak "$croak{'close'} EXMEMBERTHREAD";

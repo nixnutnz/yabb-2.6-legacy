@@ -1570,7 +1570,9 @@ sub preview {
 
     # allows the following HTML-tags in error messages: <br /> <strong>
     $error =~ s/&lt;br(\s \/)&gt;/<br \/>/igxsm;
-    $error =~ s/&lt;(\/?)b&gt;/<$1strong>/igxsm;
+    if ($error =~ m/&lt;(\/?)b&gt;/ixsm) {
+        $error =~ s/&lt;(\/?)b&gt;/<$1strong>/igxsm;
+    }
     if ( $action eq 'modify2' ) {
         $tmpmusername = $thismusername;
     }
@@ -1906,7 +1908,9 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 }
                 get_chk_err( $fixname, \@filelist );
 
-                $fixext =~ s/[.](?:pl|pm|cgi|php)/._$1/ixsm;
+                if( $fixext =~ m/[.](?:pl|pm|cgi|php)/ixsm ) {
+                    $fixext =~ s/[.](?:pl|pm|cgi|php)/._$1/ixsm;
+                }
                 $fixname =~ s/[.](?!tar$)/_/gxsm;
                 $fixfile = qq~$fixname$fixext~;
 
@@ -2294,7 +2298,7 @@ sub new_notify {
     $thismessage =~ s/\[.*?\]//gxsm;
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
     $thismessage =~
-s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
+s/<\/?([[:alpha:]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     $thismessage = from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
@@ -2370,7 +2374,7 @@ sub reply_notify {
     $thismessage =~ s/\[.*?\]//gxsm;
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
     $thismessage =~
-s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
+s/<\/?([[:alpha:]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     $thismessage = from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;

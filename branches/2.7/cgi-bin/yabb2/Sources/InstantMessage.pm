@@ -2500,7 +2500,9 @@ sub get_filelist {
         if ($cgi_query) { $file = $cgi_query->upload("file$y"); }
         if ($file) {
             my $fixfile = $file;
-            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+            if ( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm ) {
+                $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+            }
 
             # replace all inappropriate characters from lists in Language files
             if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
@@ -2542,7 +2544,9 @@ sub get_filelist {
                     }
                 }
             }
-            $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+            if ($fixext =~ m/[.](pl|pm|cgi|php)/ixsm) {
+                $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+            }
             $fixname =~ s/[.]{2}(?!tar$)/_/gxsm;
             $fixfile = qq~$fixname$fixext~;
             if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) {

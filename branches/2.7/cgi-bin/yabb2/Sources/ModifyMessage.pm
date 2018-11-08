@@ -643,7 +643,9 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
           )
         {
             $fixfile = $file;
-            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gxsm;
+            if( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm ) {
+                $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gxsm;
+            }
 
             # replace all inappropriate characters from lists in Language files
             if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
@@ -687,7 +689,9 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                     }
                 }
             }
-            $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+            if( $fixext =~ m/[.](pl|pm|cgi|php)/ixsm) {
+                $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+            }
             $fixname =~ s/[.]/_/gxsm;
             $fixfile = qq~$fixname$fixext~;
 

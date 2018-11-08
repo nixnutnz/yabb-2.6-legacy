@@ -445,10 +445,6 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                 foreach my $boardinfo (@goodboards) {
                     ( $testcat, $curboard ) = split /[|]/xsm, $boardinfo;
                     if ( $testcat ne $catid ) { next; }
-                    elsif ( $subboard{$curboard} ) {
-                        find_latest_data( $curboard,
-                            @{ $subboard{$curboard} } );
-                    }
                     $newmsg = get_newmess($curboard);
                 }
 
@@ -671,7 +667,9 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
 qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
                 my $lastposter = ${ $uid . $crboard }{'lastposter'};
-                $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ixsm;
+                if ( $lastposter =~ m/\AGuest-(.*)/ixsm ) {
+                    $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ixsm;
+                }
 
                 if ( !$lastposterguest{$crboard}
                     && ${ $uid . $crboard }{'lastposter'} ne

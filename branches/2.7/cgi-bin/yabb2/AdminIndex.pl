@@ -32,9 +32,6 @@ if (@adminindexmods) {
     $adminindexmods = 1;
 }
 
-# Make sure the module path is present
-push @INC, './Modules';
-
 ## language ##
 our ( %admin_txt, %admintxt, %croak, %load_txt, %modulecheck, %yabmtxt );
 ## locations ##
@@ -68,6 +65,10 @@ our ( $admin_template, $header, $leftmenu, $leftmenubottom, $leftmenutop,
 
 ## our Mod Hook ##
 
+# Make sure the module path is present
+require Paths;
+push @INC, "$boarddir/Modules";
+
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     my ($yypath);
     $yyiis = 1;
@@ -88,7 +89,6 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/AdminIndex[.](pl|cgi)//igxsm;
 
-require Paths;
 my $yyaext = 'pl';
 if   ( -e ("$yyexec.cgi") ) { $yyaext = 'cgi'; }
 else                        { $yyaext = 'pl'; }
@@ -422,9 +422,13 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         {
             no strict qw(refs);
             my $mytimeselected = ${ $uid . $username }{'timeselect'} || 'UTC';
-            if (   ( !$enabletz && $default_tz eq 'UTC' )
-                || ( $enabletz && ${ $uid . $username }{'user_tz'} && ${ $uid . $username }{'user_tz'} eq 'UTC' )
-                || ( !$default_tz && !${ $uid . $username }{'user_tz'} ) )
+            if (
+                ( !$enabletz && $default_tz eq 'UTC' )
+                || (   $enabletz
+                    && ${ $uid . $username }{'user_tz'}
+                    && ${ $uid . $username }{'user_tz'} eq 'UTC' )
+                || ( !$default_tz && !${ $uid . $username }{'user_tz'} )
+              )
             {
                 $zone = qq~ $admin_txt{'UTC'} ~;
             }

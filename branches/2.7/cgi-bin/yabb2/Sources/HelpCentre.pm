@@ -256,8 +256,10 @@ sub main_help {
             my $message     = ${"section_body$i"};
             my $displayname = ${ $uid . $username }{'realname'};
             enable_yabbc();
-            $message =~
+            while ( $message =~ m/\[yabbc\](.*?)\[\/yabbc\]/gxsm ) {
+                $message =~
 s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; to_html($text); do_ubbc_to($text, q{}, $displayname);/egxsm;
+            }
             $message = wrap2($message);
             my ($yyinlinestyle);
             if ( $section_anchor eq 'YaBBC_Reference' ) {
@@ -304,11 +306,17 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; to_html($text); do_ubbc_to($text, q{
     sub codehlp {
         my ($hcode) = @_;
         if ( $hcode !~ /&\S*;/xsm ) { $hcode =~ s/;/&\x23059;/gxsm; }
-        $hcode =~ s/([()\-:\\\/?!\]\[.\^])/$hpkillhash{$1}/gxsm;
-        $hcode =~
+        if ($hcode =~ m/([()\-:\\\/?!\]\[.\^])/xsm ) {
+            $hcode =~ s/([()\-:\\\/?!\]\[.\^])/$hpkillhash{$1}/gxsm;
+        }
+        if ($hcode =~ m/(&\x2391\;.+?&\x2393\;)/ixsm ) {
+            $hcode =~
           s/(&\x2391\;.+?&\x2393\;)/<span class="important">$1<\/span>/igxsm;
-        $hcode =~
+        }
+        if ($hcode =~ m/(&\x2391\;&\x2347\;.+?&\x2393\;)/ixsm) {
+            $hcode =~
 s/(&\x2391\;&\x2347\;.+?&\x2393\;)/<span class="important">$1<\/span>/igxsm;
+        }
         return $hcode;
     }
 }

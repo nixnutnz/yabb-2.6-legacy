@@ -47,7 +47,7 @@ our (
     $uid,      $username,  $vardir, %FORM,
 );
 
-if ( -e './Paths.pm' ) {
+if ( -e "$script_root/Paths.pm" ) {
     require Paths;
     $nxt = 'pm';
 }
