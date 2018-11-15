@@ -20,6 +20,9 @@ use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+use Cwd;
+my $cwd = cwd();
+push @INC, $cwd;
 our $VERSION = '2.7.00';
 
 ### Version Info ###

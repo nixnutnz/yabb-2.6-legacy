@@ -22,6 +22,9 @@ no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 use Module::Load;
+use Cwd;
+my $cwd = cwd();
+push @INC, $cwd;
 our $VERSION = '2.7.00';
 
 my $setupplver  = 'YaBB 2.7.00 $Revision$';
@@ -44,14 +47,8 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
 }
 
 ### Requirements and Errors ###
-my $script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-}
-$script_root =~ s/\\/\//gxsm;
-$script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
 
-if ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
+if ( -e "$cwd/Paths.pm" ) { require "$cwd/Paths.pm"; }
 
 our (
     $lastsaved,    $boardsdir,   $sourcedir,   $memberdir, $vardir,
@@ -77,12 +74,12 @@ our (
 
 # Check if it's blank Paths.pm or filled in one
 if ( !$lastsaved ) {
-    $boardsdir = "$script_root/Boards";
-    $sourcedir = "$script_root/Sources";
-    $memberdir = "$script_root/Members";
-    $vardir    = "$script_root/Variables";
-    $datadir   = "$script_root/Messages";
-    $langdir   = "$script_root/Languages";
+    $boardsdir = "$cwd/Boards";
+    $sourcedir = "$cwd/Sources";
+    $memberdir = "$cwd/Members";
+    $vardir    = "$cwd/Variables";
+    $datadir   = "$cwd/Messages";
+    $langdir   = "$cwd/Languages";
 }
 my $date = time;
 $boardurl    ||= q{};
@@ -99,7 +96,7 @@ if   ($boardurl) { $set_cgi = "$boardurl/Setup.$yyext"; }
 else             { $set_cgi = "Setup.$yyext"; }
 
 # Make sure the module path is present
-push @INC, "$script_root/Modules";
+push @INC, "$cwd/Modules";
 
 require Sources::Subs;
 require Sources::System;
@@ -2136,11 +2133,15 @@ sub modules {
 
     @modules = sort @modules;
     my $checker_output = q{};
-    my ($i);
+    my $i = q{};
 
     foreach my $module (@modules) {
+        my $e = q{};
+        if ( !eval "require $module" ) {
+            $e = $EVAL_ERROR;
+        }
         $dont_continue_setup = q{};
-        if ( eval { load($module); 1 } ) {
+        if ( !$e ) {
             if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
                 my $myversion = $module->VERSION || '<NO $VERSION>';
                 $checker_output .= qq~<tr>
@@ -2158,7 +2159,6 @@ sub modules {
         else {
             if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
             $i = $mylang{'8'};
-            my $e = $EVAL_ERROR;
 
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="important">$module</span></td>

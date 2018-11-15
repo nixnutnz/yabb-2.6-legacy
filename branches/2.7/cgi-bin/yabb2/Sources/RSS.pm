@@ -46,7 +46,7 @@ our (
 our (
     $annboard,     $boardname,   $boardperms, $curboard,
     $currentboard, $date,        $iamadmin,   $iamgmod,
-    $mydesc,       $script_root, $staff,      $uid,
+    $mydesc,       $staff,       $uid,
     $username,     $yydesc,      $yymain,     $yytitle,
     %board,        %cat,         %catinfo,    %director,
     %INFO,         %subboard,    %yy_cookies, @categoryorder,
@@ -498,11 +498,7 @@ sub shellaccess {
     }
 
     ### Requirements and Errors ###
-    $script_root = $arguments{'script-root'};
-
-    if ( -e 'Paths.pm' ) { require Paths; }
-    elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
-
+    require Paths;
     require Variables::Settings;
     require Sources::Subs;
     require Sources::DateTime;

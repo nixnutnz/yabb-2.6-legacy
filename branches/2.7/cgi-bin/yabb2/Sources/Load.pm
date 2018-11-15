@@ -337,6 +337,8 @@ sub load_user {
     elsif ( $regtype && $regtype == 1 && -e "$memberdir/$usr.wait" ) {
         $userextension = 'wait';
     }
+    else { $userextension = 'vars';}
+
     if ( -e "$memberdir/$usr.$userextension" ) {
         require "$memberdir/$usr.$userextension";
         our ($LOADUSER);
@@ -944,7 +946,7 @@ sub quick_links {
         }
     }
     my $quicklinks = q{};
-    my (@memstats);
+    my @memstats = ();
     if ($usertools) {
         no warnings qw(uninitialized);
         $qlcount++;
@@ -1022,7 +1024,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}"$lastnline
         }
         else { $quicklinks = q{}; }
     }
-
     return $quicklinks;
 }
 

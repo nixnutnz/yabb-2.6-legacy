@@ -114,7 +114,7 @@ sub convcontrol {
             }
         }
     }
-    if ( $brdfixl ne q{} ) {
+    if ( $brdfixl && $brdfixl ne q{} ) {
         $brdfix =
 qq~<br />There appear to be multiple Boards with the same name when converted to lowercase. These boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
     }

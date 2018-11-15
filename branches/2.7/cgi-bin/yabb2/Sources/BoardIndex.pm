@@ -615,7 +615,9 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 foreach my $curuser ( split /\//xsm, $curmods || q{} ) {
                     if ( $curuser && $username eq $curuser ) { $iammod = 1; }
                     load_user($curuser);
-                    $moderators{$curuser} = ${ $uid . $curuser }{'realname'};
+					if ($iammod) {
+                        $moderators{$curuser} = ${ $uid . $curuser }{'realname'};
+					}
                 }
                 my $showmods = q{};
                 if ( keys %moderators == 1 ) {

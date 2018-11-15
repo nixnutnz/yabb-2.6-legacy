@@ -688,6 +688,7 @@ sub job_load {
     if ( ${$updatethread}{'board'} ) {
         return;
     }    ## skip load if the variable is already filled
+
     if ( -e "$datadir/$updatethread.ctb" ) {
         require "$datadir/$updatethread.ctb";
         @repliers = split /,/xsm, ${$updatethread}{'repliers'};

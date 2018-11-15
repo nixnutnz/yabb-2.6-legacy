@@ -22,6 +22,10 @@ use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
+use Cwd;
+my $cwd = cwd();
+push @INC, $cwd;
+## Uncomment above three lines if './' disabled ##
 
 ### Version Info ###
 our $yabbversion = 'YaBB 2.7.00';
@@ -54,7 +58,6 @@ our (
 
 BEGIN {
 
-    # Make sure the module path is present
     require Paths;
     push @INC, "$boarddir/Modules";
     if ( $ENV{'SERVER_SOFTWARE'} && $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
@@ -69,11 +72,6 @@ BEGIN {
     }
 
     our $yyexec      = 'YaBB';
-    our $script_root = $ENV{'SCRIPT_FILENAME'};
-    if ( !$script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'} || q{};
-    }
-    $script_root =~ s/\/$yyexec[.](pl|cgi)//igxsm;
 
     my $yyext = 'pl';
     if   ( -e ("$yyexec.cgi") ) { $yyext = 'cgi'; }

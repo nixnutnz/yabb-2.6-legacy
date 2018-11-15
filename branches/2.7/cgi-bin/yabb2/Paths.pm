@@ -1,5 +1,5 @@
 # Blank Paths.pm file
-$boarddir = '.';                                  # The server path to the board's folder (usually can be left as '.')
+$boarddir = '.';                                  # The server path to the board's folder (can be left as '.' in older versions of Perl)
 $boardsdir = './Boards';                          # Directory with board data files
 $datadir = './Messages';                          # Directory with messages
 $memberdir = './Members';                         # Directory with member files

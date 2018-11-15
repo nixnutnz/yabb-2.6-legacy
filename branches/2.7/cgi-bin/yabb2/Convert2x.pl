@@ -23,6 +23,9 @@ no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use File::Copy qw(copy);
 use English qw(-no_match_vars);
+use Cwd;
+my $cwd = cwd();
+push @INC, $cwd;
 
 our $VERSION = '2.7.00';
 
@@ -197,19 +200,19 @@ if ( -e "$vardir/Setup.lock" ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>$conv2x_txt{'convertdir'}</b></label></td>
-                            <td><input type="text" id="convertdir" name="convertdir" value="./Convert" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" id="convertdir" name="convertdir" value="$cwd/Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>$conv2x_txt{'convboardsdir'}</b></label></td>
-                            <td><input type="text" id="convboardsdir" name="convboardsdir" value="./Convert/Boards" size="50" /></td>
+                            <td><input type="text" id="convboardsdir" name="convboardsdir" value="$cwd/Convert/Boards" size="50" /></td>
                         </tr><tr>
                             <td><label for="convmemberdir"><b>$conv2x_txt{'convmemberdir'}</b></label></td>
-                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="./Convert/Members" size="50" /></td>
+                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="$cwd/Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>$conv2x_txt{'convdatadir'}</b></label></td>
-                            <td><input type="text" id="convdatadir" name="convdatadir" value="./Convert/Messages" size="50" /></td>
+                            <td><input type="text" id="convdatadir" name="convdatadir" value="$cwd/Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>$conv2x_txt{'convvardir'}</b></label></td>
-                            <td><input type="text" id="convvardir" name="convvardir" value="./Convert/Variables" size="50" /></td>
+                            <td><input type="text" id="convvardir" name="convvardir" value="$cwd/Convert/Variables" size="50" /></td>
                         </tr><tr>
                             <td><label for="convhtml"><b>$conv2x_txt{'convhtml'}</b></label></td>
                             <td><input type="text" id="convhtml" name="convhtml" value="" size="50" onchange="setconvhtml()" /></td>

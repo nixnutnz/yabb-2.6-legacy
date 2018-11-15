@@ -16,7 +16,6 @@ use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-use Module::Load;
 our $VERSION = '2.7.00';
 
 our $modulecheckerpmver  = 'YaBB 2.7.00 $Revision$';
@@ -31,22 +30,23 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 load_language('Admin');
 
-my $script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-}
 our ($dont_continue_setup);    # Setup.pl;
 
 my @modules =
-  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
+  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape );
 
 @modules = sort @modules;
 my $checker_output = q{};
 my ($i);
 
 foreach my $module (@modules) {
-    $dont_continue_setup = q{};
-    if ( eval { load($module); 1 } ) {
+    my $e = q{};
+    if ( !eval "require $module" ) {
+        $e = $EVAL_ERROR;
+    }
+    my $dont_continue_setup = q{};
+
+    if (!$e) {
         if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' || $module eq 'Locale::Country' ) {
             my $myversion = $module->VERSION || '<NO $VERSION>';
             $checker_output .= qq~<tr>
@@ -64,8 +64,6 @@ foreach my $module (@modules) {
     else {
         if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
         $i = $modulecheck{'8'};
-        my $e = $EVAL_ERROR;
-
         # IE does display the @INC path it in one line  :-(
         # If you use IE and don't like what you see, remove the
         # comment (#) in next line.
@@ -87,7 +85,11 @@ if ( $perlver gt '5.009' ) {
 }
 my $server = $ENV{'SERVER_SOFTWARE'} || $modulecheck{'noserver'};
 
-if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
+my $script = $ENV{'SCRIPT_FILENAME'};
+if ( !$script ) {
+    $script = $ENV{'PATH_TRANSLATED'};
+}
+if ( $script !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~
         <div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">
             <table class="border-space pad-cell">
