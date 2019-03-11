@@ -156,7 +156,7 @@ sub Display {
 	if ((!$iamguest || $enable_guestposting) && &AccessCheck($currentboard, 2) eq 'granted') {
 		$replybutton = qq~$menusep<a href="~ . ($enable_quickreply && $enable_quickjump ? 'javascript:document.postmodify.message.focus();' : qq~$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply~);
 		$bypassReplyButton = $replybutton . qq~" onclick="return confirm('$display_txt{'posttolocked'}');">$img{'reply'}</a> ~;
-		$replybutton .= qq~">$img{'reply'}</a> ~; #" make my text-editor happy;
+		$replybutton .= qq~">$img{'reply'}</a> ~;
 	}
 
 	$threadclass = 'thread';

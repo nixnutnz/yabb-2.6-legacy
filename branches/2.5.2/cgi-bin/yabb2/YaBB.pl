@@ -124,7 +124,7 @@ sub yymain {
       # Choose what to do based on the form action
       if ($maintenance) {
       #admin login issues with sessions and maintenance mode fix.
-            if ( ($iamadmin || $iamgmod ) && $sessionvalid == 0 ) {&UpdateCookie("delete"); require "$sourcedir/LogInOut.pl"; &InMaintenance; };
+        if ( $staff && $sessionvalid == 0 ) {&UpdateCookie("delete"); require "$sourcedir/LogInOut.pl"; &InMaintenance; };
             if    ($action eq 'login2')    { require "$sourcedir/LogInOut.pl"; &Login2; }
             if (!$iamadmin) { require "$sourcedir/LogInOut.pl"; &InMaintenance; }
       }

@@ -28,7 +28,7 @@ sub MakeSmileys {
 	$message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img src="$smiliesurl\/$3" border="0" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/ig;
 	$message =~ s/(\W|^);-?\)/$1<img src="$imagesdir\/wink.gif" border="0" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/g;
 	$message =~ s/(\W|^);D/$1<img src="$imagesdir\/grin.gif" border="0" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/g;
-	$message =~ s/(\W|^):'\(/$1<img src="$imagesdir\/cry.gif" border="0" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/g; #' make my text editor happy;
+	$message =~ s/(\W|^):'\(/$1<img src="$imagesdir\/cry.gif" border="0" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/g;
 	$message =~ s/(\W|^):-\//$1<img src="$imagesdir\/undecided.gif" border="0" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/g;
 	$message =~ s/(\W|^):-X/$1<img src="$imagesdir\/lipsrsealed.gif" border="0" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/g;
 	$message =~ s/(\W|^):-\[/$1<img src="$imagesdir\/embarassed.gif" border="0" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/g;
@@ -217,12 +217,12 @@ sub imagemsg {
 	$attribut =~ s/(\s|$char_160)+/ /g;
 	foreach (split(/ +/, $attribut)) {
 		my ($key, $value) = split(/=/, $_);
-		$value =~ s/["']//g; #" make my text editor happy;
+		$value =~ s/["']//g;
 		$parameter{$key} = $value;
 	}
 
 	$parameter{'name'} = $type ? 'signat_img_resize' : 'post_img_resize';
-	$parameter{'alt'} =~ s/[<>"]/*/g; #" make my text editor happy;
+	$parameter{'alt'} =~ s/[<>"]/*/g;
 	$parameter{'alt'} ||= "...";
 	$parameter{'align'}  =~ s~[^a-z]~~ig;
 	$parameter{'width'}  =~ s~\D~~g;
