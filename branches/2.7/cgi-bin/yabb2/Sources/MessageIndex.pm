@@ -563,10 +563,9 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         $outside_threadtools = q{};
     }
     else {
-        if ( $outside_threadtools =~
-          m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
+        if ( $outside_threadtools =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
             $outside_threadtools =~
-          s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
+              s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
         }
         if ( $topichandellist =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
             $topichandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
@@ -721,8 +720,7 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt
         $yytitle      = $curboardname;
 
         if ( $postlink && $enable_quickpost && !$mindex_postpopup ) {
-            if( $yymain =~
-m/\Q(<!-- Icon and access info end -->)\E/xsm) {
+            if ( $yymain =~ m/\Q(<!-- Icon and access info end -->)\E/xsm ) {
                 $yymain =~
 s/\Q(<!-- Icon and access info end -->)\E/$1\n<div class="q_post_space">{yabb forumjump}<\/div>/xsm;
             }
@@ -1103,7 +1101,8 @@ sub get_mess_top1 {
       s/\[img\].*?\[\/img\]/[b][$messageindex_tp{'image_tp'}][\/b]/igxsm;
     $themessage =~
       s/\[media].*?\[\/media]/[b][$messageindex_tp{'media_tp'}][\/b]/igxsm;
-    if( $themessage =~ m/\[code(.*?)].*?\[\/code]/ixsm) {
+
+    if ( $themessage =~ m/\[code(.*?)].*?\[\/code]/ixsm ) {
         $themessage =~ s/\[code(.*?)].*?\[\/code]/[b][XCODE$1][\/b]/igxsm;
     }
     $themessage =~ s/<br.*?>/<br \/>/igxsm;
@@ -1118,11 +1117,11 @@ sub get_mess_top1 {
         $testmessage =~ s/\<.*?\>//gxsm;
         $testlength    = length $testmessage;
         $pretextlength = length $pretext;
-        if($pretext =~ m/\[(.*?\])/xsm) {
+        if ( $pretext =~ m/\[(.*?\])/xsm ) {
             $pretext =~ s/\[(.*?\])/|$1/gxsm;
         }
         $pretag =~ s/\[/|/xsm;
-        if($tagtext =~ m/\[(.*?\])/xsm) {
+        if ( $tagtext =~ m/\[(.*?\])/xsm ) {
             $tagtext =~ s/\[(.*?\])/|$1/gxsm;
         }
         $posttag =~ s/\[/|/xsm;
@@ -1147,7 +1146,7 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eig
       )
     {
     }
-    if($themessage =~ m/[|](.*?\])/xsm) {
+    if ( $themessage =~ m/[|](.*?\])/xsm ) {
         $themessage =~ s/[|](.*?\])/[$1/gxsm;
     }
     $themessage = substr $themessage, 0, $msglength;
@@ -1279,9 +1278,9 @@ qq~<a href="$scripturl?board=$currentboard;tsort=h" rel="nofollow">$messageindex
     my $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a>~;
 
-    if (!$tsort) {
-        if ($ttsreverse) { $tsort = 'a'; }
-        else {$tsort = 'b';}
+    if ( !$tsort ) {
+        if   ($ttsreverse) { $tsort = 'a'; }
+        else               { $tsort = 'b'; }
     }
     if ($tsort) {
         if ( $tsort =~ /[ab]/xsm ) {
@@ -1290,15 +1289,17 @@ qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_last'}~;
                 @threadlist =
                   reverse
-                  sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
-                  @temp_list;
+                  sort {
+                    ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4]
+                  } @temp_list;
             }
             else {
                 $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
                 @threadlist =
-                    sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
-                  @temp_list;
+                  sort {
+                    ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4]
+                  } @temp_list;
             }
         }
         elsif ( $tsort =~ /[cd]/xsm ) {
@@ -1366,7 +1367,8 @@ qq~<a href="$scripturl?board=$currentboard;tsort=g" rel="nofollow">$messageindex
             $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
             @threadlist =
-              reverse sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+              reverse
+              sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
               @temp_list;
         }
     }
@@ -1374,7 +1376,8 @@ qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex
         $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
         @threadlist =
-          reverse sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+          reverse
+          sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
           @temp_list;
     }
     undef @temp_list;

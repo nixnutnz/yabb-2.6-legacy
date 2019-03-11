@@ -453,6 +453,7 @@ sub gr_update_htaccess {
         my @sort = grep { !$have{$_}++ } @values;
         require Admin::AdminSubs;
         foreach my $ln (@sort) {
+
             if ($ln) {
                 chomp $ln;
                 my $bad = chk_ip($ln);

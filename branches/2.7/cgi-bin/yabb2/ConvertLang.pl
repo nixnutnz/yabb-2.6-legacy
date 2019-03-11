@@ -1395,7 +1395,7 @@ sub convertvariables {
     my @varlist = ();
     opendir my $VDIR, "$convertlang/Variables";
     while ( my $file = readdir $VDIR ) {
-        next if ( $file =~ m/^\./ || $file eq 'index.html' );
+        next if ( $file =~ m/^[.]/xsm || $file eq 'index.html' );
         push @varlist, $file;
     }
     closedir $VDIR;

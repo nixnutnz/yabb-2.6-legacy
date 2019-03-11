@@ -684,11 +684,12 @@ sub job_update {
 
 sub job_load {
     my ($updatethread) = @_;
+    $datadir      = clean_dir($datadir);
+    $updatethread = clean_folder($updatethread);
     no strict qw(refs);
     if ( ${$updatethread}{'board'} ) {
         return;
     }    ## skip load if the variable is already filled
-
     if ( -e "$datadir/$updatethread.ctb" ) {
         require "$datadir/$updatethread.ctb";
         @repliers = split /,/xsm, ${$updatethread}{'repliers'};

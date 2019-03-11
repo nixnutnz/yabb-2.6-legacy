@@ -149,10 +149,12 @@ sub add_new_tab2 {
 
         $tabtext = to_html($tabtext);
 
+        $langdir = clean_dir($langdir);
         opendir DIR, $langdir;
         my @languages = readdir DIR;
         closedir DIR;
         foreach my $lngdir (@languages) {
+            $lngdir  = clean_folder($lngdir);
             if ( $lngdir eq q{.} || $lngdir eq q{..} || !-d "$langdir/$lngdir" )
             {
                 next;
@@ -296,8 +298,11 @@ sub edit_tab2 {
         $tosavetxt = $FORM{$tosave};
         $tosavetxt = to_html($tosavetxt);
         $tab_lang  = $language ? $language : $lang;
+        $langdir   = clean_dir($langdir);
+        $tab_lang  = clean_folder($tab_lang);
         require "$langdir/$tab_lang/tabtext.txt";
         my $pnttxt = q{};
+
         foreach my $i ( keys %tabtxt ) {
             $pnttxt .= "\$tabtxt{'$i'} = '$tabtxt{$i}';\n";
         }
@@ -357,10 +362,12 @@ sub delete_tab {
         my $todelete = $INFO{'deltab'};
         $todelete =~ s/%26/&/gxsm;
 
+        $langdir = clean_dir($langdir);
         opendir DIR, $langdir;
         my @languages = readdir DIR;
         closedir DIR;
         foreach my $lngdir (@languages) {
+            $lngdir  = clean_folder($lngdir);
             if (   $lngdir eq q{.}
                 || $lngdir eq q{..}
                 || !-d "$langdir/$lngdir"

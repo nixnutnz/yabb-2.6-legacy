@@ -124,6 +124,7 @@ sub add_moderators2 {
     $x[1] ||= q{};
     my @modbd = split /,\s*/xsm, $x[1];
     chomp @modbd;
+    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
 
     foreach my $boardline ( keys %control ) {
@@ -286,6 +287,7 @@ sub mod_search2 {
             $i = decloak($i);
         }
     }
+    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
     ${ $control{$modboard} }[3] = join q{/}, @mods;
     ${ $control{$modboard} }[4] = $FORM{'moderatorgroups'};

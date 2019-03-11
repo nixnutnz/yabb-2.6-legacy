@@ -223,7 +223,7 @@ sub download_filecounter {
     fclose('ATM') or croak "$croak{'close'} ATM";
 
     foreach my $i ( 0 .. $#attachments ) {
-        if ($attachments[$i] =~ m/(.+[|])(.+)[|](\d+)(\s+)$/xsm) {
+        if ( $attachments[$i] =~ m/(.+[|])(.+)[|](\d+)(\s+)$/xsm ) {
             $attachments[$i] =~
 s/(.+[|])(.+)[|](\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
         }

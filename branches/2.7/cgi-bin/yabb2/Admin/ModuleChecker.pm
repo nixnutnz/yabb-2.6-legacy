@@ -33,21 +33,24 @@ load_language('Admin');
 our ($dont_continue_setup);    # Setup.pl;
 
 my @modules =
-  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape );
+  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
 
 @modules = sort @modules;
 my $checker_output = q{};
-my ($i);
+my $i              = q{};
 
 foreach my $module (@modules) {
     my $e = q{};
     if ( !eval "require $module" ) {
         $e = $EVAL_ERROR;
     }
-    my $dont_continue_setup = q{};
+    $dont_continue_setup = q{};
 
-    if (!$e) {
-        if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' || $module eq 'Locale::Country' ) {
+    if ( !$e ) {
+        if (   $module eq 'DateTime::TimeZone'
+            || $module eq 'CGI'
+            || $module eq 'Locale::Country' )
+        {
             my $myversion = $module->VERSION || '<NO $VERSION>';
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>
@@ -64,6 +67,7 @@ foreach my $module (@modules) {
     else {
         if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
         $i = $modulecheck{'8'};
+
         # IE does display the @INC path it in one line  :-(
         # If you use IE and don't like what you see, remove the
         # comment (#) in next line.

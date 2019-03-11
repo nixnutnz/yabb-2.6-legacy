@@ -44,10 +44,10 @@ our (
     $webmaster_email,      $timeselected,        $cookietsort,
     $enable_notifications, $enable_notification, $gmodview,
     $mdglobal,             @allboards,           %board,
-    %fixed_users,          %cat,                 %catinfo,
-    %grp_staff,            %grp_post,            %grp_nopost,
-    %control,              %memberlist,          %memberinf,
-    @memlist,              $forumstart
+    %cat,                  %catinfo,             %grp_staff,
+    %grp_post,             %grp_nopost,          %control,
+    %memberlist,           %memberinf,           @memlist,
+    $forumstart
 );
 
 our (
@@ -95,6 +95,8 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/Convert1x[.](pl|cgi)//igxsm;
 
+my %fixed_users = ();
+
 if ( -e "$boarddir/Paths.pm" ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
@@ -134,12 +136,11 @@ qq~                    <input type="hidden" id="mylang" name="mylang" value="$FO
 }
 else { load_language('Convert'); }
 
-my $convtext       = q{};
-my $convset        = q{};
-my $convseta       = q{};
-my $forumstarttext = q{};
-my $maintext_23    = $conv1x_txt{'maintext_23'};
-my $tmpdir         = qq~$htmldir/tmp~;
+my $convtext    = q{};
+my $convset     = q{};
+my $convseta    = q{};
+my $maintext_23 = $conv1x_txt{'maintext_23'};
+my $tmpdir      = qq~$htmldir/tmp~;
 our $formsession = q{};
 
 #############################################
@@ -151,7 +152,6 @@ if ( -e 'Variables/Setup.lock' ) {
     if ( -e 'Variables/Convert.lock' || -e 'Variables/ConvertLang.lock' ) {
         foundconvlock();
 
-        my %fixed_users = ();
         if ( -e "$tmpdir/fixusers.txt" ) {
             open '<', my $FIXUSER, "$tmpdir/fixusers.txt"
               or setup_fatal_error( "$maintext_23 $tmpdir/fixusers.txt: ", 1 );
@@ -3042,7 +3042,9 @@ sub fixnopost {
         my $totalnoposts = keys %grp_nopost;
         foreach my $cnt ( keys %control ) {
             my $i;
-            for $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
+            for my $j ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) )
+            {
+                $i = $j;
                 my $grptitle = ${ $grp_nopost{$i} }[0];
 
                 foreach my $key ( keys %catinfo ) {
@@ -3178,7 +3180,7 @@ sub conv_stringtotime {
     my $amin   = 0;
     my $asec   = 0;
     if ( $splitvar =~
-        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/ism
+        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/ixsm
       )
     {
         $amonth = int($1) || 1;
@@ -3441,7 +3443,8 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/\Q{yabb url}\E/$scripturl/gxsm;
         $curline =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
-        $curline =~ s/img src\=\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eisgm;
+        $curline =~
+          s/img src\=\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
         $output .= $curline;
         my $year = (gmtime)[5];
         $year += 1900;

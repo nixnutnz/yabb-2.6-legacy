@@ -101,27 +101,27 @@ our (
     $iamguest,         $iammod,                 $language,
     $last_modified,    $mday,                   $mloaded,
     $mon_num,          $morelang,               $mytimeselected,
-    $no_error_page,    $ns,                     $output,
-    $qcksearchaccess,  $regdate,                $spam_hits_left_count,
-    $spam_wrd,         $staff,                  $tabsep,
-    $templatejump,     $testenv,                $thread_notify,
-    $tmpregpasswrd1,   $tmpregpasswrd2,         $useboard,
-    $usedisplay,       $usehead,                $useimages,
-    $usemessage,       $usemycenter,            $user,
-    $username,         $userreg,                $usestyle,
-    $viewnum,          $yy_setcookies1,         $yy_setcookies2,
-    $yy_setcookies3,   $yy_yabbloaded,          $yyexec,
-    $yyiis,            $yynavigation,           $yysetlocation,
-    $yytitle,          %board,                  %cat,
-    %catcol,           %catinfo,                %control,
-    %FORM,             %format_unbold,          %gmod_access,
-    %INFO,             %memberinf,              %memberlist,
-    %moved_file,       %recent,                 %referallow,
-    %subboard,         %totals,                 %user_pm_level,
-    %useraccount,      %yy_cookies,             %yyuserlog,
-    @categoryorder,    @censored,               @logentries,
-    @other_cookies,    $openfiles,              $START_TIME,
-    $file_close,       $file_open,
+    $ns,               $output,                 $qcksearchaccess,
+    $regdate,          $spam_hits_left_count,   $spam_wrd,
+    $staff,            $tabsep,                 $templatejump,
+    $testenv,          $thread_notify,          $tmpregpasswrd1,
+    $tmpregpasswrd2,   $useboard,               $usedisplay,
+    $usehead,          $useimages,              $usemessage,
+    $usemycenter,      $user,                   $username,
+    $userreg,          $usestyle,               $viewnum,
+    $yy_setcookies1,   $yy_setcookies2,         $yy_setcookies3,
+    $yy_yabbloaded,    $yyexec,                 $yyiis,
+    $yynavigation,     $yysetlocation,          $yytitle,
+    %board,            %cat,                    %catcol,
+    %catinfo,          %control,                %FORM,
+    %format_unbold,    %gmod_access,            %INFO,
+    %memberinf,        %memberlist,             %moved_file,
+    %recent,           %referallow,             %subboard,
+    %totals,           %user_pm_level,          %useraccount,
+    %yy_cookies,       %yyuserlog,              @categoryorder,
+    @censored,         @logentries,             @other_cookies,
+    $openfiles,        $START_TIME,             $file_close,
+    $file_open,
 );
 our (
     $boardindex_template, $boardname,  $boardpassw,
@@ -129,6 +129,8 @@ our (
     $my_show_error,       $show_check, $show_check_bot,
     $yycopyright,
 );
+
+our ( $yyog_load, $sitename, $siteimg, $en_bookmarks, $og_on );
 
 our $yymain       = q{};
 our $yyjavascript = q{};
@@ -259,20 +261,18 @@ sub print_output_header {
         if ($_) { $ret .= "Set-Cookie: $_\n"; }
     }
 
-    if ( !$no_error_page ) {
-        if ($yysetlocation) {
-            $ret .= "Location: $yysetlocation";
+    if ($yysetlocation) {
+        $ret .= "Location: $yysetlocation";
+    }
+    else {
+        if ( !$cachebehaviour ) {
+            $ret .=
+              "Cache-Control: no-cache, must-revalidate\nPragma: no-cache\n";
         }
-        else {
-            if ( !$cachebehaviour ) {
-                $ret .=
-"Cache-Control: no-cache, must-revalidate\nPragma: no-cache\n";
-            }
-            if ($e_tag)         { $ret .= "ETag: \"$e_tag\"\n"; }
-            if ($last_modified) { $ret .= "Last-Modified: $last_modified\n"; }
-            if ( $gzcomp && $gzaccept ) { $ret .= "Content-Encoding: gzip\n"; }
-            $ret .= "Content-Type: $contenttype; charset=utf-8";
-        }
+        if ($e_tag)         { $ret .= "ETag: \"$e_tag\"\n"; }
+        if ($last_modified) { $ret .= "Last-Modified: $last_modified\n"; }
+        if ( $gzcomp && $gzaccept ) { $ret .= "Content-Encoding: gzip\n"; }
+        $ret .= "Content-Type: $contenttype; charset=utf-8";
     }
     print $ret . "\r\n\r\n" or croak "$croak{'print'} ret";
     return;
@@ -282,7 +282,7 @@ sub print_html_output_and_finish {
     if ( $gzcomp && $gzaccept ) {
         my $filehandle_exists = fileno my $GZIP;
         if ( $gzcomp || $filehandle_exists ) {
-            $OUTPUT_AUTOFLUSH = 1;
+            local $OUTPUT_AUTOFLUSH = 1;
             if ( !$filehandle_exists ) {
                 open $GZIP, q{|-}, 'gzip -f' or croak "$croak{'open'} GZIP";
                 print {$GZIP} $output or croak "$croak{'print'} GZIP";
@@ -393,7 +393,12 @@ sub template {
     $yysyntax_js     = q{};
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
-    $action          = $INFO{'action'} || q{};
+    $yyog_load       = q{};
+
+    if ( $en_bookmarks || $og_on ) {
+        $yyog_load = og_load();
+    }
+    $action = $INFO{'action'} || q{};
 
     if (   $INFO{'num'}
         || ( $INFO{'board'} && $enable_quickpost )
@@ -954,7 +959,9 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
         my %img_locs;
-        if ( $output =~ m/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ixsm) {
+        if ( $output =~
+            m/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ixsm )
+        {
             $output =~
 s/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ "$1$2$3" . img_loc($4) . $3 /eigxsm;
         }
@@ -1018,12 +1025,14 @@ sub image_resize {
         }
         return qq~"$x[0]"$x[2]~;
     };
-    if ( $output =~ m/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/xsm ) {
+    if ( $output =~
+        m/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/xsm )
+    {
         $output =~
 s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /egxsm;
     }
 
-    if ($extendedprofiles && $output =~ m/"((ext)_img_resize)"([^>]*>)/xsm ) {
+    if ( $extendedprofiles && $output =~ m/"((ext)_img_resize)"([^>]*>)/xsm ) {
         $output =~
           s/"((ext)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /egxsm;
     }
@@ -1133,13 +1142,6 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     }
 
     if ($elenable) { fatal_error_logging($errormessage); }
-
-    # for ajax calls that return errors, so no page is generated
-    if ($no_error_page) {
-        print "Content-type: text/plain\n\nerror$errormessage"
-          or croak "$croak{'print'} error";
-        CORE::exit;    # This is here only to avoid server error log entries!
-    }
 
     $yymain .= $my_show_error;
     $yymain =~ s/\Q{yabb errormessage}\E/$showerror/xsm;
@@ -1847,7 +1849,8 @@ sub count_chars {
         }
     }
     if ( $curstring =~ /([ ]*<[\/[:lower:][^>]*)$/ixsm
-        || ( $enable_ubbc && $curstring =~ /([ ]*\[[\/[:lower:]][^\]]*)$/ixsm ) )
+        || ( $enable_ubbc && $curstring =~ /([ ]*\[[\/[:lower:]][^\]]*)$/ixsm )
+      )
     {
         $convertcut -= length $1;
     }
@@ -1953,7 +1956,7 @@ sub generate_code {
 
 sub from_chars {
     my @x = @_;
-    if ($x[0] =~ m/&\x23(\d{3,});/ixsm ) {
+    if ( $x[0] =~ m/&\x23(\d{3,});/ixsm ) {
         $x[0] =~ s/&\x23(\d{3,});/ $1>127 ? "[ch$1]" : $& /egixsm;
     }
     return $x[0];
@@ -1961,7 +1964,7 @@ sub from_chars {
 
 sub to_chars {
     my @x = @_;
-    if ($x[0] =~ m/\[ch(\d{3,})\]/ixsm) {
+    if ( $x[0] =~ m/\[ch(\d{3,})\]/ixsm ) {
         $x[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&\x23$1;" : q{} /egixsm;
     }
     return $x[0];
@@ -2063,12 +2066,12 @@ qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}
     $ssm += $s_s_m =~ s/\[move by\]/$maintxt{'525'}/gxsm;    # by
 
     if ($ssm) {    # only if it was an internal s_s_m info
-        if ( $s_s_m =~ m/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/xsm) {
+        if ( $s_s_m =~ m/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/xsm ) {
             $s_s_m =~
 s/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/<a href="$1">$2<\/a>/gxsm;
         }
-        if ( $s_s_m =~ m/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/xsm) {
-        $s_s_m =~
+        if ( $s_s_m =~ m/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/xsm ) {
+            $s_s_m =~
 s/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/<a href="http:\/\/$1">$2<\/a>/gxsm;
         }
         if ( $s_s_m =~ m/\[b\](.*?)\[\/b\]/xsm ) {
@@ -2100,7 +2103,7 @@ sub wrap {
     if ($newswrap) { $linewrap = $newswrap; }
     $message =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\[tab\]/igxsm;
     $message =~ s/<br.*?>/\n/gxsm;
-    if ($message =~ m/((\[ch\d{3,}?\]){$linewrap})/ixsm) {
+    if ( $message =~ m/((\[ch\d{3,}?\]){$linewrap})/ixsm ) {
         $message =~ s/((\[ch\d{3,}?\]){$linewrap})/$1\n/igxsm;
     }
 
@@ -2249,7 +2252,6 @@ sub membership_get {
             $yyTmpFile{ ${$filehandle} } = $filename;
             $filename .= '.tmp';
         }
-
         if ( $open_mode > 2 ) {
             if ( $open_mode == 5 ) {
                 $cmd_result = CORE::open( ${$filehandle}, '+>>', $filename );
@@ -2511,7 +2513,7 @@ sub do_censor {
     foreach my $censor (@censored) {
         my ( $tmpa, $tmpb, $tmpc ) = @{$censor};
         if ($tmpc) {
-            if ( $string =~ m/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/ixsm) {
+            if ( $string =~ m/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/ixsm ) {
                 $string =~ s/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/$1$tmpb/igxsm;
             }
         }
@@ -2577,10 +2579,14 @@ sub dereferer {
 sub load_language {
     my ($what_to_load) = @_;
     my $use_lang = $language ? $language : $lang;
+    $langdir      = clean_dir($langdir);
+    $what_to_load = clean_folder($what_to_load);
     if ( -e "$langdir/$use_lang/$what_to_load.lng" ) {
+        $use_lang = clean_folder($use_lang);
         require "$langdir/$use_lang/$what_to_load.lng";
     }
     elsif ( -e "$langdir/$lang/$what_to_load.lng" ) {
+        $lang = clean_folder($lang);
         require "$langdir/$lang/$what_to_load.lng";
     }
     elsif ( -e "$langdir/English/$what_to_load.lng" ) {
@@ -3243,6 +3249,7 @@ sub checkuserpm_level {
 }
 
 sub get_forum_master {
+    $boardsdir = clean_dir($boardsdir);
     if ( $mloaded != 1 ) {
         require "$boardsdir/forum.master";
     }
@@ -3250,9 +3257,11 @@ sub get_forum_master {
 }
 
 sub get_micon {
+    $templatesdir = clean_dir($templatesdir);
+    $usestyle     = clean_folder($usestyle);
     my $micon_def = "$templatesdir/default/Micon.def";
     if ( -e "$templatesdir/$usestyle/Micon.def" ) {
-        $micon_def = "$templatesdir/$usestyle/Micon.def";
+        $micon_def    = "$templatesdir/$usestyle/Micon.def";
     }
     require $micon_def;
     return;
@@ -3260,15 +3269,26 @@ sub get_micon {
 
 sub get_template {
     my ( $templt, $atemplt ) = @_;
+    $templatesdir = clean_dir($templatesdir);
+    $templt       = clean_folder($templt);
     my @templ_list = ( $useboard, $usemessage, $usedisplay, $usemycenter );
     if ($atemplt) {
-        require "$templatesdir/$atemplt/$templt.template";
-        return;
+        $atemplt      = clean_folder($atemplt);
+        if ( -e "$templatesdir/$atemplt/$templt.template" ) {
+            require "$templatesdir/$atemplt/$templt.template";
+            return;
+        }
+        else {
+            require "$templatesdir/default/$templt.template";
+            return;
+        }
     }
     my @ld_list = qw(BoardIndex MessageIndex Display MyCenter);
     my $ld_cn   = 0;
     foreach my $x ( 0 .. $#ld_list ) {
         if ( $templt eq $ld_list[$x] ) {
+            $templ_list[$x] = clean_folder( $templ_list[$x] );
+            $ld_list[$x]    = clean_folder( $ld_list[$x] );
             require qq~$templatesdir/$templ_list[$x]/$ld_list[$x].template~;
             $ld_cn = 1;
         }
@@ -3328,10 +3348,10 @@ sub regex_1 {
 sub regex_2 {
     my ($messge) = @_;
     $messge =~ s/\cM//gxsm;
-    if ( $messge =~ m/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm) {
+    if ( $messge =~ m/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
         $messge =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
     }
-    if ($messge =~ m/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
+    if ( $messge =~ m/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/xsm ) {
         $messge =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
     }
     return $messge;
@@ -3532,7 +3552,7 @@ sub upload_file {
     if ($cgi_query) { $file = $cgi_query->upload($file_upload); }
     if ($file) {
         $fixfile = $file;
-        if ( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm) {
+        if ( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm ) {
             $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
         }
         if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
@@ -3702,7 +3722,9 @@ sub loadtranlist {
             push @lang, $langitems;
         }
     }
+    $langdir = clean_dir($langdir);
     foreach my $langd (@lang) {
+        $langd   = clean_folder($langd);
         if ( -e "$langdir/$langd/att_chars.txt" ) {
             require "$langdir/$langd/att_chars.txt";
             foreach my $trl ( 0 .. $#uploadtranlist ) {
@@ -3946,6 +3968,71 @@ sub update_adminlst {
         }
     }
     return @adminlst;
+}
+
+sub clean_dir {
+    my ($dir) = @_;
+    if ( $dir =~ m/^([\w\:\-\/]+)$/xsm ) {
+        return $1;
+    }
+    else { fatal_error( q{}, "invalid dir $dir" ); }
+    return;
+}
+
+sub clean_folder {
+    my ($fold) = @_;
+
+    #    if ($fold =~ m/^([\-\w\/]+)$/xsm ) {
+    if ( $fold =~ m/^([\-\w\/@.]+)$/xsm ) {
+        return $1;
+    }
+    else { fatal_error( q{}, "invalid folder $fold" ); }
+    return;
+}
+
+sub clean_file {
+    my ($file) = @_;
+    if ( $file =~ m/^([\-\w.]+)$/xsm ) {
+        return $1;
+    }
+    else { fatal_error( q{}, "invalid file $file" ); }
+    return;
+}
+
+sub og_load {
+    my $opendesc = $mbname;
+    if ($sitename) {
+        $opendesc = $sitename;
+    }
+
+    my $openimage = qq~$defaultimagesdir/yabblogo_27.png~;
+    if ($siteimg) {
+        $openimage = $siteimg;
+    }
+
+    my $openurl = qq~$scripturl~;
+    if ( $INFO{'catselect'} ) {
+        $openurl .= qq~?catselect=$INFO{'catselect'}~;
+    }
+    elsif ( $INFO{'board'} ) {
+        $openurl .= qq~?board=$INFO{'board'}~;
+    }
+    elsif ( $INFO{'num'} ) {
+        $openurl .= qq~?num=$INFO{'num'}~;
+    }
+    elsif ( $INFO{'action'} ) {
+        $openurl .= qq~?action=$INFO{'action'}~;
+    }
+
+    my $opengraph = qq~
+    <meta property="og:title" content="$yytitle" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="$opendesc" />
+    <meta property="og:url" content="$openurl" />
+    <meta property="og:description" content="Web Forum: $yytitle" />
+    <meta property="og:image" content="$openimage" />~;
+
+    return $opengraph;
 }
 
 1;

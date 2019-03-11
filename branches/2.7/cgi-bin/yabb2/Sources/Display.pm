@@ -147,7 +147,7 @@ sub display_thread {
         if ( -e "$vardir/BotsHosts.pm" ) {
             our (%botname);
             require Variables::BotsHosts;
-            foreach my $i (keys %botname) {
+            foreach my $i ( keys %botname ) {
                 if ( $botname{$i} && $user_host =~ /$i/ixsm ) {
                     $iambot = 1;
                     last;
@@ -1050,8 +1050,9 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                 }
                 my $filesize = -s "$uploaddir/$i";
                 $urlname = $i;
-                if ( $urlname =~ m/([[:^alnum:]])/xsm) {
-                    $urlname =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
+                if ( $urlname =~ m/([[:^alnum:]])/xsm ) {
+                    $urlname =~
+                      s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
                 }
                 $attach_count{$i} ||= 0;
                 my $download_txt =
@@ -1261,7 +1262,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 $dr_regdate =
                   timeformat( ${ $uid . $musername }{'regtime'}, 0, 0, 0, 0 );
                 $dr_regdate = dtonly($dr_regdate);
-                if ($dr_regdate =~ m/(.*)(, 1?\d):\d\d.*/xsm) {
+                if ( $dr_regdate =~ m/(.*)(, 1?\d):\d\d.*/xsm ) {
                     $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
                 }
                 $template_regdate =
@@ -1619,9 +1620,10 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         }
         else {
             $outside_posttools_tmp =~ s/\Q$menusep\E//ixsm;
-            if ( $outside_posttools_tmp =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm ) {
+            if ( $outside_posttools_tmp =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/xsm )
+            {
                 $outside_posttools_tmp =~
-              s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
+                  s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
                 $posthandelblock =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
             }
         }
@@ -1821,8 +1823,9 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             my $cliped     = 0;
             ( $bm_subject, $cliped ) = count_chars( $bm_subject, $bm_subcut );
             if ($cliped) { $bm_subject .= '...'; }
-            if ( $bm_subject =~ m/([[:^alnum:]])/xsm) {
-                $bm_subject =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
+            if ( $bm_subject =~ m/([[:^alnum:]])/xsm ) {
+                $bm_subject =~
+                  s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
             }
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
@@ -1953,10 +1956,9 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
         $outside_threadtools = q{};
     }
     else {
-        if ( $outside_threadtools =~
-          m/\[tool=(.+?)\](.+?)\[\/tool\]/gxsm) {
+        if ( $outside_threadtools =~ m/\[tool=(.+?)\](.+?)\[\/tool\]/gxsm ) {
             $outside_threadtools =~
-          s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
+              s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
             $threadhandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
             $threadhandellist2 =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
         }
@@ -2102,9 +2104,10 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $yytitle = $msubthread;
     my ($message);
     if ( $replybutton && $enable_quickreply ) {
-        if ($yymain =~
-m/(\Q<!-- Threads Admin Button Bar start -->\E.*?<\/td>)/xsm) {
-        $yymain =~
+        if ( $yymain =~
+            m/(\Q<!-- Threads Admin Button Bar start -->\E.*?<\/td>)/xsm )
+        {
+            $yymain =~
 s/(\Q<!-- Threads Admin Button Bar start -->\E.*?<\/td>)/$1<td class="right">{yabb forumjump}<\/td>/xsm;
         }
         require Sources::Post;
@@ -2273,8 +2276,9 @@ sub get_quote {
                 $tmpqda ||= q{};
                 $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
             }
-            if ($outblock =~
-m/(<div)(\Q class="$messageclass getcounter">\E)/ixsm) {
+            if ( $outblock =~
+                m/(<div)(\Q class="$messageclass getcounter">\E)/ixsm )
+            {
                 $outblock =~
 s/(<div)(\Q class="$messageclass getcounter">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
             }

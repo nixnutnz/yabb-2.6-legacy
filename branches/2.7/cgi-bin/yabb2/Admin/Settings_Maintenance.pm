@@ -64,14 +64,14 @@ qq~<input type="checkbox" name="maintenance" id="maintenance" value="1" ${ischec
             our ($MAINTTXT);
             fopen( 'MAINTTXT', '<', "$langdir/$_/maintenancetext.txt" )
               or croak "$croak{'open'} MAINTTXT";
-            ${ $_ . '_maintenancetext' } = do { local $INPUT_RECORD_SEPARATOR = undef; <$MAINTTXT> };
+            ${ $_ . '_maintenancetext' } =
+              do { local $INPUT_RECORD_SEPARATOR = undef; <$MAINTTXT> };
             fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
         }
         else { ${ $_ . '_maintenancetext' } = q{}; }
         my $lbl = $_ . '_maintenancetext';
         ${$lbl} = to_html( ${$lbl} );
         ${$lbl} = to_chars( ${$lbl} );
-
 
         push @{ $settings[0]{items} },
           {

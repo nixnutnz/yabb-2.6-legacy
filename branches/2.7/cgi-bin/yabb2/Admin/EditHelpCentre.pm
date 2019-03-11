@@ -54,6 +54,10 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
     }
     our ($section_name);
     my $hlp_area = ucfirst $help_area;
+    $helpfile      = clean_dir($helpfile);
+    $help_language = clean_folder($help_language);
+    $hlp_area      = clean_folder($hlp_area);
+    $page          = clean_folder($page);
     require "$helpfile/$help_language/$hlp_area/$page.help";
     my $txtrevision = lc $help_language . $help_area . '_' . $page . 'helpver';
     my $mytxtrevision = q{};
@@ -62,7 +66,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
         $mytxtrevision = ${$txtrevision};
     }
 
-    $section_name =~ s/_/ /gsm;
+    $section_name =~ s/_/ /gxsm;
     my $admin_list = qq~<tr>
         <td class="windowbg2">
             <label for="section_name"><b>$helptxt{'7a'}</b></label>: <input type="text" maxlength="50" size="50" value="$section_name" name="section_name" id="section_name" />

@@ -104,12 +104,12 @@ sub sendmail {
         use_smtp();
     }
     elsif ( $mailtype == 2 || $mailtype == 3 ) {
-        my ( $smtp_server, $port ) = split /[:]/xsm, $smtp_server;
+        my ( $smtp_serv, $port ) = split /[:]/xsm, $smtp_server;
         $port ||= 25;
-        $mailer{'smtp'} =~ s/\Q{yabb smtp_server}\E/$smtp_server/gxsm;
-        $mailer{'smtps1'} =~ s/\Q{yabb smtp_server}\E/$smtp_server/gxsm;
+        $mailer{'smtp'} =~ s/\Q{yabb smtp_server}\E/$smtp_serv/gxsm;
+        $mailer{'smtps1'} =~ s/\Q{yabb smtp_server}\E/$smtp_serv/gxsm;
         $mailer{'smtps1'} =~ s/\Q{yabb port}\E/$port/gxsm;
-        my @arg = ( "$smtp_server", Hello => "$helloserv", Timeout => 30 );
+        my @arg = ( "$smtp_serv", Hello => "$helloserv", Timeout => 30 );
         if ( $mailtype == 2 ) {
             if ( eval { require Net::SMTP } ) {
                 if ($port)     { push @arg, Port     => $port; }
@@ -123,7 +123,7 @@ sub sendmail {
                   or croak $mailer{'smtp'} . $OS_ERROR;
                 if ( $authuser && $authpass ) {
                     $smtp->auth( $authuser, $authpass )
-                        or croak $mailer{'smtps2'};
+                      or croak $mailer{'smtps2'};
                 }
             }
         }

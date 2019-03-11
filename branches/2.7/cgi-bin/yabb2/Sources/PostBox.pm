@@ -701,7 +701,7 @@ qq~if (document.postmodify.verification_question.value === "") { msgError += "<l
 sub my_liveprev {
     my ($my_ajxcall) = @_;
     my $x =
-      qq~var noalert = true, gralert = false, rdalert = false, clalert = false;
+      q~var noalert = true, gralert = false, rdalert = false, clalert = false;
 var cntsec = 0;
 
 function tick() {

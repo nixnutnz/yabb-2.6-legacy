@@ -1774,7 +1774,6 @@ sub modify_profile_admin2 {
     }
 
     my %groups;
-
     map { $groups{$_} = 1; } split /,\s/xsm, $member{'addgroup'};
     my @nopostmember = ();
     for ( keys %grp_nopost ) {
@@ -3626,7 +3625,7 @@ sub chk_profile_name {
     fclose('ATM') or croak "$croak{'close'} ATM";
 
     foreach my $i ( 0 .. $#attachments ) {
-        if ( $attachments[$i] =~ m/^(\d+[|]\d+[|].*?)[|](.*?)[|]/xsm) {
+        if ( $attachments[$i] =~ m/^(\d+[|]\d+[|].*?)[|](.*?)[|]/xsm ) {
             $attachments[$i] =~
 s/^(\d+[|]\d+[|].*?)[|](.*?)[|]/ ($2 eq ${ $uid . $user }{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /exsm;
         }

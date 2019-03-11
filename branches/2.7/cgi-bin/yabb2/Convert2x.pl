@@ -1847,8 +1847,10 @@ sub fixnopost {
         my $totalnoposts = keys %grp_nopost;
         my $i;
         foreach my $cnt ( keys %control ) {
-            foreach $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) )
+            foreach
+              my $j ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) )
             {
+                $i = $j;
                 my $grptitle = ${ $grp_nopost{$i} }[0];
 
                 foreach my $key ( keys %catinfo ) {
@@ -2343,7 +2345,9 @@ sub convert_settings {
     my $ret     = 0;
     my $setset  = 0;
     my $setfile = "$convvardir/Settings.pm";
-    if ( $convertdir ne "$boarddir/Convert" && -e "$convertdir/Settings.$yyext" ) {
+    if ( $convertdir ne "$boarddir/Convert"
+        && -e "$convertdir/Settings.$yyext" )
+    {
         $setfile = "$convertdir/Settings.$yyext";
         $setset  = 1;
     }
@@ -3051,61 +3055,62 @@ sub checkattach {
     my @pmattachments = ();
     if ( -e "$vardir/pmattachments.db" ) {
         open my $PMATTACHLOG, '<', "$vardir/pmattachments.db"
-      or croak 'cannot open pmattach';
-    @pmattachments = <$PMATTACHLOG>;
-    close $PMATTACHLOG or croak 'cannot close pmattach';
+          or croak 'cannot open pmattach';
+        @pmattachments = <$PMATTACHLOG>;
+        close $PMATTACHLOG or croak 'cannot close pmattach';
 
-    my $chkpmatt1 = q{};
-    my %hashpmatt = ();
-    my %hashpmlng = ();
-    foreach my $att (@pmattachments) {
-        my @chkatt = split /[|]/xsm, $att;
-        my $chkfile = $chkatt[7];
-        push @{ $hashpmatt{ lc $chkfile } }, $chkfile;
-        if ( length $chkfile > 150 ) {
-            push @{ $hashpmlng{$chkfile} }, length $chkfile;
+        my $chkpmatt1 = q{};
+        my %hashpmatt = ();
+        my %hashpmlng = ();
+        foreach my $att (@pmattachments) {
+            my @chkatt = split /[|]/xsm, $att;
+            my $chkfile = $chkatt[7];
+            push @{ $hashpmatt{ lc $chkfile } }, $chkfile;
+            if ( length $chkfile > 150 ) {
+                push @{ $hashpmlng{$chkfile} }, length $chkfile;
+            }
         }
-    }
-    foreach my $key ( keys %hashpmatt ) {
-        if ( scalar @{ $hashpmatt{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
-              or croak 'cannot open BRDFIX';
-            print {$BRDFIX} "'multiple PMattachments - possible data loss:'\n"
-              or croak 'cannot print BRDFIX';
-            close $BRDFIX or croak 'cannot close BRDFIX';
-            foreach ( @{ $hashpmatt{$key} } ) {
-                if ($_) {
-                    $chkpmatt1 .= qq~$_<br />~;
-                    open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
-                      or croak 'cannot open BRDFIX';
-                    print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
-                    close $BRDFIX or croak 'cannot close BRDFIX';
+        foreach my $key ( keys %hashpmatt ) {
+            if ( scalar @{ $hashpmatt{$key} } > 1 ) {
+                open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX}
+                  "'multiple PMattachments - possible data loss:'\n"
+                  or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+                foreach ( @{ $hashpmatt{$key} } ) {
+                    if ($_) {
+                        $chkpmatt1 .= qq~$_<br />~;
+                        open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
+                          or croak 'cannot open BRDFIX';
+                        print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                        close $BRDFIX or croak 'cannot close BRDFIX';
+                    }
+                }
+            }
+        }
+        my $chkpmatt2 = q{};
+        foreach my $key ( keys %hashpmlng ) {
+            if ( scalar @{ $hashpmlng{$key} } > 1 ) {
+                open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX}
+                  "'long file name PMattachments- possible data loss:'\n"
+                  or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+                foreach ( @{ $hashatt{$key} } ) {
+                    if ($_) {
+                        $chkpmatt2 .= qq~$_ : $hashpmatt{$_}<br />~;
+                        open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
+                          or croak 'cannot open BRDFIX';
+                        print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
+                          or croak 'cannot print BRDFIX';
+                        close $BRDFIX or croak 'cannot close BRDFIX';
+                    }
                 }
             }
         }
     }
-    my $chkpmatt2 = q{};
-    foreach my $key ( keys %hashpmlng ) {
-        if ( scalar @{ $hashpmlng{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
-              or croak 'cannot open BRDFIX';
-            print {$BRDFIX}
-              "'long file name PMattachments- possible data loss:'\n"
-              or croak 'cannot print BRDFIX';
-            close $BRDFIX or croak 'cannot close BRDFIX';
-            foreach ( @{ $hashatt{$key} } ) {
-                if ($_) {
-                    $chkpmatt2 .= qq~$_ : $hashpmatt{$_}<br />~;
-                    open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
-                      or croak 'cannot open BRDFIX';
-                    print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
-                      or croak 'cannot print BRDFIX';
-                    close $BRDFIX or croak 'cannot close BRDFIX';
-                }
-            }
-        }
-    }
-	}
     opendir DIR, "$uploaddir/";
     my @attfiles =
       grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;

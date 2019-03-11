@@ -557,16 +557,17 @@ sub add_cal {
         $calmessage =~ s/[|]//gxsm;
         $calmessage =~ s/\cM//gxsm;
         $calmessage =~ s/[:][`][(]/\:\x27\(/gxsm;
-        if ($calmessage =~ m/\[([^\]]{0,30})\n([^\]]{0,30})\]/xsm) {
+        if ( $calmessage =~ m/\[([^\]]{0,30})\n([^\]]{0,30})\]/xsm ) {
             $calmessage =~ s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
         }
-        if($calmessage =~ m/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/xsm) {
+        if ( $calmessage =~ m/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/xsm ) {
             $calmessage =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
         }
-        if ($calmessage =~
-          m/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/xsm) {
+        if ( $calmessage =~
+            m/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/xsm )
+        {
             $calmessage =~
-          s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
+              s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
         }
         $calmessage = from_chars($calmessage);
         $calmessage = to_html($calmessage);

@@ -529,6 +529,7 @@ s/\Q<span id="newsdiv"><\/span>\E/<span id="newsdiv">$tempnews<\/span>/gxsm;
     $fulltemplate =~ s/\Q{yabb tempswitcher}\E/$yytempswitcher/gxsm;
     $fulltemplate =~ s/\Q{yabb tempswitchform}\E/<form>/gxsm;
     $fulltemplate =~ s/\Q{yabb tempswitchend}\E/<\/form>/gxsm;
+    $fulltemplate =~ s/\Q{yabb og_load}\E//gxsm;
 ## Mod Hook fulltemplate
 ## End Mod Hook fulltemplate
     my ( $boardtempl, $messagetempl, $displaytempl, $mycentertempl );
@@ -937,13 +938,16 @@ sub board_templ {
     my @x = @_;
     load_language('BoardIndex');
     my $tmpimagesdir = $imagesdir;
-    $imagesdir = qq~$x[1]~;
+    $imagesdir    = qq~$x[1]~;
+    $templatesdir = clean_dir($templatesdir);
+    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/BoardIndex.template";
     my (
         $themostmembdate, $themostguestdate, $themostuserdate,
         $themostbotsdate, $themostuser,      $themostmemb,
         $themostguest,    $themostbots,
     );
+
     if ( -e "$vardir/mostlog.log" ) {
         our ($MOSTUSERS);
         fopen( 'MOSTUSERS', '<', "$vardir/mostlog.log" )
@@ -1158,7 +1162,9 @@ sub message_templ {
     my @x = @_;
     load_language('MessageIndex');
     my $tmpimagesdir = $imagesdir;
-    $imagesdir = "$x[1]";
+    $imagesdir    = "$x[1]";
+    $templatesdir = clean_dir($templatesdir);
+    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/MessageIndex.template";
     my $tempcatnm   = $templ_txt{'72'};
     my $tempboardnm = $templ_txt{'73'};
@@ -1329,7 +1335,9 @@ sub display_templ {
     my @x = @_;
     load_language('Display');
     my $tmpimagesdir = $imagesdir;
-    $imagesdir = $x[1];
+    $imagesdir    = $x[1];
+    $templatesdir = clean_dir($templatesdir);
+    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/Display.template";
     my (
         $title,     $stars,      $starpic,    $color,     $noshow,
@@ -1668,7 +1676,9 @@ sub mycenter_templ {
     our (%mycenter_txt);
     load_language('MyCenter');
     my $tmpimagesdir = $imagesdir;
-    $imagesdir = $x[1];
+    $imagesdir    = $x[1];
+    $templatesdir = clean_dir($templatesdir);
+    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/MyCenter.template";
 
     my $tabsep  = q{};

@@ -49,7 +49,7 @@ load_language('Smtp');
 
 sub use_smtp {
     my $smtpaddr = q{};
-    $OUTPUT_AUTOFLUSH = 1;
+    local $OUTPUT_AUTOFLUSH = 1;
     my ($proto) = ( getprotobyname 'tcp' )[2];
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
     if ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )

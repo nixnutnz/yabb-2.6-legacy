@@ -19,13 +19,14 @@
 ###############################################################################
 use strict;
 use warnings;
-use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.7.00';
+delete @ENV{ 'IFS', 'CDPATH', 'ENV', 'BASH_ENV' };
 use Cwd;
 my $cwd = cwd();
 push @INC, $cwd;
-## Uncomment above three lines if './' disabled ##
+use CGI::Carp qw(fatalsToBrowser);
+
+our $VERSION = '2.7.00';
 
 ### Version Info ###
 our $yabbversion = 'YaBB 2.7.00';
@@ -71,7 +72,7 @@ BEGIN {
         push @INC, $yypath;
     }
 
-    our $yyexec      = 'YaBB';
+    our $yyexec = 'YaBB';
 
     my $yyext = 'pl';
     if   ( -e ("$yyexec.cgi") ) { $yyext = 'cgi'; }
@@ -220,11 +221,11 @@ sub yymain {
         if ( !$iamadmin ) { require Sources::LogInOut; in_maintenance(); }
     }
 
-    # Guest can do the very few following actions
+    # Guests can do the very few following actions
     if (   $iamguest
         && !$guestaccess
         && $action !~
-/^(login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/xsm
+/^(?:login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/xsm
       )
     {
         kickguest();
@@ -241,6 +242,9 @@ sub yymain {
                 {
                     no strict qw(refs);
                     my @act = split /&/xsm, $director{$action};
+                    if ( $act[0] =~ /^([-\@\w.]+)$/xsm ) {
+                        $act[0] = $1;
+                    }
                     require "$sourcedir/$act[0]";
                     &{ $act[1] };
                 }

@@ -643,7 +643,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
           )
         {
             $fixfile = $file;
-            if( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm ) {
+            if ( $fixfile =~ m/.+\\([^\\]+)$|.+\/([^\/]+)$/xsm ) {
                 $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gxsm;
             }
 
@@ -689,7 +689,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                     }
                 }
             }
-            if( $fixext =~ m/[.](pl|pm|cgi|php)/ixsm) {
+            if ( $fixext =~ m/[.](pl|pm|cgi|php)/ixsm ) {
                 $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
             }
             $fixname =~ s/[.]/_/gxsm;

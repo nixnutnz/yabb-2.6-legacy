@@ -124,7 +124,7 @@ sub chk_ip {
             }
         }
     }
-    elsif ( $tochk =~ /[:]/xsm  ) {
+    elsif ( $tochk =~ /[:]/xsm ) {
         if ( $tochk =~ /(?:[:][:]).*?([:][:])/xsm ) {
             $bad = 4;
         }

@@ -74,6 +74,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         $adminindexplver, $adminindexmods, @adminindexmods, $yabbplver,
         $yabbmods,        @yabbmods,
     );
+    $boarddir = clean_dir($boarddir);
     require "$boarddir/$yyexec.$yyext";
     my %checksum = ();
     my ( $vercheck, $ver_age, $date );
@@ -254,7 +255,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
     foreach my $x (@defaulthtmlver) {
         if ( $x =~ /\Q<!-- YaBB \E/xsm ) {
             $x =~
-              s/<!-- YaBB (.*?) \$Revision: (.*?) \$ -->/YaBB $1 Build $2/igsm;
+s/<!--\sYaBB\s(.*?)\s\$Revision:\s(.*?)\s\$\s-->/YaBB $1 Build $2/igxsm;
             $defaulthtmlver = $x;
             our ($DAT);
             fopen( 'DAT', '<', "$templatesdir/default/default.html" )
@@ -338,7 +339,9 @@ function hideMods(id) {
             </tr>~;
 
     my @langflds = sort keys %lngs;
+    chomp $langdir;
     foreach my $fld (@langflds) {
+        chomp $fld;
         if ( -e "$langdir/$fld/version.txt" ) {
             open my $FILE, '<', "$langdir/$fld/version.txt"
               or croak "$croak{'open'} $langdir/$fld/version.txt";
@@ -387,16 +390,21 @@ function hideMods(id) {
                 %newcheck  = %checksum;
                 $nvercheck = 0;
             }
+            $langdir = clean_dir($langdir);
             foreach my $filein_dir (@lfilesanddirsf) {
                 chomp $filein_dir;
+
                 if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
-                    $date = time;
+                    $fld        = clean_folder($fld);
+                    $filein_dir = clean_file($filein_dir);
                     require "$langdir/$fld/$filein_dir";
+                    $date = time;
                     my $flda        = lc $fld;
                     my $txtrevision = lc $filein_dir;
                     my $modmatch    = q{};
                     $txtrevision =~ s/[.]lng/lngver/igxsm;
                     $txtrevision = $flda . $txtrevision;
+
                     if ( ${$txtrevision} ) {
                         ${$txtrevision} =~
                           s/\$Revision: (.*?) \$/Build $1/igxsm;
@@ -442,12 +450,15 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 foreach my $filein_dir (@lfilesanddirsm) {
                     chomp $filein_dir;
                     if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
+                        $fld        = clean_folder($fld);
+                        $filein_dir = clean_file($filein_dir);
                         require "$langdir/$fld/Mods/$filein_dir";
                         my $flda        = lc $fld;
                         my $txtrevision = lc $filein_dir;
                         my $modmatch    = q{};
                         $txtrevision =~ s/[.]lng/lngver/igxsm;
                         $txtrevision = $flda . $txtrevision;
+
                         if ( ${$txtrevision} ) {
                             ${$txtrevision} =~
                               s/\$Revision: (.*?) \$/Build $1/igxsm;
@@ -500,10 +511,14 @@ qq~<span class="small"> $detailed{'upped'} $date</span>~;
                     my @helpdir = readdir HELPDIRF;
                     closedir HELPDIRF;
                     @helpdir = sort @helpdir;
+                    $date    = time;
                     foreach my $helpin_dir (@helpdir) {
                         chomp $helpin_dir;
                         if ( $helpin_dir =~ m/[.]help\Z/xsm ) {
-                            $date = time;
+                            $helpfile   = clean_dir($helpfile);
+                            $area       = clean_folder($area);
+                            $fld        = clean_folder($fld);
+                            $helpin_dir = clean_file($helpin_dir);
                             require "$helpfile/$fld/$area/$helpin_dir";
                             my $txtrevision =
                               lc $fld . $area . '_' . $helpin_dir;
@@ -584,6 +599,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     foreach my $filein_dir (@admin_dir) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
+            $admindir   = clean_dir($admindir);
+            $filein_dir = clean_file($filein_dir);
             require "$admindir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pl/plver/igxsm;
@@ -613,6 +630,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             </tr>~;
         }
         elsif ( $filein_dir =~ m/[.]pm\Z/xsm ) {
+            $admindir   = clean_dir($admindir);
+            $filein_dir = clean_file($filein_dir);
             require "$admindir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pm/pmver/igxsm;
@@ -651,6 +670,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     foreach my $filein_dir (@admin_dirm) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
+            $admindir   = clean_dir($admindir);
+            $filein_dir = clean_file($filein_dir);
             require "$admindir/Mods/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pl/plver/igxsm;
@@ -674,6 +695,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             </tr>~;
         }
         elsif ( $filein_dir =~ m/[.]pm\Z/xsm ) {
+            $admindir   = clean_dir($admindir);
+            $filein_dir = clean_file($filein_dir);
             require "$admindir/Mods/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pm/pmver/igxsm;
@@ -726,6 +749,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     foreach my $filein_dir (@source_dir) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
+            $sourcedir  = clean_dir($sourcedir);
+            $filein_dir = clean_file($filein_dir);
             require "$sourcedir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pl/plver/igxsm;
@@ -755,6 +780,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             </tr>~;
         }
         elsif ( $filein_dir =~ m/[.]pm\Z/xsm ) {
+            $sourcedir  = clean_dir($sourcedir);
+            $filein_dir = clean_file($filein_dir);
             require "$sourcedir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pm/pmver/igxsm;
@@ -791,6 +818,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     foreach my $filein_dir (@source_dirm) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
+            $sourcedir  = clean_dir($sourcedir);
+            $filein_dir = clean_file($filein_dir);
             require "$sourcedir/Mods/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pl/plver/igxsm;
@@ -815,6 +844,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             </tr>~;
         }
         elsif ( $filein_dir =~ m/[.]pm\Z/xsm ) {
+            $sourcedir  = clean_dir($sourcedir);
+            $filein_dir = clean_file($filein_dir);
             require "$sourcedir/Mods/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pm/pmver/igxsm;
@@ -908,11 +939,15 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
         foreach my $filein_dir (@template_dir) {
             chomp $filein_dir;
             if ( $filein_dir =~ m/[.]template\Z/xsm ) {
+                $templatesdir = clean_dir($templatesdir);
+                $folderindir  = clean_folder($folderindir);
+                $filein_dir   = clean_file($filein_dir);
                 require "$templatesdir/$folderindir/$filein_dir";
                 my $txtrevision = lc $filein_dir;
                 my $flda        = lc $folderindir;
                 $txtrevision =~ s/[.]template/temver/igxsm;
                 $txtrevision = $flda . $txtrevision;
+
                 if ( ${$txtrevision} ) {
                     ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
                 }
@@ -949,6 +984,9 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             </tr>~;
             }
             elsif ( $filein_dir =~ m/[.]def\Z/xsm ) {
+                $templatesdir = clean_dir($templatesdir);
+                $folderindir  = clean_folder($folderindir);
+                $filein_dir   = clean_file($filein_dir);
                 require "$templatesdir/$folderindir/$filein_dir";
                 my $txtrevision = lc $filein_dir;
                 my $flda        = lc $folderindir;
@@ -1048,11 +1086,15 @@ s/<!--\s YaBB\s (.*?)\s \$Revision\:\s (.*?)\s \$\s -->/YaBB $1 Build $2/igxsm;
                 foreach my $filein_dir (@template_dirm) {
                     chomp $filein_dir;
                     if ( $filein_dir =~ m/[.]template\Z/xsm ) {
+                        $templatesdir = clean_dir($templatesdir);
+                        $folderindir  = clean_folder($folderindir);
+                        $filein_dir   = clean_file($filein_dir);
                         require "$templatesdir/$folderindir/Mods/$filein_dir";
                         my $txtrevision = lc $filein_dir;
                         my $flda        = lc $folderindir;
                         $txtrevision =~ s/[.]template/temver/igxsm;
                         $txtrevision = $flda . $txtrevision;
+
                         if ( ${$txtrevision} ) {
                             ${$txtrevision} =~
                               s/\$Revision: (.*?) \$/Build $1/igxsm;

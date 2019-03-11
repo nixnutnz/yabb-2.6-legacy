@@ -86,7 +86,7 @@ foreach my $i (@alist) {
 require Sources::Subs;
 require Sources::DateTime;
 load_language('Backup');
-my @ENVpaths = split /\:/xsm, $ENV{'PATH'};
+my @envpaths = split /\:/xsm, $ENV{'PATH'};
 my $mcurtime = CORE::time;
 
 my $anno = ( gmtime $mcurtime )[5];
@@ -121,7 +121,7 @@ sub runbackup {
               $again[4] eq 'tar' ? 'Archive::Tar' : 'Archive::Zip';
             $compressmethod =
               $again[5]
-              ? ( $again[5] eq 'gz' ? 'Compress::Zlib' : 'Compress::Bzip2' )
+              ? ( $again[5] eq 'gz' ? 'Compress::Zlib' : 'IO::Compress::Bzip2' )
               : 'none';
         }
         else {
@@ -160,7 +160,7 @@ sub runbackup {
     my $filedirs = join q{_}, @backup_paths;
 
     # Verify that our method is possible, and load it if it is a module
-    BackupMethodInit($filedirs);
+    backup_method_init($filedirs);
 
 # Handle the conversion of the informal backup_paths stored in the settings file to the real ones
 # We will build a hash to quickly match them.
@@ -202,10 +202,10 @@ sub runbackup {
                         $ENV{'SCRIPT_FILENAME'} =~ /(.*\/)/xsm;
                         $path = "$1$path";
                     }
-                    BackupDirectory( $path, $filedirs );
+                    backupdirectory( $path, $filedirs );
 
                     if ( time() > $time_to_jump ) {
-                        BackupMethodFinalize( $filedirs, 1 );
+                        backup_method_finalize( $filedirs, 1 );
 
                         runbackup_loop( $i, $j, $curtime, $backupnewest,
                             $backuptime );
@@ -219,12 +219,12 @@ sub runbackup {
  # Last, we will finalize the archive. If it is a tar, we compress them,
  # if requested. This can NOT be done with the forum out of maintenance mode
  # due to the maintenance.lock file that is removed with &automaintenance('off')
-    BackupMethodFinalize( $filedirs, 0 );
+    backup_method_finalize( $filedirs, 0 );
 
     our $lastbackup = $curtime;
 
     # save the last backup time with the actual settings
-    print_BackupSettings();
+    print_backup_settings();
     backupdone();
     return;
 }
@@ -319,7 +319,7 @@ sub check_backup_settings {
         }
     }
     else {
-        my $newcommand = CheckPath($backupmethod);
+        my $newcommand = check_path($backupmethod);
         if ( !$newcommand ) {
             fatal_error( q{}, "$backup_txt{40} $backupmethod $backup_txt{41}" );
         }
@@ -327,7 +327,7 @@ sub check_backup_settings {
 
     # If we are using $backupprogusr/tar, check for the compression method.
     if ( $backupmethod eq "$backupprogusr/tar" && $compressmethod ne 'none' ) {
-        my $newcommand = CheckPath($compressmethod);
+        my $newcommand = check_path($compressmethod);
         if ( !$newcommand ) {
             fatal_error( q{},
                 "$backup_txt{40} $compressmethod $backup_txt{41}" );
@@ -351,27 +351,27 @@ sub check_backup_settings {
     return;
 }
 
-sub BackupDirectory {
+sub backupdirectory {
 
     # Handles all the fun of directly archiving a directory.
     my ( $dir, $filedirs ) = @_;
-    my ( $recursemode, $cr, $Nt );
+    my ( $recursemode, $cr, $nt );
     $recursemode = 1;
     if ( $dir =~ s/^!//xsm ) { $recursemode = 0; }
     if ( $backupmethod eq "$backupprogusr/tar" ) {
         $cr = ( $tarcreated || $mycurtime ) ? '-r' : '-c';
         $tarcreated = 1;
         if ( !$recursemode ) { $dir .= '/*.*'; }
-        if ($backupnewest) { $Nt = "-N \@$backupnewest"; }
+        if ($backupnewest) { $nt = "-N \@$backupnewest"; }
         $dir =~ s/^\///xsm;
 
     # needed not to get server log messages like "Removing leading `/' from ..."
         ak_system(
-"tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir"
+"tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $nt $dir"
           )
           || fatal_error(
             q{},
-"'tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir' $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
+"'tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $nt $dir' $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 )
           );
     }
@@ -379,26 +379,26 @@ sub BackupDirectory {
         my $recurseoption;
         if ( !$recursemode ) { $dir .= '/*.*'; }
         else                 { $recurseoption = 'r'; }
-        if ($backupnewest) { $Nt = "-t $backupnewest"; }
+        if ($backupnewest) { $nt = "-t $backupnewest"; }
         ak_system(
-"zip -gq$recurseoption $Nt $backupdir/backup$backuptype.$curtime.$filedirs.zip $dir"
+"zip -gq$recurseoption $nt $backupdir/backup$backuptype.$curtime.$filedirs.zip $dir"
           )
           || fatal_error(
             q{},
-"'zip -gq$recurseoption $Nt $backupdir/backup$backuptype.$curtime.$filedirs.zip $dir' $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
+"'zip -gq$recurseoption $nt $backupdir/backup$backuptype.$curtime.$filedirs.zip $dir' $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 )
           );
     }
     elsif ( $backupmethod eq 'Archive::Tar' ) {
-        $tarball->add_files( RecurseDirectory( $dir, $recursemode ) );
+        $tarball->add_files( recurse_directory( $dir, $recursemode ) );
     }
     elsif ( $backupmethod eq 'Archive::Zip' ) {
-        map { $zipfile->addFile($_) } RecurseDirectory( $dir, $recursemode );
+        map { $zipfile->addFile($_) } recurse_directory( $dir, $recursemode );
     }
     return;
 }
 
-sub RecurseDirectory {
+sub recurse_directory {
 
 # Simple subroutine to run through every entry in a directory and return a giant list of the files/subdirs.
     my ( $dir, $recursemode ) = @_;
@@ -415,7 +415,7 @@ sub RecurseDirectory {
                 && -d "$dir/$item" )
             {
                 push @newcontents,
-                  RecurseDirectory( "$dir/$item", $recursemode );
+                  recurse_directory( "$dir/$item", $recursemode );
             }
             elsif (
                 -f "$dir/$item"
@@ -430,7 +430,7 @@ sub RecurseDirectory {
     return @newcontents;
 }
 
-sub print_BackupSettings {
+sub print_backup_settings {
     my @newpaths;
     my @paths = qw(src bo lan mem mes temp var html upld);
     foreach my $path (@paths) {
@@ -447,7 +447,7 @@ sub print_BackupSettings {
     return;
 }
 
-sub BackupMethodInit {
+sub backup_method_init {
     my $filedirs = shift;
 
     # Check module types and load them at runtime (not compilation)
@@ -468,13 +468,13 @@ sub BackupMethodInit {
                     "$backup_txt{'28'} Compress::Zlib: $EVAL_ERROR" );
             }
         }
-        elsif ( $compressmethod eq 'Compress::Bzip2' ) {
-            if ( eval { require Compress::Bzip2; 1 } ) {
-                Compress::Bzip2->import(':utilities');
+        elsif ( $compressmethod eq 'IO::Compress::Bzip2' ) {
+            if ( eval { require IO::Compress::Bzip2; 1 } ) {
+                IO::Compress::Bzip2->import(':utilities');
             }
             else {
                 fatal_error( q{},
-                    "$backup_txt{'28'} Compress::Bzip2: $EVAL_ERROR" );
+                    "$backup_txt{'28'} IO::Compress::Bzip2: $EVAL_ERROR" );
             }
         }
         else { $compressmethod = 'none'; }
@@ -506,17 +506,17 @@ sub BackupMethodInit {
         }
     }
     else {
-        if ( !CheckPath($backupmethod) ) {
+        if ( !check_path($backupmethod) ) {
             fatal_error( q{}, "$backup_txt{29} $backupmethod." );
         }
-        if ( $compressmethod ne 'none' && !CheckPath($compressmethod) ) {
+        if ( $compressmethod ne 'none' && !check_path($compressmethod) ) {
             fatal_error( q{}, "$backup_txt{30} $compressmethod." );
         }
     }
     return;
 }
 
-sub BackupMethodFinalize {
+sub backup_method_finalize {
     my ( $filedirs, $loop ) = @_;
     if ( !$loop && $backupmethod eq "$backupprogusr/tar" ) {
         if ( $compressmethod eq "$backupprogbin/bzip2" ) {
@@ -552,7 +552,7 @@ sub BackupMethodFinalize {
             $gzip->gzclose();
             unlink "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar";
         }
-        elsif ( $compressmethod eq 'Compress::Bzip2' ) {    # Bzip2 as a module
+        elsif ( $compressmethod eq 'IO::Compress::Bzip2' ) { # Bzip2 as a module
             my ($bzip2) = bzopen(
                 "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar.bz2",
                 'wb' );
@@ -579,14 +579,14 @@ sub ak_system
     return 1;                                     # Success; return 1.
 }
 
-sub CheckPath {
+sub check_path {
     my ($file) = @_;
 
     if ( -e $file ) { return $file; }
 
     $file =~ s/\A.*\///xsm;
 
-    foreach my $path (@ENVpaths) {
+    foreach my $path (@envpaths) {
         $path =~ s/\/\Z//xsm;
         if ( -e "$path/$file" ) { return "$path/$file"; }
     }

@@ -631,7 +631,8 @@ s/\[justify\](.*?)\[\/justify\]/<div style="text-align: justify">$1<\/div><!--ju
         $message =~ s/\Q<div style=\E/<div_style=/gxsm;
         my $reg1 =
 qr{([^\w"=\[\]]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]\]|\[td\]|\A)}xsm;
-        my $reg2 = qr{(?:[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]+?)}xsm;
+        my $reg2 =
+          qr{(?:[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]+?)}xsm;
         my $reg3 = qr{(?:[\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})}xsm;
 ## $reg3 greedy generates warnings with 5.024+ ##
 
@@ -640,18 +641,15 @@ qr{[^"=\[\]\/:.\-(:\/\/\w+)]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]}
         {
             no warnings;
 ## regex warning issues with 5.024+ ##
-            if ( $message =~
-m/$reg1\\*(\w+?:\/\/$reg2[.]$reg3+?)/ixsm
-              )
-            {
+            if ( $message =~ m/$reg1\\*(\w+?:\/\/$reg2[.]$reg3+?)/ixsm ) {
                 $message =~
-s/$reg1\\*(\w+?:\/\/$reg2[.]$reg3+?)/format_url($1,$2)/eigxsm;
+                  s/$reg1\\*(\w+?:\/\/$reg2[.]$reg3+?)/format_url($1,$2)/eigxsm;
             }
             if ( $message =~
 m/($reg4|\[[*]]|\[td\]|\A|[(])\\*(www[.][^.]$reg2[.]$reg3+?)/ixsm
-          )
+              )
             {
-            $message =~
+                $message =~
 s/($reg4|\[[*]]|\[td\]|\A|[(])\\*(www[.][^.]$reg2[.]$reg3+?)/format_url($1,$2)/eigxsm;
             }
         }

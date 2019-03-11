@@ -39,8 +39,8 @@ our (
 );
 ## paths ##
 our (
-    $adminurl, $boardurl,  $convdir, $htmldir,
-    $langdir,  $memberdir, $vardir,  $templatesdir, $boardsdir,
+    $adminurl,  $boardurl, $convdir,      $htmldir, $langdir,
+    $memberdir, $vardir,   $templatesdir, $boardsdir,
 );
 ## settings ##
 our (
@@ -146,6 +146,9 @@ sub getlastlogins {
     our (%useraccount);
     foreach my $line (@adminlog) {
         chomp $line;
+        if ( $line =~ /^([-\@\w|.]+)$/xsm ) {
+            $line = $1;    # $data now untainted
+        }
         my @element = split /[|]/xsm, $line;
         {
             no strict qw(refs);
@@ -217,8 +220,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
               or croak "$croak{'open'} clicklog.log";
             my @log = <$LOG>;
             fclose('LOG') or croak "$croak{'close'} clicklog.log";
-            $yyclicks    = @log;
-            $yyclicks    = number_format($yyclicks);
+            $yyclicks = @log;
+            $yyclicks = number_format($yyclicks);
             $yyclicktext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm;
             $yyclicklink =
 qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
@@ -234,7 +237,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
         $yyclicks    = q{};
     }
     my $errorslog = q{};
-    if ( -e "$vardir/errorlog.log" ){
+    if ( -e "$vardir/errorlog.log" ) {
         our ($ELOG);
         fopen( 'ELOG', '<', "$vardir/errorlog.log" )
           or croak "$croak{'open'} error.log";
@@ -307,7 +310,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     # &getlog; not used here !!?
     my ( %lastpostrealtime, %lastposttime, %lastposterguest );
     my ( $lsdatetime, $lsposter, $lssub, $lsreply, $lspostid );
-    my $newlink ='N/A';
+    my $newlink = 'N/A';
     foreach my $curboard (@loadboards) {
         chomp $curboard;
         my $lastposttime = q{};
@@ -345,34 +348,35 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
             $totalt += ${ $uid . $curboard }{'threadcount'};
         }
 
-        # determine the true last post on all the boards a user has access to (Admin has access to everything)
+# determine the true last post on all the boards a user has access to (Admin has access to everything)
         our %totals;
+        $boardsdir = clean_dir($boardsdir);
         require "$boardsdir/forum.totals";
         my %gettots = ();
         foreach my $i ( keys %totals ) {
-            if ( ${$totals{$i}}[2] ne 'N/A' ) {
-                $gettots{$i} = ${$totals{$i}}[2];
+            if ( ${ $totals{$i} }[2] ne 'N/A' ) {
+                $gettots{$i} = ${ $totals{$i} }[2];
             }
         }
-        my @newsort = reverse sort { $gettots{$a} <=> $gettots{$b} } keys %gettots;
+        my @newsort =
+          reverse sort { $gettots{$a} <=> $gettots{$b} } keys %gettots;
         if (@newsort) {
             my $lastthreadtime = 0;
-            $lastposttime = ${$totals{$newsort[0]}}[2];
-            if ( $lastposttime > $lastthreadtime )
-            {
-                $lsdatetime     = timeformat($lastposttime);
-                $lsposter       = ${$totals{$newsort[0]}}[3];
-                $lssub          = ${$totals{$newsort[0]}}[6];
-                $lspostid       = ${$totals{$newsort[0]}}[4];
-                $lsreply        = ${$totals{$newsort[0]}}[5];
+            $lastposttime = ${ $totals{ $newsort[0] } }[2];
+            if ( $lastposttime > $lastthreadtime ) {
+                $lsdatetime = timeformat($lastposttime);
+                $lsposter   = ${ $totals{ $newsort[0] } }[3];
+                $lssub      = ${ $totals{ $newsort[0] } }[6];
+                $lspostid   = ${ $totals{ $newsort[0] } }[4];
+                $lsreply    = ${ $totals{ $newsort[0] } }[5];
                 ( $lssub, undef ) = split_splice_move( $lssub, 0 );
                 $lssub = to_chars($lssub);
-                $newlink = qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)~;
+                $newlink =
+qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)~;
             }
         }
     }
-    $yymain .=
-qq~$newlink</div>
+    $yymain .= qq~$newlink</div>
                     <br />
                     <div class="admin-total-left">$admin_txt{'684'}</div>
                     <div class="admin-total-mid">$administrators</div>
@@ -440,7 +444,7 @@ sub showclicklog {
 
     if ( !-e "$vardir/clicklog.log" ) {
         fopen( 'LOG', '>', "$vardir/clicklog.log" )
-      or croak "$croak{'open'} clicklog.log";
+          or croak "$croak{'open'} clicklog.log";
         fclose('LOG') or croak "$croak{'close'} clicklog.log";
     }
     our ($LOG);

@@ -32,7 +32,10 @@ our ( %admin_img, %admin_txt, %admintxt, %croak, %errorlog );
 ## paths ##
 our ( $adminurl, $boardurl, $vardir, $scripturl, $yyhtml_root, );
 ## settings ##
-our ( $ip_lookup, $use_guardian, $use_htaccess, $yymycharset, $numposts, $preregspan, $minlinkpost, $minlinksig );
+our (
+    $ip_lookup, $use_guardian, $use_htaccess, $yymycharset,
+    $numposts,  $preregspan,   $minlinkpost,  $minlinksig
+);
 ## other ##
 our (
     $action_area, $date,     $OS_ERROR, $yyaext,
@@ -65,6 +68,11 @@ sub error_log {
 
     foreach my $i ( 0 .. $#errors ) {
         my @tmp_array = split /[|]/xsm, $errors[$i];
+        foreach my $i ( 0 .. $#tmp_array ) {
+            if ( $tmp_array[$i] =~ m/[^\w:@]/xsm ) {
+                $tmp_array[$i] =~ s/[^\w:@]//gxsm;
+            }
+        }
         if (   $tmp_array[0] eq q{}
             || $tmp_array[0] =~ /\D/igxsm
             || $tmp_array[1] eq q{}

@@ -559,6 +559,7 @@ sub delete_boards {
     my @x = @_;
     is_admin_or_gmod();
     our (%control);
+    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
     my @oldcontrols = keys %control;
     foreach my $board (@x) {
@@ -658,7 +659,7 @@ sub add_boards {
         $indent -= 2;
     };
     my $catboardlist_js = q{};
-    for $thiscat (@categoryorder) {
+    foreach $thiscat (@categoryorder) {
         my @catboards = @{ $cat{$thiscat} };
         $indent = -2;
         $catboardlist{$thiscat} = q~||~;
@@ -1782,6 +1783,7 @@ qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=man
     }
 
     write_forummaster();
+    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
 
     # Update categories for subboards that got changed.
@@ -2172,6 +2174,7 @@ sub reorder_boards2 {
             }
         }
         write_forummaster();
+        $boardsdir = clean_dir($boardsdir);
         require "$boardsdir/forum.control";
 
         if ($moveitem) {

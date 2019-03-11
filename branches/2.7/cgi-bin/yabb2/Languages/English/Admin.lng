@@ -780,6 +780,9 @@ This is a test of your {yabb mbname} Forum's e-mail settings.
 Thanks for using YaBB!~,
     'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
 
+    '350op'    => q~Site Name if not the same as Forum Name~,
+    '350opi'   => q~URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>~,
+    '350opb'   => q~Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>~,
 );
 
 %detailed = (
@@ -1657,7 +1660,7 @@ q~Used to send e-mails via SMTP.<br />This module is only needed if you want to 
 q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
     'Compress::Zlib' =>
 q~Used for the Backup feature and browser Output Compression.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details) and/or if you want to enable "Use GZip-Compression?". Otherwise you do not need this module.~,
-    'Compress::Bzip2' =>
+    'IO::Compress::Bzip2' =>
 q~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
     'Archive::Tar' =>
 q~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,

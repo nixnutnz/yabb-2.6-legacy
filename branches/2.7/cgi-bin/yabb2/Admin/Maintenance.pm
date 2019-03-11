@@ -136,6 +136,8 @@ sub rebuild_messageindex {
                 ${$thread}{'board'} = q{};
             }
             else {
+                $datadir = clean_dir($datadir);
+                $thread  = clean_folder($thread);
                 require "$datadir/$thread.ctb";
                 @repliers = split /,/xsm, ${$thread}{'repliers'} || q{};
             }
@@ -694,8 +696,7 @@ sub rebuild_memlist {
     # If it is completely done ...
     if ( !@contents ) {
         %memberlist = ();
-
-        # Sort memberlist.txt
+        $memberdir  = clean_dir($memberdir);
         require "$memberdir/memberlist.txt.rebuild";
 
         my $newlist = q{};
@@ -1068,6 +1069,8 @@ sub rebuild_notifications {
             if ( -e "$boardsdir/$myboard.mail"
                 && ( -s "$boardsdir/$myboard.mail" ) > 5 )
             {
+                $boardsdir = clean_dir($boardsdir);
+                $myboard   = clean_folder($myboard);
                 require "$boardsdir/$myboard.mail";
                 my @temp = sort keys %theboard;
                 undef %theboard;
@@ -1089,6 +1092,8 @@ sub rebuild_notifications {
             if ( -e "$datadir/$mythread.mail"
                 && ( -s "$datadir/$mythread.mail" ) > 5 )
             {
+                $datadir  = clean_dir($datadir);
+                $mythread = clean_folder($mythread);
                 require "$datadir/$mythread.mail";
                 my @temp = sort keys %thethread;
                 undef %thethread;
@@ -1129,12 +1134,15 @@ sub rebuild_notifications {
                 }
             }
             else {
+                $memberdir = clean_dir($memberdir);
+                $u         = clean_folder($u);
                 require "$memberdir/$u.vars";
                 %{ $uid . $u } = %vars;
                 my $realname = 'not loaded';
                 my $boardnot = 'not loaded';
                 my %bb       = ();
                 if ( %{ $uid . $u } ) {
+
                     for ( split /,/xsm,
                         ${ $uid . $u }{'board_notifications'} || q{} )
                     {
@@ -1171,12 +1179,15 @@ sub rebuild_notifications {
                 }
             }
             else {
+                $memberdir = clean_dir($memberdir);
+                $u         = clean_folder($u);
                 require "$memberdir/$u.vars";
                 %{ $uid . $u } = %vars;
                 my $realname  = 'not loaded';
                 my $threadnot = 'not loaded';
                 my %t         = ();
                 if ( %{ $uid . $u } ) {
+
                     for ( split /,/xsm,
                         ${ $uid . $u }{'thread_notifications'} || q{} )
                     {
@@ -1208,6 +1219,8 @@ sub rebuild_notifications {
             my $brdnot    = 'boards not loaded';
             my $threadnot = 'threads not loaded';
             if ( -e "$memberdir/$u.vars" ) {
+                $memberdir = clean_dir($memberdir);
+                $u         = clean_folder($u);
                 require "$memberdir/$u.vars";
                 %{ $uid . $u } = %vars;
 
@@ -1222,6 +1235,8 @@ sub rebuild_notifications {
                             if ( -e "$boardsdir/$_.mail"
                                 && ( -s "$boardsdir/$_.mail" ) > 5 )
                             {
+                                $boardsdir = clean_dir($boardsdir);
+                                $_         = clean_folder($_);
                                 require "$boardsdir/$_.mail";
                                 if ( exists $theboard{$u} ) { $bb{$_} = 1; }
                             }
@@ -1234,6 +1249,8 @@ sub rebuild_notifications {
                             if ( -e "$datadir/$_.mail"
                                 && ( -s "$datadir/$_.mail" ) > 5 )
                             {
+                                $datadir = clean_dir($datadir);
+                                $_       = clean_folder($_);
                                 require "$datadir/$_.mail";
                                 if ( exists $thethread{$u} ) { $t{$_} = 1; }
                             }

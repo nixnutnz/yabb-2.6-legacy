@@ -44,13 +44,11 @@ our (
 );
 ## system ##
 our (
-    $annboard,     $boardname,   $boardperms, $curboard,
-    $currentboard, $date,        $iamadmin,   $iamgmod,
-    $mydesc,       $staff,       $uid,
-    $username,     $yydesc,      $yymain,     $yytitle,
-    %board,        %cat,         %catinfo,    %director,
-    %INFO,         %subboard,    %yy_cookies, @categoryorder,
-    $iamguest,
+    $annboard, $boardname,  $boardperms,    $curboard, $currentboard,
+    $date,     $iamadmin,   $iamgmod,       $mydesc,   $staff,
+    $uid,      $username,   $yydesc,        $yymain,   $yytitle,
+    %board,    %cat,        %catinfo,       %director, %INFO,
+    %subboard, %yy_cookies, @categoryorder, $iamguest,
 );
 
 # Change the error routine for here.

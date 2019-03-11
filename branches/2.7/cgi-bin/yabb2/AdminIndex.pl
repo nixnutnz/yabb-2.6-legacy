@@ -20,6 +20,7 @@ use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+delete @ENV{ 'IFS', 'CDPATH', 'ENV', 'BASH_ENV' };
 use Cwd;
 my $cwd = cwd();
 push @INC, $cwd;
@@ -185,6 +186,9 @@ sub yymaina {
             require Admin::AdminSubList;
             if ( $director{$action} ) {
                 my @act = split /&/xsm, $director{$action};
+                if ( $act[0] =~ /^([-\@\w.]+)$/xsm ) {
+                    $act[0] = $1;
+                }
                 require "$admindir/$act[0]";
                 {
                     no strict qw(refs);
@@ -511,17 +515,16 @@ sub trackadminlogins {
         @adminlog = reverse sort @adminlog;
     }
     $maxadminlog ||= 5;
-    open my $ADMINLOG, '>', "$vardir/adminlog.log"
-      or croak "cannot open $vardir/adminlog.log";
-    print {$ADMINLOG} qq~$date|$username|$user_ip\n~
-      or croak 'cannot print ADMINLOG';
+    my $adminlog = qq~$date|$username|$user_ip\n~;
     foreach my $i ( 0 .. ( $maxadminlog - 2 ) ) {
         if ( $adminlog[$i] ) {
             chomp $adminlog[$i];
-            print {$ADMINLOG} qq~$adminlog[$i]\n~
-              or croak 'cannot print ADMINLOG';
+            $adminlog .= qq~$adminlog[$i]\n~;
         }
     }
+    open my $ADMINLOG, '>', "$vardir/adminlog.log"
+      or croak "cannot open $vardir/adminlog.log";
+    print {$ADMINLOG} $adminlog or croak 'cannot print ADMINLOG';
     close $ADMINLOG or croak "cannot close $vardir/adminlog.log";
     return;
 }

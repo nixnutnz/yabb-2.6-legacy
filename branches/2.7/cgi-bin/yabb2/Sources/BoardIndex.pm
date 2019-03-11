@@ -70,9 +70,8 @@ our (
     $mysymrecent,      $mysymboard,         %bot_name,
     %catcol,           %childcnt,           %INFO,
     %lastposterguest,  %lastpostrealtime,   %lastposttime,
-    %new_icon,
-    %newload,          %sub_new_cnt,        %yy_cookies,
-    %yyuserlog,        @logentries,
+    %new_icon,         %newload,            %sub_new_cnt,
+    %yy_cookies,       %yyuserlog,          @logentries,
 );
 ## templates ##
 our (
@@ -608,16 +607,17 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                     $bddescr = ${ $uid . $crboard }{'description'};
                     $bddescr = to_chars($bddescr);
                 }
-                $iammod     = q{};
+                $iammod = q{};
                 my %moderators = ();
                 my $curmods = ${ $uid . $crboard }{'mods'} || q{};
 
                 foreach my $curuser ( split /\//xsm, $curmods || q{} ) {
                     if ( $curuser && $username eq $curuser ) { $iammod = 1; }
                     load_user($curuser);
-					if ($iammod) {
-                        $moderators{$curuser} = ${ $uid . $curuser }{'realname'};
-					}
+                    if ($iammod) {
+                        $moderators{$curuser} =
+                          ${ $uid . $curuser }{'realname'};
+                    }
                 }
                 my $showmods = q{};
                 if ( keys %moderators == 1 ) {
@@ -1433,9 +1433,9 @@ sub is_bot {
     if ( -e "$vardir/BotsHosts.pm" ) {
         our (%botname);
         require Variables::BotsHosts;
-        foreach my $i (keys %botname) {
-            if ($bothost =~ m/$i/ixsm ) {
-                if ($botname{$i} ){ $return = $botname{$i}; last; }
+        foreach my $i ( keys %botname ) {
+            if ( $bothost =~ m/$i/ixsm ) {
+                if ( $botname{$i} ) { $return = $botname{$i}; last; }
             }
         }
     }
@@ -2287,8 +2287,8 @@ sub getbrdmods {
     my ( $usr, $crboard ) = @_;
     load_user($usr);
     my %moderatorgroups = ();
-    my $iamod    = 0;
-    my $showmods = q{};
+    my $iamod           = 0;
+    my $showmods        = q{};
     foreach
       my $curgroup ( split /\//xsm, ${ $uid . $crboard }{'modgroups'} || q{} )
     {

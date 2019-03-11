@@ -68,7 +68,7 @@ if (  !${ $uid . $username }{'lastips'}
     my $getips = ${ $uid . $username }{'lastips'} || q{};
     $check .= "|$getips";
     ${ $uid . $username }{'lastips'} = $check;
-    if(${ $uid . $username }{'lastips'} =~ m/^(.*?[|].*?[|].*?)[|].*/xsm) {
+    if ( ${ $uid . $username }{'lastips'} =~ m/^(.*?[|].*?[|].*?)[|].*/xsm ) {
         ${ $uid . $username }{'lastips'} =~ s/^(.*?[|].*?[|].*?)[|].*/$1/xsm;
     }
 }
@@ -327,7 +327,7 @@ sub check_icon {
     $icon ||= q{};
 
     # Check the icon so HTML cannot be exploited.
-    if ( $icon =~ m/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/xsm) {
+    if ( $icon =~ m/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/xsm ) {
         $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
     }
     $icon =~ s/[[:^alpha:]]//gxsm;

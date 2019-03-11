@@ -137,11 +137,16 @@ our (
     $user_hide_user_text,     $user_reason,
     $useraddpoll,             $usertools,
     $usertxtwrap,             $very_hot_topic,
-    %templateset,             %lngs
+    %templateset,             %lngs,
+    $sitename,                $siteimg,
+    $og_on,                   $en_bookmarks
 );
+$sitename ||= q{};
+$siteimg  ||= q{};
+$og_on    ||= $en_bookmarks;
+
 ## system ##
-our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM,
-    $username );
+our ( $date, $dstoffset, $lang, %FORM, $username );
 
 ## our Mod Hook ##
 
@@ -431,6 +436,31 @@ qq~<input type="text" size="40" name="mbname" id="mbname" value="$mbname" />~,
                 name     => 'mbname',
                 validate => 'text',
             },
+
+            # OpenGraph Mod
+            {
+                description =>
+                  qq~<label for="og_on">$admin_txt{'350opb'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="og_on" id="og_on" value="1"${ischecked($og_on)} />~,
+                name => 'og_on',
+            },
+            {
+                description =>
+                  qq~<label for="sitename">$admin_txt{'350op'}</label>~,
+                input_html =>
+qq~<input type="text" size="40" name="sitename" id="sitename" value="$sitename" />~,
+                name => 'sitename,null',
+            },
+            {
+                description =>
+                  qq~<label for="siteimg">$admin_txt{'350opi'}</label>~,
+                input_html =>
+qq~<input type="text" size="40" name="siteimg" id="siteimg" value="$siteimg" />~,
+                name => 'siteimg,null',
+            },
+
+            # End OpenGraph Mod
             {
                 description =>
                   qq~<label for="fd_fm">$admin_txt{'350a'}</label>~,

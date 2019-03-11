@@ -1570,7 +1570,7 @@ sub preview {
 
     # allows the following HTML-tags in error messages: <br /> <strong>
     $error =~ s/&lt;br(\s \/)&gt;/<br \/>/igxsm;
-    if ($error =~ m/&lt;(\/?)b&gt;/ixsm) {
+    if ( $error =~ m/&lt;(\/?)b&gt;/ixsm ) {
         $error =~ s/&lt;(\/?)b&gt;/<$1strong>/igxsm;
     }
     if ( $action eq 'modify2' ) {
@@ -1908,8 +1908,8 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 }
                 get_chk_err( $fixname, \@filelist );
 
-                if( $fixext =~ m/[.](?:pl|pm|cgi|php)/ixsm ) {
-                    $fixext =~ s/[.](?:pl|pm|cgi|php)/._$1/ixsm;
+                if ( $fixext =~ m/[.](pl|pm|cgi|php)/ixsm ) {
+                    $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
                 }
                 $fixname =~ s/[.](?!tar$)/_/gxsm;
                 $fixfile = qq~$fixname$fixext~;
@@ -1996,7 +1996,10 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         # This is a new thread. Save it.
         our ($FILE);
         fopen( 'FILE', '<', "$boardsdir/$currentboard.txt", 1 )
-          or fatal_error( 'cannot_open', $currentboard );
+          or fatal_error(
+            'cannot_open to save currentboard',
+            "$boardsdir/$currentboard.txt"
+          );
         my @buffer = <$FILE>;
         fclose('FILE') or croak "$croak{'close'} $currentboard";
 
@@ -2009,7 +2012,8 @@ qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~
         fclose('FILE') or croak "$croak{'close'} $currentboard";
 
         fopen( 'FILE', '>', "$datadir/$newthreadid.txt" )
-          or fatal_error( 'cannot_open', $newthreadid );
+          or fatal_error( 'cannot_open',
+            "write new thread $datadir/$newthreadid.txt" );
         print {$FILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
           or croak "$croak{'print'} FILE";
@@ -2356,7 +2360,8 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
         }
     }
     undef %theboard;
-#    undef %memberinf;
+
+    #    undef %memberinf;
     return;
 }
 
@@ -2708,7 +2713,7 @@ sub send_guest_pm2 {
         $spam_hits_left_count =
           $post_speed_count - ${ $uid . $username }{'spamcount'};
         if ($spamdetected) { fatal_error( 'tsc_alert', $spamword ); }
-        else                      { fatal_error('speed_alert'); }
+        else               { fatal_error('speed_alert'); }
     }
 
     ## clean name and email - remove | from email and turn any _ to spaces in name
@@ -3013,7 +3018,7 @@ sub mod_alert2 {
             $spam_hits_left_count =
               $post_speed_count - ${ $uid . $username }{'spamcount'};
             if ($spamdetected) { fatal_error( 'tsc_alert', $spamword ); }
-            else                      { fatal_error('speed_alert'); }
+            else               { fatal_error('speed_alert'); }
         }
     }
 

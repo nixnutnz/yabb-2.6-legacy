@@ -2532,7 +2532,7 @@ sub get_filelist {
                     $spam_hits_left_count =
                       $post_speed_count - ${ $uid . $username }{'spamcount'};
                     foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
-                    fatal_error('tsc_alert', $spamword );
+                    fatal_error( 'tsc_alert', $spamword );
                 }
             }
             if ( $use_guardian && $string_on ) {
@@ -2544,7 +2544,7 @@ sub get_filelist {
                     }
                 }
             }
-            if ($fixext =~ m/[.](pl|pm|cgi|php)/ixsm) {
+            if ( $fixext =~ m/[.](pl|pm|cgi|php)/ixsm ) {
                 $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
             }
             $fixname =~ s/[.]{2}(?!tar$)/_/gxsm;

@@ -245,7 +245,8 @@ our (
     $backupprogbin,                $compressmethod,
     $backupdir,                    $lastbackup,
     $backupsettingsloaded,         $backupmethod,
-    %bookmarks,
+    %bookmarks,                    $sitename,
+    $siteimg,                      $og_on,
 );
 ## other ##
 our (
@@ -543,11 +544,15 @@ $dependicies
 sub email_test {
     require Sources::Mailer;
     my $testmessage = $admin_txt{'testmessage'};
-    $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/xsm;
-    sendmail(
-        $webmaster_email, $admin_txt{'testsubject'},
-        $testmessage,     $admin_txt{'mailfrom'}
-    );
+    $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/gxsm;
+    $testmessage =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
+    $testmessage =~ s/\Q{yabb webmaster_email}\E/$webmaster_email/gxsm;
+    my $mailfrom = $admin_txt{'mailfrom'};
+    $mailfrom =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
+    $mailfrom =~ s/\Q{yabb webmaster_email}\E/$webmaster_email/gxsm;
+    $mailfrom =~ s/&amp;/&/gxsm;
+    sendmail( $webmaster_email, $admin_txt{'testsubject'},
+        $testmessage, $mailfrom );
     return;
 }
 
@@ -642,11 +647,14 @@ sub save_settings_to {
         our ($MAINT);
         if ( -e "$langdir/$i/maintenancetext.txt" ) {
             fopen( 'MAINT', '<', "$langdir/$i/maintenancetext.txt" )
-              or fatal_error( 'cannot_open', "$langdir/$i/maintenancetext.txt", 1 );
+              or fatal_error( 'cannot_open', "$langdir/$i/maintenancetext.txt",
+                1 );
             $old_maint = do { local $INPUT_RECORD_SEPARATOR = undef; <$MAINT> };
             fclose('MAINT') or croak "$croak{'close'} MAINT";
         }
-        if ( ${ $i . '_maintenancetext' } && ${ $i . '_maintenancetext' } ne $old_maint ) {
+        if (   ${ $i . '_maintenancetext' }
+            && ${ $i . '_maintenancetext' } ne $old_maint )
+        {
             fopen( 'MAINT', '>', "$langdir/$i/maintenancetext.txt" )
               or croak "$croak{'open'} MAINT";
             print {$MAINT} ${ $i . '_maintenancetext' }
@@ -889,6 +897,10 @@ qq~\$newcalicon{'$i'} = \[ '${$newcalicon{$i}}[0]', '${$newcalicon{$i}}[1]' \];\
 \$cookieview = '$cookieview';           # Name of the Guest Message Limit cookie
 \$cookieviewtime = $cookieviewtime;         # life time for Guest Message Limit cookie
 \$screenlogin = $screenlogin;                # allow members to login using their screen name.
+
+\$sitename = "\Q$sitename\E";               # The name of your Site for OpenGraph
+\$siteimg = "\Q$siteimg\E";                 # URL of your site logo for OpenGraph
+\$og_on = "\Q$og_on\E";                     # Activate OpenGraph
 
 \$regtype = $regtype;                       # 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
                                     # 2 = pre registration and email activation, 3 = open registration

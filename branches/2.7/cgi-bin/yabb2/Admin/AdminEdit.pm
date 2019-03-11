@@ -115,6 +115,9 @@ sub editbots2 {
     my $newbots = qq~%botname = (\n~;
     foreach my $i ( sort @mybots ) {
         my @newbots = split /[|]/xsm, $i;
+        if ( $newbots[0] =~ /[^\w.-]/ixsm ) {
+            fatal_error( 'illegal', $newbots[0] );
+        }
         $newbots .= qq~'$newbots[0]' => '$newbots[1]',\n~;
     }
     $newbots .= qq~);\n\n1;\n~;
@@ -442,6 +445,8 @@ sub modifyagreement2 {
 
     $FORM{'agreement'} =~ s/\n/<br \/>\n/gxsm;
     if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
+        $helpfile          = clean_dir($helpfile);
+        $agreementlanguage = clean_folder($agreementlanguage);
         require "$helpfile/$agreementlanguage/User/user00_agreement.help";
         my $txtrevision =
           lc $agreementlanguage . 'user_user00_agreementhelpver';
@@ -1179,56 +1184,58 @@ sub edit_paths2 {
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-
-\$lastsaved = '$lastsaved';
-\$lastdate = '$lastdate';
+use strict;
+use warnings;
+our \$VERSION   = '2.7.00';
+our \$lastsaved = '$lastsaved';
+our \$lastdate = '$lastdate';
 
 ########## Directories ##########
 
-\$boardurl = '$boardurl';
+our \$boardurl = '$boardurl';
 # URL of your board's folder (without trailing '/')
-\$boarddir = '$boarddir';
+our \$boarddir = '$boarddir';
 # The server path to the board's folder (usually can be left as '.')
-\$boardsdir = '$boardsdir';
+our \$boardsdir = '$boardsdir';
 # Directory with board data files
-\$datadir = '$datadir';
+our \$datadir = '$datadir';
 # Directory with messages
-\$memberdir = '$memberdir';
+our \$memberdir = '$memberdir';
 # Directory with member files
-\$sourcedir = '$sourcedir';
+our \$sourcedir = '$sourcedir';
 # Directory with YaBB source files
-\$admindir = '$admindir';
+our \$admindir = '$admindir';
 # Directory with YaBB admin source files
-\$vardir = '$vardir';
+our \$vardir = '$vardir';
 # Directory with variable files
-\$langdir = '$langdir';
+our \$langdir = '$langdir';
 # Directory with Language files and folders
-\$helpfile = '$helpfile';
+our \$helpfile = '$helpfile';
 # Directory with Help files and folders
-\$templatesdir = '$templatesdir';
+our \$templatesdir = '$templatesdir';
 # Directory with template files and folders
-\$htmldir = '$htmldir';
+our \$htmldir = '$htmldir';
 # Base Path for all public-html files and folders
-\$facesdir = '$facesdir';
+our \$facesdir = '$facesdir';
 # Base Path for all avatar files
-\$uploaddir = '$uploaddir';
+our \$uploaddir = '$uploaddir';
 # Base Path for all attachment files
-\$pmuploaddir = '$pmuploaddir';
+our \$pmuploaddir = '$pmuploaddir';
 # Base Path for pm attachment files
-\$modimgdir = '$modimgdir';
+our \$modimgdir = '$modimgdir';
 # Base Path for all mod images
 
 ########## URLs ##########
 
-\$yyhtml_root = '$yyhtml_root';
+our \$yyhtml_root = '$yyhtml_root';
 # Base URL for all html/css files and folders
-\$facesurl = '$facesurl';
+our \$facesurl = '$facesurl';
 # Base URL for all avatar files
-\$uploadurl = '$uploadurl'; 
+our \$uploadurl = '$uploadurl'; 
 # Base URL for all attachment files
-\$pmuploadurl = '$pmuploadurl';
+our \$pmuploadurl = '$pmuploadurl';
 # Base URL for pm attachment files
-\$modimgurl = '$modimgurl';
+our \$modimgurl = '$modimgurl';
 # Base URL for all mod images
 
 if (\$ENV{'HTTPS'}) {

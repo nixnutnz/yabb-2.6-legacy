@@ -188,6 +188,8 @@ q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">re
     'backup' =>
       q~Remove this file if your board is in backup-lock for no reason.~,
     'tmpchange' => q~Change Template:~,
+    'am' => q~am~,
+    'pm' => q~pm~,
 );
 
 %load_txt = (
@@ -305,8 +307,8 @@ q~This information will not be saved, but will only be used to evaluate your app
     'admin_alert_one'        => q~</strong> validated Registrant~,
     'admin_alert_more'       => q~</strong> validated Registrants~,
     'admin_alert_end'        => q~ awaiting approval.~,
-    'admin_alert_end_more'   => q~ awaiting approval.~
-    ,    ## For languages that need a different end line on more than one user
+    'admin_alert_end_more'   => q~ awaiting approval.~,
+        ## For languages that need a different end line on more than one user
     'admin_alert_act_one'      => q~</strong> Pre-Registered Member that is~,
     'admin_alert_act_more'     => q~</strong> Pre-Registered Members that are~,
     'admin_alert_act_end'      => q~ not yet validated.~,
@@ -329,9 +331,9 @@ q~<div class="editbg">No Masterkey was set in the Security Settings/Validation I
 );
 
 %mailer = (
-    'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
+    'smtp' => qq~Unable to create Net::SMTP object. Server: '{yabb smtp_server}'\n\n~,
     'smtps1' =>
-qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
+qq~Unable to create Net::SMTPS object. Server: '{yabb smtp_server}', port '{yabb port}'\n\n~,
     'smtps2' =>
 q~Could not authenticate SMTPS credentials. Please provide credentials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
 );

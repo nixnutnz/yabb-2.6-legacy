@@ -120,7 +120,7 @@ sub backupsettings {
         'a08tar' => 'Archive::Tar|backupmethod3|',
         'a09tar' => 'none|tarmodulecompress|',
         'a10tar' => "Compress::Zlib|tarmodulecompress|$backup_txt{18}",
-        'a11tar' => "Compress::Bzip2|tarmodulecompress|$backup_txt{18}",
+        'a11tar' => "IO::Compress::Bzip2|tarmodulecompress|$backup_txt{18}",
         'a12tar' => 'blank||',
         'a13tar' => 'Archive::Zip|backupmethod4|',
     );
@@ -135,7 +135,7 @@ sub backupsettings {
         </tr>~;
 
     my $label_id = 0;
-    foreach my $module (qw(Compress::Zlib Compress::Bzip2)) {
+    foreach my $module (qw(Compress::Zlib IO::Compress::Bzip2)) {
         $methodchecklist{$module} ||= q{};
         $label_id++;
         $input =
