@@ -1,9 +1,9 @@
 checksum.txt
 Languages/Suomi/AddModerators.lng|3cfa065d8619938c1c0effd838d7a413
-Languages/Suomi/Admin.lng|bb82e87bc1a4f73619d99bbb1b9b84fd
+Languages/Suomi/Admin.lng|e19da4df16ce8fe04faaf1db924cd51e
 Languages/Suomi/Backup.lng|6213f5ea1165a9b9de9a891fa42c662e
 Languages/Suomi/BoardIndex.lng|3efec93e1fb5908a8fb1f8d453c6e547
-Languages/Suomi/Bookmarks.lng|f0fcb2afaa695e6790ad380b9e1416fe
+Languages/Suomi/Bookmarks.lng|930bcfa3a8eeb6b0b833bdfc0d00e2b6
 Languages/Suomi/ContextHelp.lng|f2f82fae079048234dcc4fd5e589223b
 Languages/Suomi/Convert.lng|94118e55c161a87e42bca0a7e77e8de0
 Languages/Suomi/Credits.lng|02c6049ae5175400ddcc61a42592190c
@@ -20,7 +20,7 @@ Languages/Suomi/HelpCentre.lng|fb25cbaab5ab13bbcdd26eec7b1ce2b9
 Languages/Suomi/InstantMessage.lng|4b1c649a59e65649cdb9d0f74d1da859
 Languages/Suomi/LivePreview.lng|2b2a14b34e7cf63f2914f6e6c9c0149b
 Languages/Suomi/LogInOut.lng|8c6d085dd375595c90d52dfa8895ed9d
-Languages/Suomi/Main.lng|83abbc55196b43bfb5eb85f0b7a36206
+Languages/Suomi/Main.lng|ddc2ef63c053caf9d1054367a9242ad6
 Languages/Suomi/MemberList.lng|3c013ee49ac0495c10854d32655af2a7
 Languages/Suomi/Menu.lng|b8cb5bf7fb2efd6a9917b20afc67b91c
 Languages/Suomi/MessageIndex.lng|bb992aa2d3e1eb47614828ab9e10889a

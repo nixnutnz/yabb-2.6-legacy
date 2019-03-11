@@ -1,9 +1,9 @@
 checksum.txt
 Languages/Russianx/AddModerators.lng|385b1d81fdc80477039c1894fc76e0b7
-Languages/Russianx/Admin.lng|13417834d04130c57e68a0ae8f2ff497
+Languages/Russianx/Admin.lng|53b775eb6f78e817c04a778309e15d5c
 Languages/Russianx/Backup.lng|4a3fdf385782cb697c6e15ef8e76133c
 Languages/Russianx/BoardIndex.lng|812e25f20dcdb392242e02b9b5450a91
-Languages/Russianx/Bookmarks.lng|531189e069c6a306648c7e5073d59473
+Languages/Russianx/Bookmarks.lng|01e83fc1b44afa0c63171a3f77134bb9
 Languages/Russianx/ContextHelp.lng|4f72ce50ddf995e5f1df74b87e663fb1
 Languages/Russianx/Convert.lng|554dc87c680acd13fd3f379408ae1a60
 Languages/Russianx/Credits.lng|9dea3251a3584216be42ca9b39e9d4b4
@@ -20,7 +20,7 @@ Languages/Russianx/HelpCentre.lng|a832d044402e60379d7dae30f163f0a1
 Languages/Russianx/InstantMessage.lng|f27f7f1ff8547c990249dc48512beb02
 Languages/Russianx/LivePreview.lng|1efe7debbbdfe46d9cc7358aa3400143
 Languages/Russianx/LogInOut.lng|98d72b4e6af84ea88d6dce5ea0b22dc4
-Languages/Russianx/Main.lng|c43122b13243c351cd99a97e958962fb
+Languages/Russianx/Main.lng|08ee2bbcb3293899bd85c2ec8c74f6b9
 Languages/Russianx/MemberList.lng|38fd77a432c27fbbb89dc884682a595a
 Languages/Russianx/Menu.lng|d81a32eea1970c2822c841323765a183
 Languages/Russianx/MessageIndex.lng|064454d6b070376f06c7bea6360d48f7

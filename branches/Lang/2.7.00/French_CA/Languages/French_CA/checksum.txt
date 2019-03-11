@@ -1,9 +1,9 @@
 checksum.txt
 Languages/French_CA/AddModerators.lng|6cd3e450054afd9aaee2bfcbfa8f7aff
-Languages/French_CA/Admin.lng|ec16cf0719f06d44c0d01512d0337462
+Languages/French_CA/Admin.lng|3f5f949462e0d0af100246cdec4c8ce8
 Languages/French_CA/Backup.lng|3d9951b6db75dd74163fa9ee3c3de87d
 Languages/French_CA/BoardIndex.lng|8a47d585dc97332b66baeb6348f6ece7
-Languages/French_CA/Bookmarks.lng|0c82c06bcc96cc9b6143b3d27593e7cd
+Languages/French_CA/Bookmarks.lng|1e1746f3eee34701d3eadf1972afafd8
 Languages/French_CA/ContextHelp.lng|1091b70eaf69846ee9fe4ee87de7210f
 Languages/French_CA/Convert.lng|621c9dd00107dbe278d32011ee620896
 Languages/French_CA/Credits.lng|a2bd6985cdcb0063e2f501948b9c107d
@@ -20,7 +20,7 @@ Languages/French_CA/HelpCentre.lng|903d1ab0ade5e93a74966e054df17f49
 Languages/French_CA/InstantMessage.lng|4e733bfc4c2d9675612fe93d0f63ad65
 Languages/French_CA/LivePreview.lng|cce06103af193e973b5c7d754f60c449
 Languages/French_CA/LogInOut.lng|7cc64581b6f7f93190478d59efe393d8
-Languages/French_CA/Main.lng|a3b7bb8b1f4e3d36fbfdae81e5535946
+Languages/French_CA/Main.lng|c403ae41deed3de9e27887ead261d955
 Languages/French_CA/MemberList.lng|99e166b90dfb923aa9eff6f8d0fc0b2a
 Languages/French_CA/Menu.lng|4e76b49ce69d935135573b2ca049c3e6
 Languages/French_CA/MessageIndex.lng|468a0c0f68146830c0af635a5e3d799a
