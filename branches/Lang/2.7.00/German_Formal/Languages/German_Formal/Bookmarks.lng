@@ -33,7 +33,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '05' => q~Sind Sie sicher, dass Sie dieses Bookmark löschen wollen?~,
     '08' => q~Es liegen noch keine Social Bookmarks vor.~,
     '09' => q~Social-Bookmark-Einstellungen~,
-    '10' => q~Bookmarks einschalten?~,
+    '10' => q~Bookmarks einschalten?<br /><span class="small">Hinweis: Open Graph-Tags für die Unterstützung von Facebook werden automatisch aktiviert, wenn Social Bookmarks aktiviert werden.</span>~,
     '11' =>
 q~Wählen Sie die Foren, wo die Bookmarks in gezeigt werden sollen:<br /><span class="small">- Wird kein Forum ausgewählt, sind alle Foren eingeschaltet.<br />- Wähle Ctrl, Shift oder Apple Key zum aktivieren/deaktivieren der Foren.</span>~,
     '12' => q~Social-Bookmarks~,

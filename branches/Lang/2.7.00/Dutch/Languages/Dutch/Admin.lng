@@ -811,6 +811,10 @@ Dit is een test van uw {yabb mbname} Forum's e-mail instellingen.
 
 Danku voor het gebruik van Yabb!~,
     'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
+
+    '350op'    => q~Site Name if not the same as Forum Name~,
+    '350opi'   => q~URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>~,
+    '350opb'   => q~Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>~,
 );
 
 %detailed = (
@@ -1699,7 +1703,7 @@ q~Gebruikt voor het verzenden van emails via SMTP.<br />Deze module is alleen no
 q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
     'Compress::Zlib' =>
 q~Gebruikt voor de back-up functie en browser Output compressie.<br />Deze module is alleen nodig als u geen andere back-up methoden beschikbaar heeft (Zie de back-up functie voor meer informatie) en/of als u wilt inschakelen "Gebruik GZip-compressie". Anders heeft u deze module niet nodig.~,
-    'Compress::Bzip2' =>
+    'IO::Compress::Bzip2' =>
 q~Gebruikt voor de back-up functie.<br />Deze module is alleen nodig als u geen andere back-up methoden beschikbaar heeft (Zie de back-up functie voor meer informatie). Anders heeft u deze module niet nodig.~,
     'Archive::Tar' =>
 q~Gebruikt voor de back-up functie.<br />Deze module is alleen nodig als u geen andere back-up methoden beschikbaar heeft (Zie de back-up functie voor meer informatie). Anders heeft u deze module niet nodig.~,

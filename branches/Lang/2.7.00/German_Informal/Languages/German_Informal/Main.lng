@@ -202,6 +202,8 @@ q~Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">reg
     'backup' =>
       q~Entferne diese Datei, wenn Dein Board ohne Grund im Backup-Modus ist.~,
     'tmpchange' => q~Wechsle Template:~,
+    'am' => q~am~,
+    'pm' => q~pm~,
 );
 
 %load_txt = (

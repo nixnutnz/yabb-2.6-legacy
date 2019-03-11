@@ -787,6 +787,10 @@ This is a test of your {yabb mbname} Forum's e-mail settings.
 Thanks for using YaBB!~,
     'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
 
+    '350op'    => q~Site Name if not the same as Forum Name~,
+    '350opi'   => q~URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>~,
+    '350opb'   => q~Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>~,
+
 );
 
 %detailed = (
@@ -1662,7 +1666,7 @@ q~Käytetään sähköpostien lähettämiseen SMTP:n kautta.<br />Moduuli on tar
 q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
     'Compress::Zlib' =>
 q~Käytetään varmuuskopioiden luomiseen ja sivuston pakkaamiseen selaimelle<br />Moduulia tarvitaan vain jos muita varmuuskopiomenetelmiä ei ole tarjolla tai jos käytät sivuston pakkausta. Muussa tapauksessa et tarvitse moduulia.~,
-    'Compress::Bzip2' =>
+    'IO::Compress::Bzip2' =>
 q~Käytetään varmuuskopion luomiseen.<br />Moduuli on tarpeellinen vain jos tarjolla ei ole mitään muuta varmuuskopiomenetelmää.~,
     'Archive::Tar' =>
 q~Käytetään varmuuskopion luomiseen.<br />Moduuli on tarpeellinen vain jos tarjolla ei ole mitään muuta varmuuskopiomenetelmää.~,

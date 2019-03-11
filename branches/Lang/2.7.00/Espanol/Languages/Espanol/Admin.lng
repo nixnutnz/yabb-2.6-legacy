@@ -795,6 +795,9 @@ This is a test of your {yabb mbname} Forum's e-mail settings.
 Thanks for using YaBB!~,
     'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
 
+    '350op'    => q~Site Name if not the same as Forum Name~,
+    '350opi'   => q~URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>~,
+    '350opb'   => q~Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>~,
 );
 
 %detailed = (
@@ -1689,7 +1692,7 @@ q~Usado para mandar emails por SMTP.<br />Este módulo sólo es necesario si qui
 q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
     'Compress::Zlib' =>
 q~Usado para la opción de Backup y para comprimir el tamaño del código HTML enviado por el YaBB al navegador.<br />Este módulo sólo es necesario si no tienes otros métodos de backup disponibles (mira la página de opciones de backup para más detalles) y/o si quieres habilitar "¿Usar Compresión-Gzip?". De lo contrario, no necesitas este módulo.~,
-    'Compress::Bzip2' =>
+    'IO::Compress::Bzip2' =>
 q~Usado para la opción de Backup.<br />Este módulo sólo es necesario si no tienes otros métodos de backup disponibles (mira la página de opciones de backup para más detalles). De lo contrario no necesitas este módulo.~,
     'Archive::Tar' =>
 q~Usado para la opción de Backup.<br />Este módulo sólo es necesario si no tienes otros métodos de backup disponibles (mira la página de opciones de backup para más detalles). De lo contrario no necesitas este módulo.~,

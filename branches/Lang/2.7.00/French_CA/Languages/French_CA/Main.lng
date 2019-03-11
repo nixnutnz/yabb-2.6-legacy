@@ -186,6 +186,8 @@ $maintenancetext = q~Nous sommes présentement en train d'effectuer une mise à 
     'banned'    => q~Bannis~,
     'backup' => q~Retirer ce fichier si votre forum est verrouillé sans raison.~,
     'tmpchange' => q~Changer de modèle:~,
+    'am' => q~am~,
+    'pm' => q~pm~,
 );
 
 %load_txt = (

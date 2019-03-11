@@ -29,7 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '05' => 'Oletko varma, että haluat poistaa tämän kirjanmerkin?',
     '08' => 'Tällä hetkellä ei ole yhtään sosiaalista kirjanmerkkiä.',
     '09' => 'Sosiaalisten kirjanmerkkien asetukset',
-    '10' => 'Ota käyttöön kirjanmerkit?',
+    '10' => 'Ota käyttöön kirjanmerkit?<br /><span class="small">Huomautus: Facebook-tuen avoimet graafitunnisteet aktivoituvat automaattisesti, kun sosiaaliset kirjanmerkit ovat käytössä.</span>',
     '11' =>
 'Valitse alueet, joissa kirjanmerkit näytetään:<br /><span class="small">- Jos yhtään aluetta ei ole valittuna, näytetään kaikkilla alueilla.<br />- Käytä Ctrl-, Shift- tai Apple-näppäintä valitaksesi/poistaaksesi valinnan alueilta.</span>',
     '12' => 'Sosiaaliset kirjanmerkit',

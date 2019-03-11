@@ -803,6 +803,12 @@ q~You may add a short reason for the ban by using a '|' symbol to separate the I
     'UTC' => q~(UTC)~,
 );
 
+## OpenGraph Mod
+$admin_txt{'350op'} = 'Site Name if not the same as Forum Name';
+$admin_txt{'350opi'} = 'URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>';
+$admin_txt{'350opb'} = 'Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>';
+##End Open Graph Mod
+
 %detailed = (
     '429'      => q~Детальная проверка версии~,
     '430'      => q~Файлов в папке Admin:~,
@@ -1685,7 +1691,7 @@ q~Используется для отправки почты через SMTP.<b
 q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
     'Compress::Zlib' =>
 q~Используется для резервного копирования форума и сжатия HTML кода при передаче его от форума браузеру.<br />Этот модуль требуется только, если Вы не имеете возможности использовать другой метод (смотри на странице управления резервным копированием). и/или если Вы хотите включить "Use GZip-Compression?". В противном случае Вам не требуется этот модуль.~,
-    'Compress::Bzip2' =>
+    'IO::Compress::Bzip2' =>
 q~Используется для резервного копирования форума.<br />Этот модуль требуется только, если Вы не имеете возможности использовать другой метод (смотри на странице управления резервным копированием). В противном случае Вам не требуется этот модуль.~,
     'Archive::Tar' =>
 q~Используется для резервного копирования форума.<br />Этот модуль требуется только, если Вы не имеете возможности использовать другой метод (смотри на странице управления резервным копированием). В противном случае Вам не требуется этот модуль.~,

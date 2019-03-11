@@ -190,6 +190,8 @@ q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">re
     'backup' =>
       q~Remove this file if your board is in backup-lock for no reason.~,
     'tmpchange' => q~Change Template:~,
+    'am' => q~am~,
+    'pm' => q~pm~,
 );
 
 %load_txt = (

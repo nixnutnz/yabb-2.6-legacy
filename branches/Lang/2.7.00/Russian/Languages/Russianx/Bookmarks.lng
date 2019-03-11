@@ -29,7 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '05' => q~Are you sure you want to delete this Bookmark?~,
     '08' => q~There are currently no Social Bookmarks.~,
     '09' => q~Social Bookmark Settings~,
-    '10' => q~Enable Bookmarks?~,
+    '10' => q~Enable Bookmarks? <br /><span class="small">Note: Open Graph tags for Facebook support will be automatically activated when Social Bookmarks are turned on.</span>~,
     '11' =>
 q~Select the Boards which Bookmarks will be shown in:<br /><span class="small">- If no boards are selected then all boards will be enabled.<br />- Use Ctrl, Shift or Apple Key to select/deselect boards.</span>~,
     '12' => q~Social Bookmarks~,

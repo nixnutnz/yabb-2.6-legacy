@@ -772,6 +772,10 @@ Ceci est un test des paramètres de messagerie de votre forum {yabb mbname}.
 Merci d'utiliser YaBB!~,
     'mailfrom' =>
       q~"{yabb mbname} Test de messagerie" <{yabb webmaster_email}>~,
+
+    '350op'    => q~Site Name if not the same as Forum Name~,
+    '350opi'   => q~URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>~,
+    '350opb'   => q~Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>~,
 );
 
 %detailed = (
@@ -1666,7 +1670,7 @@ q~Utilisé pour envoyer des courriels via SMTP.<br />Ce module n'est nécessaire
 q~Utilisé pour envoyer des courriels via SMTPS.<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via Net :: SMTPS . Sinon, vous n'avez pas besoin de ce module.~,
     'Compress::Zlib' =>
 q~Utilisé pour la fonction de sauvegarde et la compression de sortie du navigateur.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles (voir la <a href="{yabb adminurl}?action=backup">fonction Sauvegarde</a> pour plus de détails) et/ou Voulez-vous activer "Utiliser GZip-Compression?". Sinon, vous n'avez pas besoin de ce module.~,
-    'Compress::Bzip2' =>
+    'IO::Compress::Bzip2' =>
 q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles (voir la fonction Sauvegarde pour plus de détails). Sinon, vous n'avez pas besoin de ce module.~,
     'Archive::Tar' =>
 q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles (voir la fonction Sauvegarde pour plus de détails). Sinon, vous n'avez pas besoin de ce module.~,

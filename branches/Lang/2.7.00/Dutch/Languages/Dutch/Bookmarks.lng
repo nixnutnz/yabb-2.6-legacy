@@ -32,7 +32,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '05' => q~Weet u zeker dat u deze bladwijzer wilt verwijderen?~,
     '08' => q~Er zijn momenteel geen Sociale Bladwijzers.~,
     '09' => q~instellingen sociale Bladwijzers~,
-    '10' => q~Bladwijzers inschakelen?~,
+    '10' => q~Bladwijzers inschakelen?<br /><span class="small">Opmerking: Open Graph-tags voor Facebook-ondersteuning worden automatisch geactiveerd wanneer Social Bookmarks is ingeschakeld.</span>~,
     '11' =>
 q~Selecteer de boards wiens bladwijzers worden getoond in:<br /><span class="small">- Als er geen boards geselecteerd zijn zullen alle boards worden ingeschakeld.<br />- Gebruik Ctrl, Shift of Apple toets om boards te selecteren/deselecteren.</span>~,
     '12' => q~Sociale Bladwijzers~,
