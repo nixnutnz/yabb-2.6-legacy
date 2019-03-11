@@ -19,6 +19,10 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+#use Cwd;
+#my $cwd = cwd();
+#push @INC, $cwd;
+## Uncomment above three lines if './' is disabled ##
 our $VERSION = '2.6.12';
 
 ### Version Info ###
@@ -26,7 +30,8 @@ $YaBBversion     = 'YaBB 2.6.12';
 $adminindexplver = 'YaBB 2.6.12 $Revision$';
 
 # Make sure the module path is present
-push @INC, './Modules';
+require Paths;
+push @INC, "$boarddir/Modules";
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -47,14 +52,13 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/AdminIndex\.(pl|cgi)//igxsm;
 
-require Paths;
 require Variables::Settings;
 
 # Check always for Time::HiRes
 eval { require Time::HiRes; import Time::HiRes qw(time); };
 $START_TIME = time;
 
-require './Sources/Subs.pm';
+require "$boarddir/Sources/Subs.pm";
 require Sources::System;
 require Sources::DateTime;
 require Sources::Load;

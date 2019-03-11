@@ -21,6 +21,10 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+#use Cwd;
+#my $cwd = cwd();
+#push @INC, $cwd;
+## Uncomment above three lines if './' is disabled ##
 our $VERSION = '2.6.12';
 
 ### Version Info ###
@@ -32,7 +36,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 BEGIN {
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    require Paths;
+    push @INC, "$boarddir/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;
@@ -51,7 +56,6 @@ BEGIN {
     }
     $script_root =~ s/\/$yyexec\.(pl|cgi)//igxsm;
 
-    require Paths;
     require Variables::Settings;
 
     # Check for Time::HiRes if debugmodus is on
@@ -60,7 +64,7 @@ BEGIN {
     }
     $START_TIME = time;
 
-    require './Sources/Subs.pm';
+    require "$boarddir/Sources/Subs.pm";
     require Sources::System;
     require Sources::DateTime;
     require Sources::Load;

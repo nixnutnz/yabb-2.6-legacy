@@ -21,6 +21,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+use Cwd;
+my $cwd = cwd();
+push @INC, $cwd;
 our $VERSION = '2.6.12';
 
 $setupplver  = 'YaBB 2.6.12 $Revision$';
@@ -50,18 +53,15 @@ if ( !$script_root ) {
 $script_root =~ s/\\/\//gxsm;
 $script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
 
-if    ( -e './Paths.pm' )            { require Paths; }
+if    ( -e "$cwd/Paths.pm" )            { require Paths; }
 elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
-elsif ( -e "$script_root/Variables/Paths.pm" ) {
-    require "$script_root/Variables/Paths.pm";
-}
 
 # Check if it's blank Paths.pm or filled in one
 if ( !$lastsaved ) {
-    $boardsdir = './Boards';
-    $sourcedir = './Sources';
-    $memberdir = './Members';
-    $vardir    = './Variables';
+    $boardsdir = "$cwd/Boards";
+    $sourcedir = "$cwd/Sources";
+    $memberdir = "$cwd/Members";
+    $vardir    = "$cwd/Variables";
 }
 
 if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
@@ -70,7 +70,7 @@ if   ($boardurl) { $set_cgi = "$boardurl/Setup.$yyext"; }
 else             { $set_cgi = "Setup.$yyext"; }
 
 # Make sure the module path is present
-push @INC, './Modules';
+push @INC, "$cwd/Modules/";
 
 require Sources::Subs;
 require Sources::System;
@@ -754,7 +754,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 1;
 EOF
 
-    open $FILE, '>', './Paths.pm'
+    open $FILE, '>', "$cwd/Paths.pm"
       || setup_fatal_error( "$maintext_23 ./Paths.pm: ", 1 );
     print {$FILE} nicely_aligned_file($setfile)
       or croak 'cannot print nicely aligned Paths.pm';
@@ -1984,7 +1984,7 @@ sub tempstarter {
     $YaBBversion = 'YaBB 2.6.12';
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$boarddir/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;

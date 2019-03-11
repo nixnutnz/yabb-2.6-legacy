@@ -8,7 +8,7 @@
 # Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################

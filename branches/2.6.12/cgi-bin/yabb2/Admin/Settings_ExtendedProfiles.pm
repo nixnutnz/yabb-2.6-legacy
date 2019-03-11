@@ -473,8 +473,8 @@ sub ext_admin {
         require "$vardir/ConvSettings.txt";
     }
     else {
-        $convmemberdir = './Convert/Members';
-        $convvardir    = './Convert/Variables';
+        $convmemberdir = "$boarddir/Convert/Members";
+        $convvardir    = "$boarddir/Convert/Variables";
     }
 
     $yymain .= qq~

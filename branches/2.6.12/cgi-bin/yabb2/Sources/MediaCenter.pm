@@ -117,7 +117,7 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
                 if ( $i =~ m/v=/sm ) {
                     $i =~ s/amp;//gsm;
                     $i =~ s/v=//gsm;
-                    $media_url = qq~http://www.youtube.com/v/$i~;
+                    $media_url = qq~https://www.youtube.com/v/$i~;
                 }
             }
             $video         = $embed_youtube;
