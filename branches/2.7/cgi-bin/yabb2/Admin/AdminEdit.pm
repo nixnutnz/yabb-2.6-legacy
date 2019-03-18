@@ -892,6 +892,7 @@ advsettings2 => '$FORM{'advsettings'}',
 referer_control2 => '$FORM{'referer_control'}',
 removeoldthreads => '$FORM{'deleteoldthreads'}',
 ipban2 => '$FORM{'ipban'}',
+ipban_add => '$FORM{'ipban'}',
 setcensor2 => '$FORM{'setcensor'}',
 setreserve2 => '$FORM{'setreserve'}',
 

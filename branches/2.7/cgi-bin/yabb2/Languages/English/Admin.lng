@@ -763,7 +763,7 @@ q~Print Post Permissions<br /><span class="small">Disable Print Post or set it t
     'ptopicperms' =>
 q~Print Thread Permissions<br /><span class="small">Disable Print Thread or set it to "All Members" if you have spambot problems with this function.</span>~,
     '813a' =>
-q~Enable Style Switcher Dropdown Field?<br /><span class="small">If enabled, selected groups have the have the option to quickly select and change the forum layout, assuming other templates or css stylesheets are available.</span>~,
+q~Enable Style Switcher Dropdown Field?<br /><span class="small">If enabled, selected groups have the option to quickly select and change the forum layout, assuming other templates or css stylesheets are available.</span>~,
     '813b' =>
       q~Select the membergroups allowed to use the Style Switcher:</span>~,
     '10bak' => q~*.bak files deleted~,
