@@ -764,6 +764,7 @@ sub get_bd_search {
                 my $viewmont = $mybdlist_viewmont;
                 $cdate ||= $var_cal{'hidden'};
                 $viewmont =~ s/\Q{yabb cal_col_star}\E/$cal_col_star/xsm;
+                $user_linkprofile ||= q{};
                 $viewmont =~
                   s/\Q{yabb user_linkprofile}\E/$user_linkprofile/xsm;
                 $viewmont =~ s/\Q{yabb myage}\E/$myage/xsm;

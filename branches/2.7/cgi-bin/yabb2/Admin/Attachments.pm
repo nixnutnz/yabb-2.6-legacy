@@ -34,7 +34,8 @@ our ( %admin_img, %admin_txt, %amv_txt, %croak, %fatxt, %rebuild_txt, );
 our (
     $adminurl,  $boardsdir,   $datadir,     $htmldir,
     $imagesdir, $pmuploaddir, $pmuploadurl, $scripturl,
-    $uploaddir, $uploadurl,   $vardir,      $memberdir
+    $uploaddir, $uploadurl,   $vardir,      $memberdir,
+    $yyhtml_root,
 );
 ## settings ##
 our ( $dirlimit, $maxdaysattach, $maxsizeattach, $pm_dirlimit,
@@ -43,7 +44,7 @@ our ( $dirlimit, $maxdaysattach, $maxsizeattach, $pm_dirlimit,
 our (
     $action_area,            $allow_gmod_aprofile, $iamgmod,
     $INPUT_RECORD_SEPARATOR, $max_process_time,    $time_to_jump,
-    $useimages,              $yymain,              $yysetlocation,
+    $yymain,                 $yysetlocation,
     $yytitle,                %board,               %boards,
     %FORM,                   %gmod_access,         %gmod_access2,
     %INFO,                   @boardlist,
@@ -629,6 +630,7 @@ sub attachments2 {
       or croak "$croak{'open'} AML";
     my @attachinput = <$AML>;
     fclose('AML') or croak "$croak{'close'} AML";
+    chomp @attachinput;
     my $max = @attachinput;
 
     $action = $INFO{'action'};
@@ -763,7 +765,7 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
             }
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
-                  ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
+                  ( $ext && -e "$htmldir/Templates/Forum/default/$ext.gif" )
                   ? "$ext.gif"
                   : 'paperclip.gif';
             }
@@ -780,7 +782,7 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$amthreadid" value="$amfn" /></td>
             <td class="windowbg2"><a href="$uploadurl/$amfn" target="_blank">$amfna</a></td>
-            <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
+            <td class="windowbg2 center"><img src="$yyhtml_root/Templates/Forum/default/$attach_gif{$ext}" class="bottom" alt="$ext" /></td>
             <td class="windowbg2 right">$amkb KB</td>
             <td class="windowbg2 center">$amdate</td>
             <td class="windowbg2 right">$amcount</td>
@@ -1348,7 +1350,7 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
             }
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
-                  ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
+                  ( $ext && -e "$htmldir/Templates/Forum/default/$ext.gif" )
                   ? "$ext.gif"
                   : 'paperclip.gif';
             }

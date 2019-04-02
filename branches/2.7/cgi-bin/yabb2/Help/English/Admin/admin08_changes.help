@@ -185,10 +185,10 @@ $section_body5 = q~<p>These are some completely new features to YaBB 2.6.0 that 
         <br />Nearly all the html code has been taken out of the source-code and placed into template files for easy customization by the Admin.
     </li>
     <li><b>CSS buttons</b>
-        <br />Instead of needing sets of buttons specific to each language, the various buttons are now created using icons and css on an Admin selected background. All buttons are created 'on-the-fly' from a single definition file &#40;menu.def&#41; in the 'Templates' folder so each 'skin' can have its own set of buttons simply by changing the icon and language in the <i>menu.def</i> file.
+        <br />Instead of needing sets of buttons specific to each language, the various buttons are now created using icons and css on an Admin selected background. All buttons are created 'on-the-fly' from a single definition file &#40;Menu.def&#41; in the 'Templates' folder so each 'skin' can have its own set of buttons simply by changing the icon and language in the <i>Menu.def</i> file.
     </li>
     <li><b>Icon definitions</b>
-        <br />Instead of being hard-coded in the source-code, the names of the various image graphics are stored as variables in the templates while the icon image names are stored in an icon definition file &#40;micon.def&#41; in the 'Templates' folder so each 'skin' can have its own set of icons and graphics.
+        <br />Instead of being hard-coded in the source-code, the names of the various image graphics are stored as variables in the templates while the icon image names are stored in an icon definition file &#40;Micon.def&#41; in the 'Templates' folder so each 'skin' can have its own set of icons and graphics.
     </li>
     <li><span class="anchor" id="time"></span><b>Location based Time-Zones with automatic Daylight Savings time</b>
         <br />The Admin can choose whether or not users have the option to choose their own Time Zone. If the Admin chooses to not allow user choice, all displayed times on the Forum will be the Forum Default Time Zone.

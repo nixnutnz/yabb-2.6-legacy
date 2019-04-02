@@ -1042,6 +1042,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
           or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         my @attach = <$ATM>;
         fclose('ATM') or croak "$croak{'close'} attachments.db";
+        chomp @attach;
         foreach (@attach) {
             my ( $attid, undef, undef, undef, undef, undef, undef,
                 $attachmentname, $downloadscount )
@@ -1054,7 +1055,6 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             {
                 push @newattachments, $_;
             }
-            chomp $downloadscount;
             $attachments{$attachmentname} = $downloadscount;
         }
 

@@ -3983,7 +3983,6 @@ sub clean_dir {
 sub clean_folder {
     my ($fold) = @_;
 
-    #    if ($fold =~ m/^([\-\w\/]+)$/xsm ) {
     if ( $fold =~ m/^([\-\w\/@.]+)$/xsm ) {
         return $1;
     }

@@ -2260,8 +2260,6 @@ qq~$scripturl?virboard=$FORM{'virboard'};num=$thread/$start#$mreplies~;
     redirectexit();
     return;
 }
-
-# We load all the notification strings from a given language and store them in memory
 sub load_notifymessages {
     my $languages   = shift;
     my $currentlang = $language;

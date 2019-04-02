@@ -170,6 +170,7 @@ sub editemailtemplates {
         # Find the list of usable YaBB tags
         foreach my $yabbtag ( split /\s+/xsm, $yabbtags{$string} ) {
             if ( $yabbtag !~ /\w/xsm ) { next; }
+            $yabbtagdesc{$yabbtag} ||= q{};
             $yymain .= qq~
                     <li>&#123;yabb $yabbtag&#125; $yabbtagdesc{$yabbtag}</li>~;
         }

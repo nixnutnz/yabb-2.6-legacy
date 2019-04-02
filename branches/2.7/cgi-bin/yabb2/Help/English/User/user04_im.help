@@ -37,7 +37,7 @@ $section_body2 = q~<p>YaBB allows Forum Staff the capability to communicate with
     <li>All forum members</li>
     <li>Any combination of the above</li>
 </ul>
-<p>The Administrator may also enable the option for Guests to send a <b>PM to the Administrator</b>. These PMs are actually transmitted to the Administrator as a Broadcast Message, so it requires both the PM to Admin option AND Broadcast Messaging allowed for Administrators in order to work.</p>
+<p>The Administrator may also enable the option for Guests to send a <b>PM to the Administrator</b>.</p>
 ~;
 #############################################
 
