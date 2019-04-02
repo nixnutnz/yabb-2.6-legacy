@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.12';
 
-$adminpmver = 'YaBB 2.6.12 $Revision: 2025 $';
+$adminpmver = 'YaBB 2.6.12 $Revision: 2042 $';
 LoadLanguage('Credits');
 
 get_template('AdminCentre');
@@ -33,7 +33,7 @@ sub Admin {
     $yymain =~ s/{yabb YaBBversion}/$YaBBversion/gsm;
     $yymain =~ s/{yabb lastlogins}/$my_lastlogin/sm;
 
-    if ( -d './Convert' ) {
+    if ( -d "$boarddir/Convert" ) {
         $yymain .= $convert_box;
     }
 
@@ -50,7 +50,7 @@ sub DeleteConverterFiles {
     my @convertdir = qw~Boards Members Messages Variables~;
 
     foreach my $cnvdir (@convertdir) {
-        $convdir = "./Convert/$cnvdir";
+        $convdir = "$boarddir/Convert/$cnvdir";
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
               || fatal_error( 'cannot_open_dir', "$convdir" );
@@ -63,7 +63,7 @@ sub DeleteConverterFiles {
             rmdir "$convdir";
         }
     }
-    $convdir = './Convert';
+    $convdir = "$boarddir/Convert";
     if ( -d "$convdir" ) {
         opendir 'CNVDIR', $convdir
           || fatal_error( 'cannot_open_dir', "$convdir" );
@@ -74,15 +74,15 @@ sub DeleteConverterFiles {
         }
         rmdir "$convdir";
     }
-    if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
-    if ( -e './Convert.pl' )      { unlink './Convert.pl'; }
-    if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
-    if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
+    if ( -e "$boarddir/Setup.pl" )        { unlink "$boarddir/Setup.pl"; }
+    if ( -e "$boarddir/Convert.pl" )      { unlink "$boarddir/Convert.pl"; }
+    if ( -e "$boarddir/Convert2x.pl" )    { unlink "$boarddir/Convert2x.pl"; }
+    if ( -e "$boarddir/BoardConvert.pl" ) { unlink "$boarddir/BoardConvert.pl"; }
     if ( -e "$htmldir/Templates/Forum/setup.css" ) {
         unlink "$htmldir/Templates/Forum/setup.css";
     }
-    if ( -e './Variables/ConvSettings.txt' ) {
-        unlink './Variables/ConvSettings.txt';
+    if ( -e "$boarddir/Variables/ConvSettings.txt" ) {
+        unlink "$boarddir/Variables/ConvSettings.txt";
     }
 
     $yymain .= qq~<b>$admintxt{'10'}</b>~;

@@ -344,14 +344,16 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
     }
 
+    $mybdlist_alpha_a =
+      qq~<a href="$boardurl/YaBB.pl?action=birthdaylist;sort=sortuser;letter=~;
+    my $my_alpha_a = q{};
     for my $i ( 'a' .. 'z' ) {
         $my_alpha_a .=
             $mybdlist_alpha_a
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)
-          . $mybdlist_alpha_b;
-        $my_alpha_a =~ s/{yabb sortiert}/$sortiert/sm;
+          . q~</a> &nbsp~;
     }
 
     for my $j ( 1 .. 12 ) {

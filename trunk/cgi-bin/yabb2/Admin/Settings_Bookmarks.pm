@@ -8,14 +8,14 @@
 # Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$settings_bookmarkspmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$settings_bookmarkspmver = 'YaBB 2.6.12 $Revision: 2042 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Bookmarks');

@@ -17,7 +17,7 @@
 ###############################################################################
 our $VERSION = '2.6.12';
 
-$settings_extendedprofilespmver = 'YaBB 2.6.12 $Revision: 1914 $';
+$settings_extendedprofilespmver = 'YaBB 2.6.12 $Revision: 2042 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');
@@ -473,8 +473,8 @@ sub ext_admin {
         require "$vardir/ConvSettings.txt";
     }
     else {
-        $convmemberdir = './Convert/Members';
-        $convvardir    = './Convert/Variables';
+        $convmemberdir = "$boarddir/Convert/Members";
+        $convvardir    = "$boarddir/Convert/Variables";
     }
 
     $yymain .= qq~
