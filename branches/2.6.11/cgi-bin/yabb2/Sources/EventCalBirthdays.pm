@@ -344,14 +344,16 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
     }
 
-    for my $i ( a .. z ) {
+    $mybdlist_alpha_a =
+      qq~<a href="$boardurl/YaBB.pl?action=birthdaylist;sort=sortuser;letter=~;
+    my $my_alpha_a = q{};
+    for my $i ( 'a' .. 'z' ) {
         $my_alpha_a .=
             $mybdlist_alpha_a
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)
-          . $mybdlist_alpha_b;
-        $my_alpha_a =~ s/{yabb sortiert}/$sortiert/sm;
+          . q~</a> &nbsp~;
     }
 
     for my $j ( 1 .. 12 ) {
@@ -440,7 +442,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                 if ( $letter ) {
                     $searchbdname = $user_bdrealname;
                     $searchbdname = isempty( $searchbdname, $user_bdname );
-                    if ( $searchbdname =~ /^$letter/i ) { $showviewbd = 1; }
+                    if ( $searchbdname =~ /^$letter/ixsm || ( $letter eq 'other' && $searchbdname =~ m/^[^a-z]/ixsm )) { $showviewbd = 1; }
                 }
                 else {
                     $showviewbd = 1;
@@ -513,7 +515,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                         if ($letter) {
                             $searchbdname = $user_bdrealname;
                             $searchbdname = isempty( $searchbdname, $user_bdname );
-                            if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
+                            if ( $searchbdname =~ /^$letter/ixsm || ( $letter eq 'other' && $searchbdname =~ m/^[^a-z]/ixsm )) { $showviewbd = 1; }
                         }
                         else {
                             $showviewbd = 1;
