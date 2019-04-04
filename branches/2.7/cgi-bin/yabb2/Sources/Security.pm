@@ -93,7 +93,10 @@ if ($currentboard) {
 # Create Hash %moderators and %moderatorgroups with all Moderators of the current board
     for ( split /\//xsm, ${ $uid . $currentboard }{'mods'} ) {
         load_user($_);
-        $moderators{$_} = ${ $uid . $_ }{'realname'};
+        if ( ${ $uid . $_ }{'realname'} ) {
+            $moderators{$_} = ${ $uid . $_ }{'realname'};
+        }
+        else { delete $moderators{$_}; }
     }
     for ( split /\//xsm, ${ $uid . $currentboard }{'modgroups'} ) {
         $moderatorgroups{$_} = $_;
