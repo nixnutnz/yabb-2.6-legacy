@@ -1488,6 +1488,8 @@ q~ Zeitlimit in Minuten setzen?<br /><span class="small">Dies betrifft sowohl da
 $maintxt{'769'}  = 'Heute';          ## needed to show Today in registration log
 $maintxt{'769a'} = 'Gestern';        ## needed to show Today in registration log
 $maintxt{'dst'}  = '<sup>*</sup>';   ## needed to show Today in registration log
+$maintxt{'am'} = q~am~;
+$maintxt{'pm'} = q~pm~;
 
 %timetxt = (
     '1' => q~<sup>st</sup>~,

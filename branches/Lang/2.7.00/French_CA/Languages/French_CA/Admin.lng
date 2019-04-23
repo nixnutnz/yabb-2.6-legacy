@@ -1448,6 +1448,8 @@ $maintxt{'769a'} =
   q~Hier~;    ## requis pour afficher Hier dans le journal d'enregistrement
 $maintxt{'dst'} =
   q~<sup>*</sup>~;    ## requis pour afficher * dans le journal d'enregistrement
+$maintxt{'am'} = q~am~;
+$maintxt{'pm'} = q~pm~;
 
 %timetxt = (
     '1' => q~<sup>ier</sup>~,

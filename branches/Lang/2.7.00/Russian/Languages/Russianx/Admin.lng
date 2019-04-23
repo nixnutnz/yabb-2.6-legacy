@@ -804,8 +804,8 @@ q~You may add a short reason for the ban by using a '|' symbol to separate the I
 );
 
 ## OpenGraph Mod
-$admin_txt{'350op'} = 'Site Name if not the same as Forum Name';
-$admin_txt{'350opi'} = 'URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>';
+$admin_txt{'350op'} = 'Название сайта, если оно не совпадает с именем форума';
+$admin_txt{'350opi'} = 'URL-адрес логотипа сайта для Open Graph<br /><span class="small">Если логотип не выбран, будет использоваться логотип YaBB по умолчанию.</span>';
 $admin_txt{'350opb'} = 'Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>';
 ##End Open Graph Mod
 
@@ -1473,6 +1473,8 @@ q~ Set Time Limit in minutes?<br /><span class="small">This affects both modifyi
 $maintxt{'769'}  = q~Сегодня~;       ## needed to show Today in registration log
 $maintxt{'769a'} = q~Вчера~;         ## needed to show Today in registration log
 $maintxt{'dst'}  = q~<sup>*</sup>~;  ## needed to show Today in registration log
+$maintxt{'am'} = q~am~;
+$maintxt{'pm'} = q~pm~;
 
 %timetxt = (
     '1' => q~-е~,

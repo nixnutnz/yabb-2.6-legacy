@@ -787,10 +787,11 @@ This is a test of your {yabb mbname} Forum's e-mail settings.
 Thanks for using YaBB!~,
     'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
 
-    '350op'    => q~Site Name if not the same as Forum Name~,
-    '350opi'   => q~URL of site logo for Open Graph<br /><span class="small">If no logo is chosen the default YaBB logo will be used.</span>~,
+## OpenGraph Mod
+    '350op'  => 'Sivuston nimi, jos ei ole sama kuin Foorumin nimi',
+    '350opi' => 'URL-osoitteen URL-osoitteen avaaminen<br /><span class="small"> Jos logoa ei ole valittu, käytetään oletusarvoista YaBB-logoa.</span>',
     '350opb'   => q~Activate Open Graph Meta tags for Facebook support.<br /><span class="small">Note: Open Graph tags will automatically activate when Social Bookmarks are turned on.</span>~,
-
+##End Open Graph Mod
 );
 
 %detailed = (
@@ -1450,6 +1451,8 @@ q~ Set Time Limit in minutes?<br /><span class="small">This affects both modifyi
 $maintxt{'769'}  = 'Tänään';         ## needed to show Today in registration log
 $maintxt{'769a'} = 'Eilen';          ## needed to show Today in registration log
 $maintxt{'dst'}  = '<sup>*</sup>';   ## needed to show Today in registration log
+$maintxt{'am'} = q~am~;
+$maintxt{'pm'} = q~pm~;
 
 %timetxt = (
     '1' => q{.},
