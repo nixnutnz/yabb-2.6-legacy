@@ -1,6 +1,6 @@
 checksum.txt
 Languages/Espanol/AddModerators.lng|bde13ed6dd145442b41369d776c88053
-Languages/Espanol/Admin.lng|7fca2f00edcb633d4498bd1375843c35
+Languages/Espanol/Admin.lng|c458f8f7b23770c6fd39adcdf0f36be6
 Languages/Espanol/Backup.lng|39c5538bdfe5e15ef6d05bb427aece1d
 Languages/Espanol/BoardIndex.lng|c64b9d3069ce9728d9f2f59c9dadefdd
 Languages/Espanol/Bookmarks.lng|7019491eb21c4381591f23e3be70cc05

@@ -1,6 +1,6 @@
 checksum.txt
 Languages/Suomi/AddModerators.lng|3cfa065d8619938c1c0effd838d7a413
-Languages/Suomi/Admin.lng|e19da4df16ce8fe04faaf1db924cd51e
+Languages/Suomi/Admin.lng|12a5103691737981a2068df3c3aa3cf8
 Languages/Suomi/Backup.lng|6213f5ea1165a9b9de9a891fa42c662e
 Languages/Suomi/BoardIndex.lng|3efec93e1fb5908a8fb1f8d453c6e547
 Languages/Suomi/Bookmarks.lng|930bcfa3a8eeb6b0b833bdfc0d00e2b6
