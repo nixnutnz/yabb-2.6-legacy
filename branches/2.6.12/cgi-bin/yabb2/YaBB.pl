@@ -21,10 +21,6 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-#use Cwd;
-#my $cwd = cwd();
-#push @INC, $cwd;
-## Uncomment above three lines if './' is disabled ##
 our $VERSION = '2.6.12';
 
 ### Version Info ###
@@ -34,6 +30,13 @@ $yabbplver   = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 BEGIN {
+    $script_root = $ENV{'SCRIPT_FILENAME'};
+    if ( !$script_root ) {
+        $script_root = $ENV{'PATH_TRANSLATED'};
+    }
+    $yyexec      = 'YaBB';
+    $script_root =~ s/\/$yyexec\.(pl|cgi)//igxsm;
+    push @INC, $script_root;
 
     # Make sure the module path is present
     require Paths;
@@ -48,13 +51,6 @@ BEGIN {
         chdir $yypath;
         push @INC, $yypath;
     }
-
-    $yyexec      = 'YaBB';
-    $script_root = $ENV{'SCRIPT_FILENAME'};
-    if ( !$script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'};
-    }
-    $script_root =~ s/\/$yyexec\.(pl|cgi)//igxsm;
 
     require Variables::Settings;
 
