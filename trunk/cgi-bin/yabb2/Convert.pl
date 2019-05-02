@@ -23,7 +23,7 @@ use Carp;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$convertplver = 'YaBB 2.6.12 $Revision: 1667 $';
+$convertplver = 'YaBB 2.6.12 $Revision: 2057 $';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -49,8 +49,9 @@ if ( !$script_root ) {
     $script_root =~ s/\\/\//gxsm;
 }
 $script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
+push @INC, $script_root;
 
-if ( -e './Paths.pm' ) { require Paths; }
+if ( -e "$script_root/Paths.pm" ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
 if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
@@ -59,7 +60,7 @@ if   ($boardurl) { $set_cgi = "$boardurl/Convert.$yyext"; }
 else             { $set_cgi = "Convert.$yyext"; }
 
 # Make sure the module path is present
-push @INC, './Modules';
+push @INC, "$script_root/Modules";
 
 require Sources::Subs;
 require Sources::System;
@@ -135,7 +136,7 @@ if ( -e "$vardir/Setup.lock" ) {
                     </ol>
                     <b>OR</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6.12 installation or if you do not know the path to your SP 1.x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.12 installation, and chmod them 755. In this case the Path to your YaBB 1x folders is './Convert'.</li>
+                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.12 installation, and chmod them 755. In this case the Path to your YaBB 1x folders is '$script_root/Convert'.</li>
                         <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.6.12 installation, and CHMOD it 644.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
@@ -146,19 +147,19 @@ if ( -e "$vardir/Setup.lock" ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>Path to your YaBB 1 Gold - SP 1.x files: </b></label></td>
-                            <td><input type="text" name="convertdir" value="./Convert" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" name="convertdir" value="$script_root/Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>Path to your YaBB 1 Gold - SP 1.x Boards: </b></label></td>
-                            <td><input type="text" name="convboardsdir" value="./Convert/Boards" size="50" /></td>
+                            <td><input type="text" name="convboardsdir" value="$script_root/Convert/Boards" size="50" /></td>
                         </tr><tr>
                             <td><label for="convmemberdir"><b>Path to your YaBB 1 Gold - SP 1.x Members: </b></label></td>
-                            <td><input type="text" name="convmemberdir" value="./Convert/Members" size="50" /></td>
+                            <td><input type="text" name="convmemberdir" value="$script_root/Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>Path to your YaBB 1 Gold - SP 1.x Messages: </b></label></td>
-                            <td><input type="text" name="convdatadir" value="./Convert/Messages" size="50" /></td>
+                            <td><input type="text" name="convdatadir" value="$script_root/Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>Path to your YaBB 1 Gold - SP 1.x Variables: </b><label></td>
-                            <td><input type="text" name="convvardir" value="./Convert/Variables" size="50" /></td>
+                            <td><input type="text" name="convvardir" value="$script_root/Convert/Variables" size="50" /></td>
                         </tr>
                     </table>
                     <br />
@@ -3005,7 +3006,7 @@ sub tempstarter {
     $YaBBversion = 'YaBB 2.6.12';
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$script_root/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;
@@ -3020,7 +3021,7 @@ sub tempstarter {
     # Requirements and Errors
     require Variables::Settings;
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-    else                                 { $convertdir = './Convert'; }
+    else                                 { $convertdir = "$script_root/Convert"; }
 
     LoadCookie();    # Load the user's cookie (or set to guest)
     LoadUserSettings();
@@ -3336,7 +3337,7 @@ sub SetInstall2 {
     $ret = 0;
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-    if ( $convertdir ne './Convert' && -e "Settings.pl" ) {
+    if ( $convertdir ne "$script_root/Convert" && -e "Settings.pl" ) {
         require "Settings.pl";
         $oldname   = $mbname;
         $oldemail  = $webmaster_email;

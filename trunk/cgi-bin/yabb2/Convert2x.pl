@@ -24,7 +24,7 @@ use English qw(-no_match_vars);
 
 our $VERSION = '2.6.12';
 
-$convert2xplver = 'YaBB 2.6.12 $Revision: 1914 $';
+$convert2xplver = 'YaBB 2.6.12 $Revision: 2057 $';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -46,16 +46,17 @@ if ( !$script_root ) {
     $script_root =~ s/\\/\//gxsm;
 }
 $script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
+push @INC, $script_root;
 
-if    ( -e './Paths.pm' )            { require Paths; }
+if    ( -e "$script_root/Paths.pm" )            { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
-$boardsdir   = './Boards';
-$sourcedir   = './Sources';
-$memberdir   = './Members';
-$datadir     = './Messages';
-$vardir      = './Variables';
-$convert     = './Convert';
+$boardsdir   = "$script_root/Boards";
+$sourcedir   = "$script_root/Sources";
+$memberdir   = "$script_root/Members";
+$datadir     = "$script_root/Messages";
+$vardir      = "$script_root/Variables";
+$convert     = "$script_root/Convert";
 
 $thisscript = "$ENV{'SCRIPT_NAME'}";
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
@@ -65,9 +66,9 @@ else             { $set_cgi = "Convert2x.$yyext"; }
 $scripturl = "$boardurl/YaBB.$yyext";
 
 # Make sure the module path is present
-push @INC, './Modules';
+push @INC, "$script_root/Modules";
 
-require Sources::Subs;
+require "$script_root/Sources/Subs.pm";
 require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
@@ -113,7 +114,7 @@ if ( -e "$vardir/Setup.lock" ) {
                     </ol>
                     <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.6.12 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.6.12 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
+                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.6.12 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is '$script_root/Convert'.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <table style="width:auto; margin-left:0">
@@ -123,19 +124,19 @@ if ( -e "$vardir/Setup.lock" ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>Path to your YaBB 2x folders: </b></label></td>
-                            <td><input type="text" name="convertdir" value="./Convert" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" name="convertdir" value="$script_root/Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>Path to your YaBB 2x Boards: </b></label></td>
-                            <td><input type="text" name="convboardsdir" value="./Convert/Boards" size="50" /></td>
+                            <td><input type="text" name="convboardsdir" value="$script_root/Convert/Boards" size="50" /></td>
                         </tr><tr>
                             <td><label for="convmemberdir"><b>Path to your YaBB 2x Members: </b></label></td>
-                            <td><input type="text" name="convmemberdir" value="./Convert/Members" size="50" /></td>
+                            <td><input type="text" name="convmemberdir" value="$script_root/Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>Path to your YaBB 2x Messages: </b></label></td>
-                            <td><input type="text" name="convdatadir" value="./Convert/Messages" size="50" /></td>
+                            <td><input type="text" name="convdatadir" value="$script_root/Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>Path to your YaBB 2x Variables: </b></label></td>
-                            <td><input type="text" name="convvardir" value="./Convert/Variables" size="50" /></td>
+                            <td><input type="text" name="convvardir" value="$script_root/Convert/Variables" size="50" /></td>
                         </tr>
                     </table>
                 </td>
@@ -1410,7 +1411,7 @@ sub Convert_Settings {
     $ret = 0;
     my $setset = 0;
     my $setfile = "$convvardir/Settings.pm";
-    if ( $convertdir ne './Convert' && -e "Settings.$yyext" ) {
+    if ( $convertdir ne "$script_root/Convert" && -e "Settings.$yyext" ) {
         $setfile = "Settings.$yyext";
         $setset = 1;
     }
@@ -1606,7 +1607,7 @@ sub tempstarter {
     $YaBBversion = 'YaBB 2.6.12';
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$script_root/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;
@@ -1623,7 +1624,7 @@ sub tempstarter {
     if ( -e "$vardir/ConvSettings.txt" ) {
         require "$vardir/ConvSettings.txt";
     }
-    else { $convertdir = './Convert'; }
+    else { $convertdir = "$script_root/Convert"; }
 
     LoadCookie();    # Load the user's cookie (or set to guest)
     LoadUserSettings();

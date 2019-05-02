@@ -19,17 +19,19 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-#use Cwd;
-#my $cwd = cwd();
-#push @INC, $cwd;
-## Uncomment above three lines if './' is disabled ##
 our $VERSION = '2.6.12';
 
 ### Version Info ###
 $YaBBversion     = 'YaBB 2.6.12';
-$adminindexplver = 'YaBB 2.6.12 $Revision: 2042 $';
+$adminindexplver = 'YaBB 2.6.12 $Revision: 2057 $';
 
-# Make sure the module path is present
+$yyexec      = 'YaBB';
+$script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+$script_root =~ s/\/AdminIndex\.(pl|cgi)//igxsm;
+push @INC, $script_root;
 require Paths;
 push @INC, "$boarddir/Modules";
 
@@ -44,13 +46,6 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
 }
 
 $adminscreen = 1;
-
-$yyexec      = 'YaBB';
-$script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-}
-$script_root =~ s/\/AdminIndex\.(pl|cgi)//igxsm;
 
 require Variables::Settings;
 
