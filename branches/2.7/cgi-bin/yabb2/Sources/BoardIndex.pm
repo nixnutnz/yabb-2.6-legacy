@@ -397,6 +397,7 @@ sub board_index {
             ( $catname, $catperms, $catallowcol, $catimage, $catrss ) =
               @{ $catinfo{$catid} };
             $catname = to_chars($catname);
+            $brd_img_id{$catid} = $catimage || q{};
 
             # Category Permissions Check
             my $cataccess = cat_access($catperms);
@@ -1566,19 +1567,6 @@ sub markallread {    # Mark all boards as read.
     croak q{};    # This is here only to avoid server error log entries!
 }
 
-sub gost_remove {
-    my ( $thecat, $gostboard ) = @_;
-    my @tmp_master = ();
-    foreach my $item ( @{ $cat{$thecat} } ) {
-        if ( $item ne $gostboard ) {
-            push @tmp_master, $item;
-        }
-    }
-    $cat{$thecat} = \@tmp_master;
-    write_forummaster();
-    return;
-}
-
 sub del_max_im {
     my ( $ext, $max ) = @_;
     our ($DELMAXIM);
@@ -2196,7 +2184,6 @@ sub get_catbrds {
     # get boards in category if we're not looking for subboards
     foreach my $crboard (@bdlist) {
         if ( !exists $board{$crboard} ) {
-            gost_remove( $catid, $crboard );
             next;
         }
 
@@ -2226,7 +2213,6 @@ sub get_catbrds {
 
                # now fill all the necessary hashes to show all board index stuff
                     if ( !exists $board{$childbd} ) {
-                        gost_remove( $catid, $childbd );
                         next;
                     }
 

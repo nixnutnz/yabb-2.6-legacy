@@ -51,6 +51,14 @@ my (
 my $yyiis  = 0;
 my $yypath = q{};
 
+my $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root =~ s/\\/\//gxsm;
+}
+$script_root =~ s/\/ConvertLang[.](pl|cgi)//igxsm;
+push @INC, $script_root;
+
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yyiis = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
@@ -66,13 +74,6 @@ my $buff = 500;    #'refresh' for Members
 my $duff = 100;    #'refresh for Messages
 our $uid = substr $date, length($date) - 3, 3;
 ### Requirements and Errors ###
-my $script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-    $script_root =~ s/\\/\//gxsm;
-}
-$script_root =~ s/\/ConvertLang[.](pl|cgi)//igxsm;
-
 require Paths;
 require Sources::Subs;
 my $uselang = $INFO{'lang'} || $FORM{'getlang'} || 'English';

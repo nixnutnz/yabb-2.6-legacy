@@ -21,9 +21,6 @@ use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 delete @ENV{ 'IFS', 'CDPATH', 'ENV', 'BASH_ENV' };
-use Cwd;
-my $cwd = cwd();
-push @INC, $cwd;
 our $VERSION = '2.7.00';
 
 ### Version Info ###
@@ -69,7 +66,12 @@ our ( $admin_template, $header, $leftmenu, $leftmenubottom, $leftmenutop,
 
 ## our Mod Hook ##
 
-# Make sure the module path is present
+our $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+$script_root =~ s/\/AdminIndex[.](pl|cgi)//igxsm;
+push @INC, $script_root;
 require Paths;
 push @INC, "$boarddir/Modules";
 
@@ -87,12 +89,6 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
 my $adminscreen = 1;
 
 our $yyexec      = 'YaBB';
-our $script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-}
-$script_root =~ s/\/AdminIndex[.](pl|cgi)//igxsm;
-
 my $yyaext = 'pl';
 if   ( -e ("$yyexec.cgi") ) { $yyaext = 'cgi'; }
 else                        { $yyaext = 'pl'; }

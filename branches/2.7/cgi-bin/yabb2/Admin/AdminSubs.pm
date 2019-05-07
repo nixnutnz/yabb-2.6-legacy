@@ -30,8 +30,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 our (
     $adminurl, $yysetlocation, %croak,    %FORM,   %INFO,
-    $boarddir, $sourcedir,     $admindir, $vardir, $langdir,
-    $helpfile, $templatesdir,  $yymain,   %admintxt
+    $boarddir, $sourcedir,     $admindir, $vardir, $langdir, $boardsdir,
+    $helpfile, $templatesdir,  $yymain,   %admintxt,
+    @categoryorder, %cat, %catinfo, %board, %subboard,
 );
 
 sub mail_list {
@@ -133,6 +134,48 @@ sub chk_ip {
         }
     }
     return $bad;
+}
+
+sub write_forummaster {
+    my $newforum = qq~\$mloaded = 1;\n~;
+    my @catorder = undupe(@categoryorder);
+    my $catlist  = join q{ }, @catorder;
+    $newforum .= qq~\@categoryorder = qw($catlist);\n~;
+    foreach my $key ( @catorder) {
+        my $value = $cat{$key};
+        if ( $value && $value ne q{} ) {
+            my $val2 = join q{', '}, @{$value};
+            $newforum .= qq~\$cat{'$key'} = ['$val2'];\n~;
+        }
+    }
+    foreach my $key (@catorder) {
+        my $value = $catinfo{$key};
+        if ( $value && $value ne q{} ) {
+            $value =~ s/\$/\\\$/gxsm;
+            my $values = join q{', '}, @{$value};
+            $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
+        }
+    }
+    while ( my ( $key, $value ) = each %subboard ) {
+        if ( @{$value} ) {
+            my $val2 = join q{', '}, @{$value};
+            $newforum .= qq~\$subboard{'$key'} = ['$val2'];\n~;
+        }
+    }
+    while ( my ( $key, $value ) = each %board ) {
+        $value =~ s/\$/\\\$/gxsm;
+        $value =~ s/\~//gxsm;
+        my $val2 = join q{', '}, @{$value};
+        $newforum .= qq~\$board{'$key'} = ['$val2'];\n~;
+    }
+    $newforum .= qq~\n1;~;
+
+    our ($FORUMMASTER);
+    fopen( 'FORUMMASTER', '>', "$boardsdir/forum.master" )
+      or croak "$croak{'open'} forum.master";
+    print {$FORUMMASTER} $newforum or croak "$croak{'print'} FORUMMASTER";
+    fclose('FORUMMASTER') or croak "$croak{'close'} forum.master";
+    return;
 }
 
 1;

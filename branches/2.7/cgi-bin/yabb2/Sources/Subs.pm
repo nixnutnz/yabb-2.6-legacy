@@ -2680,45 +2680,6 @@ sub save_moved_file {
     return;
 }
 
-sub write_forummaster {
-    my $newforum = qq~\$mloaded = 1;\n~;
-    my @catorder = undupe(@categoryorder);
-    my $catlist  = join q{ }, @catorder;
-    $newforum .= qq~\@categoryorder = qw($catlist);\n~;
-    while ( my ( $key, $value ) = each %cat ) {
-        my $val2 = join q{', '}, @{$value};
-        $val2 = qq~['$val2']~;
-        $newforum .= qq~\$cat{'$key'} = $val2;\n~;
-    }
-    while ( my ( $key, $value ) = each %catinfo ) {
-        $value =~ s/\$/\\\$/gxsm;
-        my $values = join q{', '}, @{$value};
-        $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
-    }
-    while ( my ( $key, $value ) = each %board ) {
-        $value =~ s/\$/\\\$/gxsm;
-        $value =~ s/\~//gxsm;
-        my $val2 = join q{', '}, @{$value};
-        $val2 = qq~['$val2']~;
-        $newforum .= qq~\$board{'$key'} = $val2;\n~;
-    }
-    while ( my ( $key, $value ) = each %subboard ) {
-        if ( @{$value} ) {
-            my $val2 = join q{', '}, @{$value};
-            $val2 = qq~['$val2']~;
-            $newforum .= qq~\$subboard{'$key'} = $val2;\n~;
-        }
-    }
-    $newforum .= qq~\n1;~;
-
-    our ($FORUMMASTER);
-    fopen( 'FORUMMASTER', '>', "$boardsdir/forum.master" )
-      or croak "$croak{'open'} forum.master";
-    print {$FORUMMASTER} $newforum or croak "$croak{'print'} FORUMMASTER";
-    fclose('FORUMMASTER') or croak "$croak{'close'} forum.master";
-    return;
-}
-
 sub write_forum_control {
     my @boardcontrol = ();
     foreach my $cnt ( sort { lc $a cmp lc $b } keys %control ) {
@@ -3997,6 +3958,16 @@ sub clean_file {
     }
     else { fatal_error( q{}, "invalid file $file" ); }
     return;
+}
+
+sub clean_usr {
+    my ($usr) = @_;
+    if ( $usr =~ m/^([\-\w@.]+)$/xsm ) {
+        $usr = $1;
+    }
+    else { $usr = 'guest'; }
+    return $usr;
+    
 }
 
 sub og_load {

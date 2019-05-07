@@ -79,6 +79,7 @@ sub do_cats {
             $yymain .=
               qq~$admin_txt{'830'} <i>$catid</i> $admin_txt{'831'}<br />~;
         }
+        require Admin::AdminSubs;
         write_forummaster();
     }
     $yytitle     = $admin_txt{'3'};
@@ -296,6 +297,7 @@ sub add_cats2 {
 
         $yymain .= qq~$admin_txt{'830'} <i>$id</i> $admin_txt{'48'}<br />~;
     }
+    require Admin::AdminSubs;
     write_forummaster();
 
     $yytitle     = $admin_txt{'3'};
@@ -390,6 +392,7 @@ sub reorder_cats2 {
                 }
             }
         }
+        require Admin::AdminSubs;
         write_forummaster();
     }
     $yysetlocation = qq~$adminurl?action=reordercats;thecat=$moveitem~;

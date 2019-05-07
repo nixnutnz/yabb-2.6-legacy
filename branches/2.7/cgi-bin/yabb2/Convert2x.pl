@@ -23,9 +23,6 @@ no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use File::Copy qw(copy);
 use English qw(-no_match_vars);
-use Cwd;
-my $cwd = cwd();
-push @INC, $cwd;
 
 our $VERSION = '2.7.00';
 
@@ -57,13 +54,14 @@ our (
     $yyimages,              $yymain,               $yymenu,
     $yyposition,            $yysetlocation,        $yystyle,
     $yytabmenu,             $yytitle,              $yyuname,
-    %board,                 %catinfo,              %color,
-    %croak,                 %FORM,                 %Group,
-    %grp_nopost,            %INFO,                 %maintxt,
-    %NoPost,                %Post,                 %recent,
-    %settings,              %subboard,             @ext_prof_fields,
-    @nopostorder,           @SmilieCode,           @SmilieDescription,
-    @SmilieLinebreak,       @SmilieURL,
+    %board,                 %cat,                  %catinfo,
+    %color,                 %croak,                %FORM,
+    %Group,                 %grp_nopost,           %INFO,
+    %maintxt,               %NoPost,               %Post,
+    %recent,                %settings,             %subboard,
+    @ext_prof_fields,       @nopostorder,          @SmilieCode,
+    @SmilieDescription,     @SmilieLinebreak,      @SmilieURL,
+    @categoryorder,
 );
 
 our (
@@ -89,6 +87,14 @@ our (
 my $yyiis  = 0;
 my $yypath = q{};
 
+my $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root =~ s/\\/\//gxsm;
+}
+$script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
+push @INC, $script_root;
+
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yyiis = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
@@ -104,13 +110,6 @@ my $time_to_jump     = time() + $max_process_time;
 my $date             = time;
 my $lim              = 500;
 ### Requirements and Errors ###
-my $script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-    $script_root =~ s/\\/\//gxsm;
-}
-$script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
-
 if ( -e "$script_root/Paths.pm" ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
@@ -122,13 +121,13 @@ my $set_cgi = "Convert2x.$yyext";
 if ($boardurl) {
     $set_cgi = "$boardurl/Convert2x.$yyext";
 }
-my $convert   = "$boarddir/Convert";
-my $scripturl = "$boardurl/$yyexec.$yyext";
+my $convert = "$boarddir/Convert";
+our $scripturl = "$boardurl/$yyexec.$yyext";
 
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
 
-require Sources::Subs;
+require "$boarddir/Sources/Subs.pm";
 require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
@@ -159,7 +158,7 @@ our $formsession = q{};
 my $maintext_23 = $conv2x_txt{'maintext_23'};
 
 $smiliesdir  = "$htmldir/Smilies";
-$boardpixdir = "$htmldir/Templates/Forum/default/Board";
+$boardpixdir = "$htmldir/Templates/Forum/default/Boards";
 
 #############################################
 # Conversion starts here                    #
@@ -200,19 +199,19 @@ if ( -e "$vardir/Setup.lock" ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>$conv2x_txt{'convertdir'}</b></label></td>
-                            <td><input type="text" id="convertdir" name="convertdir" value="$cwd/Convert" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" id="convertdir" name="convertdir" value="$script_root/Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>$conv2x_txt{'convboardsdir'}</b></label></td>
-                            <td><input type="text" id="convboardsdir" name="convboardsdir" value="$cwd/Convert/Boards" size="50" /></td>
+                            <td><input type="text" id="convboardsdir" name="convboardsdir" value="$script_root/Convert/Boards" size="50" /></td>
                         </tr><tr>
                             <td><label for="convmemberdir"><b>$conv2x_txt{'convmemberdir'}</b></label></td>
-                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="$cwd/Convert/Members" size="50" /></td>
+                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="$script_root/Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>$conv2x_txt{'convdatadir'}</b></label></td>
-                            <td><input type="text" id="convdatadir" name="convdatadir" value="$cwd/Convert/Messages" size="50" /></td>
+                            <td><input type="text" id="convdatadir" name="convdatadir" value="$script_root/Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>$conv2x_txt{'convvardir'}</b></label></td>
-                            <td><input type="text" id="convvardir" name="convvardir" value="$cwd/Convert/Variables" size="50" /></td>
+                            <td><input type="text" id="convvardir" name="convvardir" value="$script_root/Convert/Variables" size="50" /></td>
                         </tr><tr>
                             <td><label for="convhtml"><b>$conv2x_txt{'convhtml'}</b></label></td>
                             <td><input type="text" id="convhtml" name="convhtml" value="" size="50" onchange="setconvhtml()" /></td>
@@ -507,6 +506,7 @@ MEMBERS1
             );
         }
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
+        $INFO{'st'} ||= 0;
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         my $starttme = $time_to_jump - $INFO{'starttime'};
         my $mwidth =
@@ -578,7 +578,7 @@ $conv2x_txt{'4mems'}
         if ( !exists $INFO{'bstart'} ) {
             moveboards();
         }
-        fixcontrol();
+        fixcontrol($boardsdir);
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
@@ -651,7 +651,8 @@ $conv2x_txt{'3brds'}
 
         my $bwidth   = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
         my $starttme = $time_to_jump - $INFO{'starttime'};
-        my $took     = int( ( $INFO{'st'} + 60 ) / 60 );
+        $INFO{'st'} ||= 0;
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
 
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -722,8 +723,8 @@ $conv2x_txt{'4brds'}
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
 
-        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         $INFO{'st'} ||= 0;
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -794,6 +795,7 @@ $conv2x_txt{'3mess'}
           : 0;
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
+        $INFO{'st'} ||= 0;
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         my $starttme = $time_to_jump - $INFO{'starttime'};
         $yymain = qq~
@@ -871,6 +873,7 @@ $conv2x_txt{'4mess'}
         fixnopost();
         getbadmem();
         $formsession = cloak("$mbname$username");
+        $INFO{'st'} ||= 0;
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
@@ -962,7 +965,7 @@ $convset
             $vardir = "$boarddir/ConvertLang/Variables";
         }
         createconvlock();
-        $yysetlocation = $boardurl;
+        $yysetlocation = "$boardurl/YaBB.$yyext";
         redirectexit();
     }
 
@@ -1384,6 +1387,7 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
         }
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @getmem ) {
+            $INFO{'st'} ||= 0;
             $yysetlocation =
                 qq~$set_cgi?action=members2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
@@ -1436,38 +1440,35 @@ sub getbadmem {
 # Board + Category Conversion ##
 
 sub moveboards {
-    our ( @categoryorder, %cat );
     require "$convboardsdir/forum.master";
     my $newforum = qq~\$mloaded = 1;\n~;
     my @catorder = undupe(@categoryorder);
     my $catlist  = join q{ }, @catorder;
+    my @brdlst   = ();
     $newforum .= qq~\@categoryorder = qw($catlist);\n~;
-    while ( my ( $key, $value ) = each %cat ) {
-        my @val2 = split /,/xsm, $value;
-        foreach (@val2) {
-            if ( $_ eq 'admin' ) { $_ = 'admin_fix'; }
+    foreach my $key (@catorder) {
+        my $value = $cat{$key};
+        if ( $value && $value ne q{} ) {
+            my @val2 = split /,/xsm, $value;
+            foreach (@val2) {
+                if ( $_ eq 'admin' ) { $_ = 'admin_fix'; }
+            }
+            my $val2 = join q{', '}, @val2;
+            push @brdlst, @val2;
+            $newforum .= qq~\$cat{'$key'} = ['$val2'];\n~;
         }
-        my $val2 = join q{', '}, @val2;
-        $newforum .= qq~\$cat{'$key'} = ['$val2'];\n~;
     }
-    while ( my ( $key, $value ) = each %catinfo ) {
-        $value =~ s/\$/\\\$/gxsm;
-        $value =~ s/'/&#39;/gxsm;
-        my @val2 = split /[|]/xsm, $value;
-        my @mods = split /,\s/xsm, $val2[1];
-        $val2[1] = join q{/}, @mods;
-        my $values = join q{', '}, @val2;
-        $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
-    }
-    while ( my ( $key, $value ) = each %board ) {
-        if ( $key eq 'admin' ) { $key = 'admin_fix'; }
-        $value =~ s/\$/\\\$/gxsm;
-        $value =~ s/'/&#39;/gxsm;
-        my @val2 = split /[|]/xsm, $value;
-        my @mods = split /,\s/xsm, $val2[1];
-        $val2[1] = join q{/}, @mods;
-        my $val2 = join q{', '}, @val2;
-        $newforum .= qq~\$board{'$key'} = ['$val2'];\n~;
+    foreach my $key (@catorder) {
+        my $value = $catinfo{$key};
+        if ( $value && $value ne q{} ) {
+            $value =~ s/\$/\\\$/gxsm;
+            $value =~ s/'/&#39;/gxsm;
+            my @val2 = split /[|]/xsm, $value;
+            my @mods = split /,\s/xsm, $val2[1];
+            $val2[1] = join q{/}, @mods;
+            my $values = join q{', '}, @val2;
+            $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
+        }
     }
     while ( my ( $key, $value ) = each %subboard ) {
         if ( $key eq 'admin' ) { $key = 'admin_fix'; }
@@ -1476,15 +1477,30 @@ sub moveboards {
             if ( $_ eq 'admin' ) { $_ = 'admin_fix'; }
         }
         my $val2 = join q{', '}, @val2;
-        $newforum .= qq~\$subboard{'$key'} = ['$val2'];\n~;
+        push @brdlst, @val2;
+        if ($key) {
+            $newforum .= qq~\$subboard{'$key'} = ['$val2'];\n~;
+        }
+    }
+    foreach my $key (@brdlst) {
+        my $value = $board{$key};
+        if ( $key eq 'admin' ) { $key = 'admin_fix'; }
+        if ( $value && $value ne q{} ) {
+            $value =~ s/\$/\\\$/gxsm;
+            $value =~ s/'/&#39;/gxsm;
+            my @val2 = split /[|]/xsm,  $value;
+            my @mods = split /,\s+/xsm, $val2[1];
+            $val2[1] = join q{/}, @mods;
+            my $val2 = join q{', '}, @val2;
+            $newforum .= qq~\$board{'$key'} = ['$val2'];\n~;
+        }
     }
     $newforum .= qq~\n1;~;
 
-    our ($FORUMMASTER);
-    fopen( 'FORUMMASTER', '>', "$boardsdir/forum.master" )
+    open my $FORUMMASTER, '>', "$boardsdir/forum.master"
       or croak "$croak{'open'} forum.master";
     print {$FORUMMASTER} $newforum or croak "$croak{'print'} FORUMMASTER";
-    fclose('FORUMMASTER') or croak "$croak{'close'} forum.master";
+    close $FORUMMASTER or croak "$croak{'close'} forum.master";
 
 ## forum.totals ##
     open my $FTOTALS, '<', "$convboardsdir/forum.totals"
@@ -1581,6 +1597,7 @@ qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
             }
         }
         if ( time() > $time_to_jump && ( $i + 1 ) < @boards ) {
+            $INFO{'st'} ||= 0;
             $yysetlocation =
                 qq~$set_cgi?action=cats2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
@@ -1593,30 +1610,34 @@ qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
 }
 
 sub fixcontrol {
-    opendir DIR, "$boardsdir/";
-    my @brds =
-      grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;
-    closedir DIR;
+    ($boardsdir) = @_;
+    opendir BOARDSDIR, $boardsdir
+      or fatal_error( 'cannot_open', "$boardsdir", 1 );
+    my @brds = grep { /[.]txt$/xsm } readdir BOARDSDIR;
+    closedir BOARDSDIR;
     my %winbrds = ();
     foreach (@brds) {
         my ( $brd, $ext ) = split /[.]/xsm;
-        if ( $ext eq 'txt' ) {
-            $winbrds{$brd} = 1;
-        }
+        $winbrds{$brd} = 1;
     }
     my $bdbrds = q{};
-    our (%cat);
     require "$boardsdir/forum.master";
     my @newbrds = ();
-    while ( my ( $key, $value ) = each %cat ) {
-        my @new = ();
-        foreach my $old ( @{$value} ) {
-            if ( exists $winbrds{$old} ) {
-                push @new, $old;
+    foreach my $key (@categoryorder) {
+        if ( scalar @{ $cat{$key} } > 0 ) {
+            my @new = ();
+            foreach my $old ( @{ $cat{$key} } ) {
+                if ( $winbrds{$old} ) {
+                    push @new, $old;
+                }
+                else { $bdbrds .= "$old\n"; }
             }
-            else { $bdbrds .= "$old\n"; }
             $cat{$key} = [@new];
             push @newbrds, @new;
+        }
+        else {
+            delete $cat{$key};
+            $bdbrds .= "removed bad cat $key\n";
         }
     }
     while ( my ( $key, $value ) = each %subboard ) {
@@ -1702,11 +1723,11 @@ sub fixcontrol {
             ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
-            $mods =~ s/,\s/\//gxsm;
-            $modgroups =~ s/,\s/\//gxsm;
-            $topicperms =~ s/,\s/\//gxsm;
-            $replyperms =~ s/,\s/\//gxsm;
-            $pollperms =~ s/,\s/\//gxsm;
+            $mods =~ s/,\s*/\//gxsm;
+            $modgroups =~ s/,\s*/\//gxsm;
+            $topicperms =~ s/,\s*/\//gxsm;
+            $replyperms =~ s/,\s*/\//gxsm;
+            $pollperms =~ s/,\s*/\//gxsm;
             $description =~ s/\'/&#39;/gxsm;
             $rulestitle =~ s/\'/&#39;/gxsm;
             $rulesdesc =~ s/\'/&#39;/gxsm;
@@ -1909,7 +1930,7 @@ sub fixnopost {
             }
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalnoposts ) {
                 write_forum_control();
-
+                $INFO{'st'} ||= 0;
                 $yysetlocation =
                   qq~$set_cgi?action=cleanup2;st=~
                   . int(
@@ -2067,6 +2088,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                 }
             }
             if ( time() > $time_to_jump && ( $tops + 1 ) < $totalmess ) {
+                $INFO{'st'} ||= 0;
                 $yysetlocation =
                   qq~$set_cgi?action=messages2;st=~
                   . int( $INFO{'st'} +
@@ -2634,10 +2656,6 @@ EOF
             'default', 'default', 'default', 'default', 'default', 'default',
             'default', '2',       '0',       '0',       '0'
         ],
-        'Mobile' => [
-            'mobile', 'mobile', 'mobile', 'mobile', 'mobile', 'mobile',
-            'mobile', '0',      '0',      '0',      '1'
-        ],
     );
     my @newfields = ();
 
@@ -2819,7 +2837,7 @@ sub tabmenushow {    # used by the converter
         $navlink6 =
 qq~$tabsep<span>$tabfill UTF-8 Converter $tabfill</span>$tabsep&nbsp;~;
     }
-
+    $INFO{'st'} ||= 0;
     $navlink1a =
 qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
     $navlink2a =

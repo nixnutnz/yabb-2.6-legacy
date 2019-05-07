@@ -22,9 +22,6 @@ no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 use Module::Load;
-use Cwd;
-my $cwd = cwd();
-push @INC, $cwd;
 our $VERSION = '2.7.00';
 
 my $setupplver  = 'YaBB 2.7.00 $Revision$';
@@ -36,7 +33,15 @@ our $firstmstime = time;
 
 my $yy_iis = 0;
 my $yypath = q{};
-if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
+my $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root =~ s/\\/\//gxsm;
+}
+$script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
+push @INC, $script_root;
+
+if ( $ENV{SERVER_SOFTWARE} =~ /IIS/xsm ) {
     $yy_iis = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
@@ -48,7 +53,7 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
 
 ### Requirements and Errors ###
 
-if ( -e "$cwd/Paths.pm" ) { require "$cwd/Paths.pm"; }
+if ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
 
 our (
     $lastsaved,    $boardsdir,   $sourcedir,   $memberdir, $vardir,
@@ -74,12 +79,12 @@ our (
 
 # Check if it's blank Paths.pm or filled in one
 if ( !$lastsaved ) {
-    $boardsdir = "$cwd/Boards";
-    $sourcedir = "$cwd/Sources";
-    $memberdir = "$cwd/Members";
-    $vardir    = "$cwd/Variables";
-    $datadir   = "$cwd/Messages";
-    $langdir   = "$cwd/Languages";
+    $boardsdir = "$script_root/Boards";
+    $sourcedir = "$script_root/Sources";
+    $memberdir = "$script_root/Members";
+    $vardir    = "$script_root/Variables";
+    $datadir   = "$script_root/Messages";
+    $langdir   = "$script_root/Languages";
 }
 my $date = time;
 $boardurl    ||= q{};
@@ -96,9 +101,9 @@ if   ($boardurl) { $set_cgi = "$boardurl/Setup.$yyext"; }
 else             { $set_cgi = "Setup.$yyext"; }
 
 # Make sure the module path is present
-push @INC, "$cwd/Modules";
+push @INC, "$script_root/Modules";
 
-require Sources::Subs;
+require "$script_root/Sources/Subs.pm";
 require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
@@ -340,25 +345,25 @@ sub autoconfig {
     ## find the webroot ##
     my $this_script = q{};
     my $searchroot  = q{};
-    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
-        $this_script = "$ENV{'SCRIPT_NAME'}";
+    if ( $ENV{SERVER_SOFTWARE} =~ /IIS/xsm ) {
+        $this_script = $ENV{SCRIPT_NAME};
         my $x = $PROGRAM_NAME;
         $x =~ s/\\/\//gxsm;
         $x =~ s/$this_script//xsm;
         $searchroot = $x . q{/};
     }
     else {
-        $searchroot = $ENV{'DOCUMENT_ROOT'};
+        $searchroot = $ENV{DOCUMENT_ROOT};
         $searchroot =~ s/\\/\//gxsm;
     }
     my $support_env_path = q{};
 
     # Simple output of env variables, for troubleshooting
-    if ( $ENV{'SCRIPT_FILENAME'} ne q{} ) {
-        $support_env_path = $ENV{'SCRIPT_FILENAME'};
+    if ( $ENV{SCRIPT_FILENAME} ne q{} ) {
+        $support_env_path = $ENV{SCRIPT_FILENAME};
     }
-    elsif ( $ENV{'PATH_TRANSLATED'} ne q{} ) {
-        $support_env_path = $ENV{'PATH_TRANSLATED'};
+    elsif ( $ENV{PATH_TRANSLATED} ne q{} ) {
+        $support_env_path = $ENV{PATH_TRANSLATED};
     }
     my @getslash = split /\//xsm, $tempboardurl;
     splice @getslash, -3, 3;
@@ -1478,7 +1483,7 @@ sub tempstarter {
     # Make sure the module path is present
     push @INC, "$boarddir/Modules";
 
-    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
+    if ( $ENV{SERVER_SOFTWARE} =~ /IIS/xsm ) {
         $yy_iis = 1;
         if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
             $yypath = $1;
@@ -2064,6 +2069,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 }
 
 sub foundsetuplock {
+    $mylang = q{};
     if ( $INFO{'lang'} ) {
         $mylang =
 qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~;
@@ -2129,7 +2135,7 @@ sub modules {
     ($mylang) = @_;
     getlang($mylang);
     my @modules =
-      qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
+      qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
 
     @modules = sort @modules;
     my $checker_output = q{};
@@ -2175,7 +2181,7 @@ sub modules {
     if ( $perlver gt '5.009' ) {
         $perlver = $PERL_VERSION;
     }
-    my $server = $ENV{'SERVER_SOFTWARE'} || $mylang{'noserver'};
+    my $server = $ENV{SERVER_SOFTWARE} || $mylang{'noserver'};
 
     my $modchk = qq~
         <div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">

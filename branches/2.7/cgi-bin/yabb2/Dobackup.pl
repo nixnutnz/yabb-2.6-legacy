@@ -50,6 +50,12 @@ our (
 our ( $support_env_path, $tarcreated, $backuptype, $curtime,
     $backupsettingsloaded, $tarball, $zipfile );
 
+our $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+$script_root =~ s/\/Dobackup[.](pl|cgi)//igxsm;
+push @INC, $script_root;
 require Paths;
 
 my $yyext = 'pl';

@@ -21,9 +21,6 @@ use strict;
 use warnings;
 use English qw(-no_match_vars);
 delete @ENV{ 'IFS', 'CDPATH', 'ENV', 'BASH_ENV' };
-use Cwd;
-my $cwd = cwd();
-push @INC, $cwd;
 use CGI::Carp qw(fatalsToBrowser);
 
 our $VERSION = '2.7.00';
@@ -58,7 +55,12 @@ our (
 );
 
 BEGIN {
-
+    our $script_root = $ENV{'SCRIPT_FILENAME'};
+    if ( !$script_root ) {
+        $script_root = $ENV{'PATH_TRANSLATED'};
+    }
+    $script_root =~ s/\/YaBB[.](pl|cgi)//igxsm;
+    push @INC, $script_root;
     require Paths;
     push @INC, "$boarddir/Modules";
     if ( $ENV{'SERVER_SOFTWARE'} && $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {

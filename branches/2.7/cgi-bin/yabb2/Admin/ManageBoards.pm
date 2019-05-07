@@ -544,6 +544,7 @@ sub board_screen {
 
         # Actual deleting
         delete_boards(@editbrd);
+        require Admin::AdminSubs;
         write_forummaster();
     }
     else {
@@ -618,6 +619,7 @@ sub delete_boards {
               ${ $uid . $changedboard }{'parent'};
         }
     }
+    require Admin::AdminSubs;
     write_forum_control();
     return;
 }
@@ -1782,6 +1784,7 @@ qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=man
         boardtotals( 'add', @changes );
     }
 
+    require Admin::AdminSubs;
     write_forummaster();
     $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
@@ -2173,6 +2176,7 @@ sub reorder_boards2 {
                 ${ $uid . $moveitem }{'parent'} = $FORM{'selectboard'};
             }
         }
+        require Admin::AdminSubs;
         write_forummaster();
         $boardsdir = clean_dir($boardsdir);
         require "$boardsdir/forum.control";
@@ -2333,7 +2337,7 @@ sub fix_dupes {
             push @del, $dpfile;
         }
     }
-
+    require Admin::AdminSubs;
     write_forummaster();
     $yymain .=
 qq~$admin_txt{'fixduprem'}<br />@del<br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a>~;

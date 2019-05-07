@@ -23,9 +23,6 @@ no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use File::Copy qw(copy);
 use English qw(-no_match_vars);
-use Cwd;
-my $cwd = cwd();
-push @INC, $cwd;
 our $VERSION = '2.7.00';
 
 our $convert1xplver = 'YaBB 2.7.00 $Revision$';
@@ -70,6 +67,14 @@ our (
     $language,      $lang,
 );
 
+my $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root =~ s/\\/\//gxsm;
+}
+$script_root =~ s/\/Convert1x[.](pl|cgi)//igxsm;
+push @INC, $script_root;
+
 my $yyiis  = 0;
 my $yypath = q{};
 
@@ -88,16 +93,9 @@ my $time_to_jump     = time() + $max_process_time;
 my $date             = time;
 my $lim              = 500;
 ### Requirements and Errors ###
-my $script_root = $ENV{'SCRIPT_FILENAME'};
-if ( !$script_root ) {
-    $script_root = $ENV{'PATH_TRANSLATED'};
-    $script_root =~ s/\\/\//gxsm;
-}
-$script_root =~ s/\/Convert1x[.](pl|cgi)//igxsm;
-
 my %fixed_users = ();
 
-if ( -e "$boarddir/Paths.pm" ) { require Paths; }
+if ( -e "$script_root/Paths.pm" ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
 my $thisscript = $ENV{'SCRIPT_NAME'};
@@ -114,10 +112,11 @@ my $scripturl = "$boardurl/$yyexec.$yyext";
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
 
-require Sources::Subs;
+require "$boarddir/Sources/Subs.pm";
 require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
+
 our %conv1x_txt;
 my $mygetlang = q{};
 if ( $FORM{'lang'} ) {
@@ -146,10 +145,11 @@ our $formsession = q{};
 #############################################
 # Conversion starts here                    #
 #############################################
+$imagesdir = "$yyhtml_root/Templates/Forum/default";
 my $px = 'px';
 
-if ( -e 'Variables/Setup.lock' ) {
-    if ( -e 'Variables/Convert.lock' || -e 'Variables/ConvertLang.lock' ) {
+if ( -e "$vardir/Setup.lock" ) {
+    if ( -e "$vardir/Convert.lock" || -e "$vardir/ConvertLang.lock" ) {
         foundconvlock();
 
         if ( -e "$tmpdir/fixusers.txt" ) {
@@ -195,19 +195,19 @@ if ( -e 'Variables/Setup.lock' ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>$conv1x_txt{'convertdir'}</b></label></td>
-                            <td><input type="text" id="convertdir" name="convertdir" value="$cwd/Convert" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" id="convertdir" name="convertdir" value="$script_root/Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>$conv1x_txt{'convboardsdir'}</b></label></td>
-                            <td><input type="text" id="convboardsdir" name="convboardsdir" value="$cwd/Convert/Boards" size="50" /></td>
+                            <td><input type="text" id="convboardsdir" name="convboardsdir" value="$script_root/Convert/Boards" size="50" /></td>
                         </tr><tr>
                             <td><label for="convmemberdir"><b>$conv1x_txt{'convmemberdir'}</b></label></td>
-                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="$cwd/Convert/Members" size="50" /></td>
+                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="$script_root/Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>$conv1x_txt{'convdatadir'}</b></label></td>
-                            <td><input type="text" id="convdatadir" name="convdatadir" value="$cwd/Convert/Messages" size="50" /></td>
+                            <td><input type="text" id="convdatadir" name="convdatadir" value="$script_root/Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>$conv1x_txt{'convvardir'}</b><label></td>
-                            <td><input type="text" id="convvardir" name="convvardir" value="$cwd/Convert/Variables" size="50" /></td>
+                            <td><input type="text" id="convvardir" name="convvardir" value="$script_root/Convert/Variables" size="50" /></td>
                         </tr><tr>
                             <td><label for="convhtml"><b>$conv1x_txt{'convhtml'}</b></label></td>
                             <td><input type="text" id="convhtml" name="convhtml" value="" size="50"  onchange="setconvhtml()" /></td>

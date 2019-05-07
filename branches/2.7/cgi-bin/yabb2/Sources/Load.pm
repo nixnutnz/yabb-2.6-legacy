@@ -341,12 +341,14 @@ sub load_user {
     else { $userextension = 'vars'; }
 
     $memberdir = clean_dir($memberdir);
-    $usr       = clean_folder($usr);
+    $usr = clean_usr($usr);
     if ( -e "$memberdir/$usr.$userextension" ) {
         require "$memberdir/$usr.$userextension";
         our ($LOADUSER);
-        fopen( 'LOADUSER', '<', "$memberdir/$usr.lst" )
-          or fatal_error( 'cannot_open', "$memberdir/$usr.lst", 1 );
+        if ( -e "$memberdir/$usr.lst" ) {
+            fopen( 'LOADUSER', '<', "$memberdir/$usr.lst" )
+              or fatal_error( 'cannot_open', "$memberdir/$usr.lst", 1 );
+        }
         my $mylastonline = <$LOADUSER>;
         fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
         if ( $username && $usr ne $username ) {
