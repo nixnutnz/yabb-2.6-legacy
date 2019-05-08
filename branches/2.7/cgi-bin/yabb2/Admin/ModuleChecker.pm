@@ -72,6 +72,8 @@ foreach my $module (@modules) {
         # If you use IE and don't like what you see, remove the
         # comment (#) in next line.
         # $e =~ s/\//\\/g;
+        if (!$modulecheck{'5'} ) {$modulecheck{'5'} = 'Text missing';}
+        if (!$modulecheck{$module} ) {$modulecheck{$module} = "$module Text missing";}
         $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="important">$module</span></td>
                     <td class="windowbg2">

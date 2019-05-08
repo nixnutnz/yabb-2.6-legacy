@@ -2165,7 +2165,8 @@ sub modules {
         else {
             if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
             $i = $mylang{'8'};
-
+            if (!$modulecheck{'5'} ) {$modulecheck{'5'} = 'Text missing';}
+            if (!$modulecheck{$module} ) {$modulecheck{$module} = "$module Text missing";}
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="important">$module</span></td>
                     <td class="windowbg2">
