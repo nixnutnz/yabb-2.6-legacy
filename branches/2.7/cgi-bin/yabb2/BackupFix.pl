@@ -26,7 +26,14 @@ use File::stat;
 our $VERSION = '2.7.00';
 
 our ( $boardurl, $vardir, $memberdir, $yyhtml_root, );
+our $script_root = $ENV{'SCRIPT_FILENAME'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+$script_root =~ s/\/BackupFix[.](pl|cgi)//igxsm;
+push @INC, $script_root;
 require Paths;
+
 my $yyext = 'pl';
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
