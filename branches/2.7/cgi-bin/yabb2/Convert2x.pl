@@ -1666,6 +1666,7 @@ sub fixcontrol {
     }
     delete $newbrds{'admin'};
     %board = %newbrds;
+    require Admin::AdminSubs;
     write_forummaster();
 
     my $newboard   = q{};
