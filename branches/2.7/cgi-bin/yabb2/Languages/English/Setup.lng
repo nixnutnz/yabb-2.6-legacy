@@ -33,7 +33,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 q~Only click on the insert button if your server needs the absolute path to the YaBB main script - if your host has installed Perl 5.026 OR has disabled 'UNSAFE_INC' you must use this option.~,
     'change' => q~Change this form if changes are necessary.~,
     'prebrddir' =>
-q~Main Script Directory:<br /><span style="font-size: 11px;">The server path to the board's folder. (If your host has installed Perl 5.026 OR has disabled 'UNSAFE_INC' you must cannot use './'.</span>~,
+q~Main Script Directory:<br /><span style="font-size: 11px;">The server path to the board's folder. (If your host has installed Perl 5.026 OR has disabled 'UNSAFE_INC' you cannot use './'.</span>~,
     'prebrdurl' =>
 q~Board URL:<br /><span style="font-size: 11px;">URL of your board's folder (without trailing '/')</span>~,
     'prehtmldir' =>
