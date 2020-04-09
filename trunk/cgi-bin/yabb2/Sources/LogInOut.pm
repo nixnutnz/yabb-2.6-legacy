@@ -308,7 +308,7 @@ sub Reminder2 {
     if ( $regcheck && !$iamadmin ) {
         validation_check( $FORM{'verification'} );
     }
-    if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
+    if ( !$iamadmin && $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
         SpamQuestionCheck( $FORM{'verification_question'},
             $FORM{'verification_question_id'} );
     }
