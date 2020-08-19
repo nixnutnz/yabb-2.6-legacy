@@ -1447,6 +1447,8 @@ q~ Set Time Limit in minutes?<br /><span class="small">This affects both modifyi
 $maintxt{'769'}  = 'Today';          ## needed to show Today in registration log
 $maintxt{'769a'} = 'Yesterday';      ## needed to show Today in registration log
 $maintxt{'dst'}  = '<sup>*</sup>';   ## needed to show Today in registration log
+$maintxt{'am'} = q~am~;              ## needed for Detailedversion check
+$maintxt{'pm'} = q~pm~;              ## needed for Detailedversion check
 
 %timetxt = (
     '1' => q~<sup>st</sup>~,
