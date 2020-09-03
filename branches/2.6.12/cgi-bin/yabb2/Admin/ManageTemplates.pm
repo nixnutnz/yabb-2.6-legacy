@@ -409,67 +409,67 @@ qq~<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'
     $templatejump  = 1;
     $tempforumjump = jumpto();
 
-    $fulltemplate =~ s/({|<)yabb bottom(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb fixtop(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb javascripta(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb javascript(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
-    $fulltemplate =~ s/({|<)yabb mycharset(}|>)/$yymycharset/gsm;
-    $fulltemplate =~ s/({|<)yabb title(}|>)/$temptitle/gsm;
-    $fulltemplate =~ s/({|<)yabb style(}|>)/$tempstyles/gsm;
-    $fulltemplate =~ s/({|<)yabb html_root(}|>)/$yyhtml_root/gsm;
-    $fulltemplate =~ s/({|<)yabb images(}|>)/$tempimages/gsm;
-    $fulltemplate =~ s/({|<)yabb uname(}|>)/$tempuname/gsm;
-    $fulltemplate =~ s/({|<)yabb boardlink(}|>)/$tempforumurl/gsm;
-    $fulltemplate =~ s/({|<)yabb navigation(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb searchbox(}|>)/$tempsearchbox/gsm;
-    $fulltemplate =~ s/({|<)yabb searchform(}|>)/<form>/gsm;
-    $fulltemplate =~ s/({|<)yabb searchformend(}|>)/<\/form>/gsm;
-    $fulltemplate =~ s/({|<)yabb im(}|>)/$tempuim/gsm;
-    $fulltemplate =~ s/({|<)yabb time(}|>)/$temptime/gsm;
-    $fulltemplate =~ s/({|<)yabb langChooser(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb menu(}|>)/$temp21menu/gsm;
-    $fulltemplate =~ s/({|<)yabb tabmenu(}|>)/$tempmenu/gsm;
-    $fulltemplate =~ s/({|<)yabb rss(}|>)/$rssbutton/gsm;
+    $fulltemplate =~ s/(\{|<)yabb bottom(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb fixtop(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb javascripta(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb javascript(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $fulltemplate =~ s/(\{|<)yabb mycharset(}|>)/$yymycharset/gsm;
+    $fulltemplate =~ s/(\{|<)yabb title(}|>)/$temptitle/gsm;
+    $fulltemplate =~ s/(\{|<)yabb style(}|>)/$tempstyles/gsm;
+    $fulltemplate =~ s/(\{|<)yabb html_root(}|>)/$yyhtml_root/gsm;
+    $fulltemplate =~ s/(\{|<)yabb images(}|>)/$tempimages/gsm;
+    $fulltemplate =~ s/(\{|<)yabb uname(}|>)/$tempuname/gsm;
+    $fulltemplate =~ s/(\{|<)yabb boardlink(}|>)/$tempforumurl/gsm;
+    $fulltemplate =~ s/(\{|<)yabb navigation(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb searchbox(}|>)/$tempsearchbox/gsm;
+    $fulltemplate =~ s/(\{|<)yabb searchform(}|>)/<form>/gsm;
+    $fulltemplate =~ s/(\{|<)yabb searchformend(}|>)/<\/form>/gsm;
+    $fulltemplate =~ s/(\{|<)yabb im(}|>)/$tempuim/gsm;
+    $fulltemplate =~ s/(\{|<)yabb time(}|>)/$temptime/gsm;
+    $fulltemplate =~ s/(\{|<)yabb langChooser(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb menu(}|>)/$temp21menu/gsm;
+    $fulltemplate =~ s/(\{|<)yabb tabmenu(}|>)/$tempmenu/gsm;
+    $fulltemplate =~ s/(\{|<)yabb rss(}|>)/$rssbutton/gsm;
     $fulltemplate =~ s/<span id="newsdiv"><\/span>/<span id="newsdiv">$tempnews<\/span>/gsm;
-    $fulltemplate =~ s/({|<)yabb newstitle(}|>)/$tempnewstitle/gsm;
-    $fulltemplate =~ s/({|<)yabb copyright(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb debug(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb forumjump(}|>)/$tempforumjump/gsm;
-    $fulltemplate =~ s/({|<)yabb freespace(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb navback(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb admin_alert(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb tabadd(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb addtab(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb syntax_js(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb grayscript(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb high(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb ubbc(}|>)//gsm;
-    $fulltemplate =~ s/({|<)yabb news(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb newstitle(}|>)/$tempnewstitle/gsm;
+    $fulltemplate =~ s/(\{|<)yabb copyright(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb debug(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb forumjump(}|>)/$tempforumjump/gsm;
+    $fulltemplate =~ s/(\{|<)yabb freespace(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb navback(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb admin_alert(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb tabadd(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb addtab(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb syntax_js(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb grayscript(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb high(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb ubbc(}|>)//gsm;
+    $fulltemplate =~ s/(\{|<)yabb news(}|>)//gsm;
 ## Mod Hook fulltemplate
 ## End Mod Hook fulltemplate
 
     if ( $selectedsection eq 'vboard' ) {
         $boardtempl = BoardTempl( $viewboard, $tempimages, $tempimagesdir );
-        $fulltemplate =~ s/({|<)yabb main(}|>)/$boardtempl/gsm;
-        $fulltemplate =~ s/({|<)yabb colboardtable(}|>)//gsm;
-        $fulltemplate =~ s/({|<)yabb boardtable(}|>)/$boardtable/gsm;
-        $fulltemplate =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
+        $fulltemplate =~ s/(\{|<)yabb main(}|>)/$boardtempl/gsm;
+        $fulltemplate =~ s/(\{|<)yabb colboardtable(}|>)//gsm;
+        $fulltemplate =~ s/(\{|<)yabb boardtable(}|>)/$boardtable/gsm;
+        $fulltemplate =~ s/(\{|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
     }
     elsif ( $selectedsection eq 'vmessage' ) {
         $messagetempl =
           MessageTempl( $viewmessage, $tempimages, $tempimagesdir );
-        $fulltemplate =~ s/({|<)yabb main(}|>)/$messagetempl/gsm;
+        $fulltemplate =~ s/(\{|<)yabb main(}|>)/$messagetempl/gsm;
     }
     elsif ( $selectedsection eq 'vdisplay' ) {
         $displaytempl =
           DisplayTempl( $viewdisplay, $tempimages, $tempimagesdir );
-        $fulltemplate =~ s/({|<)yabb main(}|>)/$displaytempl/gsm;
+        $fulltemplate =~ s/(\{|<)yabb main(}|>)/$displaytempl/gsm;
     }
     elsif ( $selectedsection eq 'vmycenter' ) {
         $mycentertempl =
           MyCenterTempl( $viewmycenter, $tempimages, $tempimagesdir );
-        $fulltemplate =~ s/({|<)yabb main(}|>)/$mycentertempl/gsm;
+        $fulltemplate =~ s/(\{|<)yabb main(}|>)/$mycentertempl/gsm;
     }
     $fulltemplate =~
 s/img src\=\"$tempimages\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisgm;
@@ -801,7 +801,7 @@ qq~$boardindex_txt{'63'}: $templ_txt{'74'}<br />$boardindex_txt{'63a'}: $templ_t
     $tempcatlink =
 qq~<img src="$x[1]/cat_collapse.png" alt="" /> <a href="javascript:;">$templ_txt{'81'}</a>~;
     my $templatecat = $catheader;
-    $templatecat =~ s/({|<)yabb catlink(}|>)/$tempcatlink/gsm;
+    $templatecat =~ s/(\{|<)yabb catlink(}|>)/$tempcatlink/gsm;
     my $tmptemplateblock = $templatecat;
     my $templastpostdate = timeformat($date);
     $templastpostdate = qq~($templastpostdate).<br />~;
@@ -823,25 +823,25 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
 
     for my $i ( 1 .. 2 ) {
         my $templateblock = $boardblock;
-        $templateblock =~ s/({|<)yabb new(}|>)/$tempnew/gsm;
-        $templateblock =~ s/({|<)yabb boardrss(}|>)//gsm; ### RSS on Board Index ###
-        $templateblock =~ s/({|<)yabb boardanchor(}|>)/$tempboardanchor_$i/gsm;
-        $templateblock =~ s/({|<)yabb boardurl(}|>)/$tempcurboardurl/gsm;
-        $templateblock =~ s/({|<)yabb boardpic(}|>)/$tempboardpic/gsm;
-        $templateblock =~ s/({|<)yabb boardname(}|>)/$tempcurboard $i/gsm;
-        $templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
-        $templateblock =~ s/({|<)yabb boarddesc(}|>)/$tempbddescr/gsm;
-        $templateblock =~ s/({|<)yabb moderators(}|>)/$tempshowmods/gsm;
-        $templateblock =~ s/({|<)yabb threadcount(}|>)/$i/gsm;
-        $templateblock =~ s/({|<)yabb messagecount(}|>)/$i/gsm;
-        $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
-        $templateblock =~ s/({|<)yabb lastposter(}|>)/$templastposter/gsm;
-        $templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$tmplasttopiclink/gsm;
+        $templateblock =~ s/(\{|<)yabb new(}|>)/$tempnew/gsm;
+        $templateblock =~ s/(\{|<)yabb boardrss(}|>)//gsm; ### RSS on Board Index ###
+        $templateblock =~ s/(\{|<)yabb boardanchor(}|>)/$tempboardanchor_$i/gsm;
+        $templateblock =~ s/(\{|<)yabb boardurl(}|>)/$tempcurboardurl/gsm;
+        $templateblock =~ s/(\{|<)yabb boardpic(}|>)/$tempboardpic/gsm;
+        $templateblock =~ s/(\{|<)yabb boardname(}|>)/$tempcurboard $i/gsm;
+        $templateblock =~ s/(\{|<)yabb boardviewers(}|>)/$boardviewers/gsm;
+        $templateblock =~ s/(\{|<)yabb boarddesc(}|>)/$tempbddescr/gsm;
+        $templateblock =~ s/(\{|<)yabb moderators(}|>)/$tempshowmods/gsm;
+        $templateblock =~ s/(\{|<)yabb threadcount(}|>)/$i/gsm;
+        $templateblock =~ s/(\{|<)yabb messagecount(}|>)/$i/gsm;
+        $templateblock =~ s/(\{|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
+        $templateblock =~ s/(\{|<)yabb lastposter(}|>)/$templastposter/gsm;
+        $templateblock =~ s/(\{|<)yabb lasttopiclink(}|>)/$tmplasttopiclink/gsm;
         $tmptemplateblock .= $templateblock;
     }
     $tmptemplateblock .= $catfooter;
-    $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//sm;
-    $boardindex_template =~ s/({|<)yabb catsblock(}|>)/$tmptemplateblock/gsm;
+    $boardindex_template =~ s/(\{|<)yabb pollshowcase(}|>)//sm;
+    $boardindex_template =~ s/(\{|<)yabb catsblock(}|>)/$tmptemplateblock/gsm;
     require Sources::Menu;
     $collapselink = SetImage('collapse', $UseMenuType);
     $markalllink  = SetImage('markallread', $UseMenuType);
@@ -852,61 +852,61 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
     my $templasttopiclink =
 qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
 
-    $boardhandellist =~ s/({|<)yabb collapse(}|>)/$menusep$collapselink/gsm;
-    $boardhandellist =~ s/({|<)yabb expand(}|>)//gsm;
-    $boardhandellist =~ s/({|<)yabb markallread(}|>)/$menusep$markalllink/gsm;
+    $boardhandellist =~ s/(\{|<)yabb collapse(}|>)/$menusep$collapselink/gsm;
+    $boardhandellist =~ s/(\{|<)yabb expand(}|>)//gsm;
+    $boardhandellist =~ s/(\{|<)yabb markallread(}|>)/$menusep$markalllink/gsm;
     $boardhandellist =~ s/\Q$menusep//ism;
     $boardindex_template =~
-      s/({|<)yabb boardhandellist(}|>)/$boardhandellist/gsm;
-    $boardindex_template =~ s/({|<)yabb catimage(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb catrss(}|>)//gsm; ### RSS on Board Index ###
+      s/(\{|<)yabb boardhandellist(}|>)/$boardhandellist/gsm;
+    $boardindex_template =~ s/(\{|<)yabb catimage(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb catrss(}|>)//gsm; ### RSS on Board Index ###
     $boardindex_template =~
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
 
-    $boardindex_template =~ s/({|<)yabb newmsg start(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb newmsg icon(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb newmsg(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb newmsg end(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb newmsg start(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb newmsg icon(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb newmsg(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb newmsg end(}|>)//gsm;
 
-    $boardindex_template =~ s/({|<)yabb totaltopics(}|>)/3/gsm;
-    $boardindex_template =~ s/({|<)yabb totalmessages(}|>)/3/gsm;
+    $boardindex_template =~ s/(\{|<)yabb totaltopics(}|>)/3/gsm;
+    $boardindex_template =~ s/(\{|<)yabb totalmessages(}|>)/3/gsm;
     $boardindex_template =~
-      s/({|<)yabb lastpostlink(}|>)/$templasttopiclink/gsm;
-    $boardindex_template =~ s/({|<)yabb lastpostdate(}|>)/$templastpostdate/gsm;
-    $boardindex_template =~ s/({|<)yabb recentposts(}|>)/$temprecentposts/gsm;
-    $boardindex_template =~ s/({|<){yabb recenttopics(}|>)//gsm;
+      s/(\{|<)yabb lastpostlink(}|>)/$templasttopiclink/gsm;
+    $boardindex_template =~ s/(\{|<)yabb lastpostdate(}|>)/$templastpostdate/gsm;
+    $boardindex_template =~ s/(\{|<)yabb recentposts(}|>)/$temprecentposts/gsm;
+    $boardindex_template =~ s/(\{|<){yabb recenttopics(}|>)//gsm;
 
-    $boardindex_template =~ s/({|<)yabb mostusers(}|>)/$themostuser/gsm;
-    $boardindex_template =~ s/({|<)yabb mostmembers(}|>)/$themostmemb/gsm;
-    $boardindex_template =~ s/({|<)yabb mostguests(}|>)/$themostguest/gsm;
-    $boardindex_template =~ s/({|<)yabb mostbots(}|>)/$themostbots/gsm;
-    $boardindex_template =~ s/({|<)yabb mostusersdate(}|>)/$themostuserdate/gsm;
+    $boardindex_template =~ s/(\{|<)yabb mostusers(}|>)/$themostuser/gsm;
+    $boardindex_template =~ s/(\{|<)yabb mostmembers(}|>)/$themostmemb/gsm;
+    $boardindex_template =~ s/(\{|<)yabb mostguests(}|>)/$themostguest/gsm;
+    $boardindex_template =~ s/(\{|<)yabb mostbots(}|>)/$themostbots/gsm;
+    $boardindex_template =~ s/(\{|<)yabb mostusersdate(}|>)/$themostuserdate/gsm;
     $boardindex_template =~
-      s/({|<)yabb mostmembersdate(}|>)/$themostmembdate/gsm;
+      s/(\{|<)yabb mostmembersdate(}|>)/$themostmembdate/gsm;
     $boardindex_template =~
-      s/({|<)yabb mostguestsdate(}|>)/$themostguestdate/gsm;
-    $boardindex_template =~ s/({|<)yabb mostbotsdate(}|>)/$themostbotsdate/gsm;
-    $boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/gsm;
+      s/(\{|<)yabb mostguestsdate(}|>)/$themostguestdate/gsm;
+    $boardindex_template =~ s/(\{|<)yabb mostbotsdate(}|>)/$themostbotsdate/gsm;
+    $boardindex_template =~ s/(\{|<)yabb groupcolors(}|>)/$grpcolors/gsm;
 
-    $boardindex_template =~ s/({|<)yabb membercount(}|>)/$tempmembercount/gsm;
-    $boardindex_template =~ s/({|<)yabb expandmessages(}|>)/$temp_expandmessages/gsm;
-    $boardindex_template =~ s/({|<)yabb latestmember(}|>)/$latestmemberlink/gsm;
-    $boardindex_template =~ s/({|<)yabb ims(}|>)/$tempims/gsm;
-    $boardindex_template =~ s/({|<)yabb users(}|>)/$tempuserson/gsm;
-    $boardindex_template =~ s/({|<)yabb spc(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb onlineusers(}|>)/$tempusers/gsm;
-    $boardindex_template =~ s/({|<)yabb guests(}|>)/$tempguestson/gsm;
-    $boardindex_template =~ s/({|<)yabb onlineguests(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb bots(}|>)/$tempbotson/gsm;
-    $boardindex_template =~ s/({|<)yabb onlinebots(}|>)/$tempbotlist/gsm;
-    $boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/gsm;
-    $boardindex_template =~ s/({|<)yabb sharedlogin(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb selecthtml(}|>)//gsm;
-    $boardindex_template =~ s/({|<)yabb new_load(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb membercount(}|>)/$tempmembercount/gsm;
+    $boardindex_template =~ s/(\{|<)yabb expandmessages(}|>)/$temp_expandmessages/gsm;
+    $boardindex_template =~ s/(\{|<)yabb latestmember(}|>)/$latestmemberlink/gsm;
+    $boardindex_template =~ s/(\{|<)yabb ims(}|>)/$tempims/gsm;
+    $boardindex_template =~ s/(\{|<)yabb users(}|>)/$tempuserson/gsm;
+    $boardindex_template =~ s/(\{|<)yabb spc(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb onlineusers(}|>)/$tempusers/gsm;
+    $boardindex_template =~ s/(\{|<)yabb guests(}|>)/$tempguestson/gsm;
+    $boardindex_template =~ s/(\{|<)yabb onlineguests(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb bots(}|>)/$tempbotson/gsm;
+    $boardindex_template =~ s/(\{|<)yabb onlinebots(}|>)/$tempbotlist/gsm;
+    $boardindex_template =~ s/(\{|<)yabb caldisplay(}|>)/$cal_display/gsm;
+    $boardindex_template =~ s/(\{|<)yabb sharedlogin(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb selecthtml(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb new_load(}|>)//gsm;
     $boardindex_template =~
-                  s/({|<)yabb subboardlist(}|>)//gsm;
+                  s/(\{|<)yabb subboardlist(}|>)//gsm;
     $boardindex_template =~
-                  s/({|<)yabb messagedropdown(}|>)//gsm;
+                  s/(\{|<)yabb messagedropdown(}|>)//gsm;
 ## Mod Hook BoardIndex ##
 ## End Mod Hook BoardIndex ##
     $boardindex_template =~
@@ -949,26 +949,26 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $temp_attachment =
       qq~<img src="$x[1]/paperclip.gif" alt="$messageindex_txt{'5'}" />~;
 
-    $messageindex_template =~ s/({|<)yabb home(}|>)/$mbname/gsm;
-    $messageindex_template =~ s/({|<)yabb category(}|>)/$tempcatnm/gsm;
-    $messageindex_template =~ s/({|<)yabb board(}|>)/$tempboardnm/gsm;
-    $messageindex_template =~ s/({|<)yabb moderators(}|>)/$tempmodslink/gsm;
-    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$messageindex_txt{'70'}/gsm;
-    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$messageindex_txt{'109'}/gsm;
-    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$messageindex_txt{'110'}/gsm;
-    $messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$messageindex_txt{'22'}/gsm;
-    $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
-    $messageindex_template =~ s/({|<)yabb threadcount(}|>)/1/gsm;
-    $messageindex_template =~ s/({|<)yabb messagecount(}|>)/2/gsm;
-    $boarddescription =~ s/({|<)yabb boarddescription(}|>)/$tempbdescrip/gsm;
-    $messageindex_template =~ s/({|<)yabb description(}|>)/$boarddescription/gsm;
-    $messageindex_template =~ s/({|<)yabb colspan(}|>)/7/gsm;
+    $messageindex_template =~ s/(\{|<)yabb home(}|>)/$mbname/gsm;
+    $messageindex_template =~ s/(\{|<)yabb category(}|>)/$tempcatnm/gsm;
+    $messageindex_template =~ s/(\{|<)yabb board(}|>)/$tempboardnm/gsm;
+    $messageindex_template =~ s/(\{|<)yabb moderators(}|>)/$tempmodslink/gsm;
+    $messageindex_template =~ s/(\{|<)yabb sortsubject(}|>)/$messageindex_txt{'70'}/gsm;
+    $messageindex_template =~ s/(\{|<)yabb sortstarter(}|>)/$messageindex_txt{'109'}/gsm;
+    $messageindex_template =~ s/(\{|<)yabb sortanswer(}|>)/$messageindex_txt{'110'}/gsm;
+    $messageindex_template =~ s/(\{|<)yabb sortlastpostim(}|>)/$messageindex_txt{'22'}/gsm;
+    $messageindex_template =~ s/(\{|<)yabb bdpicture(}|>)/$bdpic/gsm;
+    $messageindex_template =~ s/(\{|<)yabb threadcount(}|>)/1/gsm;
+    $messageindex_template =~ s/(\{|<)yabb messagecount(}|>)/2/gsm;
+    $boarddescription =~ s/(\{|<)yabb boarddescription(}|>)/$tempbdescrip/gsm;
+    $messageindex_template =~ s/(\{|<)yabb description(}|>)/$boarddescription/gsm;
+    $messageindex_template =~ s/(\{|<)yabb colspan(}|>)/7/gsm;
 
     $messageindex_template =~
-      s/({|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
+      s/(\{|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
     $messageindex_template =~
-      s/({|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
-    $messageindex_template =~ s/({|<)yabb new_load(}|>)//gsm;
+      s/(\{|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
+    $messageindex_template =~ s/(\{|<)yabb new_load(}|>)//gsm;
 
     require Sources::Menu;
     $notify_board = SetImage('notify', $UseMenuType);
@@ -1007,54 +1007,54 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $topichandellist =~ s/\Q$menusep//ism;
 
     $messageindex_template =~
-      s/({|<)yabb topichandellist(}|>)/$topichandellist/gsm;
+      s/(\{|<)yabb topichandellist(}|>)/$topichandellist/gsm;
     $messageindex_template =~
-      s/({|<)yabb topichandellist2(}|>)/$topichandellist/gsm;
+      s/(\{|<)yabb topichandellist2(}|>)/$topichandellist/gsm;
     $messageindex_template =~
       s/class="post_tools center" style="width:10em"/class="right"/gsm;
 
-    $messageindex_template =~ s/({|<)yabb pageindex(}|>)/$temppageindex/gsm;
+    $messageindex_template =~ s/(\{|<)yabb pageindex(}|>)/$temppageindex/gsm;
     $messageindex_template =~
-      s/({|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
-    $messageindex_template =~ s/({|<)yabb admin column(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb outsidethreadtools(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb topicpreview(}|>)//gsm;
+      s/(\{|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
+    $messageindex_template =~ s/(\{|<)yabb admin column(}|>)//gsm;
+    $messageindex_template =~ s/(\{|<)yabb outsidethreadtools(}|>)//gsm;
+    $messageindex_template =~ s/(\{|<)yabb topicpreview(}|>)//gsm;
 
     my $tempbar = $threadbar;
-    $tempbar =~ s/({|<)yabb admin column(}|>)//gsm;
-    $tempbar =~ s/({|<)yabb threadpic(}|>)/$tempthreadpic/gsm;
-    $tempbar =~ s/({|<)yabb icon(}|>)/$tempmicon/gsm;
-    $tempbar =~ s/({|<)yabb new(}|>)/$tempnew/gsm;
-    $tempbar =~ s/({|<)yabb poll(}|>)//gsm;
-    $tempbar =~ s/({|<)yabb favorite(}|>)//gsm;
-    $tempbar =~ s/({|<)yabb subjectlink(}|>)/$tempmsublink/gsm;
-    $tempbar =~ s/({|<)yabb pages(}|>)//gsm;
-    $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
-    $tempbar =~ s/({|<)yabb starter(}|>)/$tempmname/gsm;
-    $tempbar =~ s/({|<)yabb starttime(}|>)/ timeformat($date)/egsm;
-    $tempbar =~ s/({|<)yabb replies(}|>)/2/gsm;
-    $tempbar =~ s/({|<)yabb views(}|>)/12/gsm;
-    $tempbar =~ s/({|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
-    $tempbar =~ s/({|<)yabb lastposter(}|>)/$templastposter/gsm;
+    $tempbar =~ s/(\{|<)yabb admin column(}|>)//gsm;
+    $tempbar =~ s/(\{|<)yabb threadpic(}|>)/$tempthreadpic/gsm;
+    $tempbar =~ s/(\{|<)yabb icon(}|>)/$tempmicon/gsm;
+    $tempbar =~ s/(\{|<)yabb new(}|>)/$tempnew/gsm;
+    $tempbar =~ s/(\{|<)yabb poll(}|>)//gsm;
+    $tempbar =~ s/(\{|<)yabb favorite(}|>)//gsm;
+    $tempbar =~ s/(\{|<)yabb subjectlink(}|>)/$tempmsublink/gsm;
+    $tempbar =~ s/(\{|<)yabb pages(}|>)//gsm;
+    $tempbar =~ s/(\{|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
+    $tempbar =~ s/(\{|<)yabb starter(}|>)/$tempmname/gsm;
+    $tempbar =~ s/(\{|<)yabb starttime(}|>)/ timeformat($date)/egsm;
+    $tempbar =~ s/(\{|<)yabb replies(}|>)/2/gsm;
+    $tempbar =~ s/(\{|<)yabb views(}|>)/12/gsm;
+    $tempbar =~ s/(\{|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
+    $tempbar =~ s/(\{|<)yabb lastposter(}|>)/$templastposter/gsm;
 
     if ( $accept_permalink == 1 ) {
-        $tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/gsm;
+        $tempbar =~ s/(\{|<)yabb permalink(}|>)/$message_permalink/gsm;
     }
     else {
-        $tempbar =~ s/({|<)yabb permalink(}|>)//gsm;
+        $tempbar =~ s/(\{|<)yabb permalink(}|>)//gsm;
     }
 
     $tmptempbar .= $tempbar;
 
-    $messageindex_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/gsm;
-    $messageindex_template =~ s/({|<)yabb modupdate(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb modupdateend(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb stickyblock(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb adminfooter(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb icons(}|>)/$tempyabbicons/gsm;
+    $messageindex_template =~ s/(\{|<)yabb threadblock(}|>)/$tmptempbar/gsm;
+    $messageindex_template =~ s/(\{|<)yabb modupdate(}|>)//gsm;
+    $messageindex_template =~ s/(\{|<)yabb modupdateend(}|>)//gsm;
+    $messageindex_template =~ s/(\{|<)yabb stickyblock(}|>)//gsm;
+    $messageindex_template =~ s/(\{|<)yabb adminfooter(}|>)//gsm;
+    $messageindex_template =~ s/(\{|<)yabb icons(}|>)/$tempyabbicons/gsm;
     $messageindex_template =~
-      s/({|<)yabb admin icons(}|>)/$tempyabbadminicons/gsm;
-    $messageindex_template =~ s/({|<)yabb access(}|>)//gsm;
+      s/(\{|<)yabb admin icons(}|>)/$tempyabbadminicons/gsm;
+    $messageindex_template =~ s/(\{|<)yabb access(}|>)//gsm;
     $messageindex_template =~
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
     $messageindex_template =~
@@ -1195,13 +1195,13 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
             $css          = q~windowbg2~;
             $counterwords = "$display_txt{'146'} #$i";
         }
-        $posthandelblock =~ s/({|<)yabb modalert(}|>)/$template_alertmod/gsm;
-        $posthandelblock =~ s/({|<)yabb quote(}|>)/$template_quote/gsm;
-        $posthandelblock =~ s/({|<)yabb modify(}|>)/$template_modify/gsm;
-        $posthandelblock =~ s/({|<)yabb split(}|>)/$template_split/gsm;
-        $posthandelblock =~ s/({|<)yabb delete(}|>)/$template_delete/gsm;
-        $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
-        $posthandelblock =~ s/({|<)yabb print_post(}|>)/$template_print_post/gsm;
+        $posthandelblock =~ s/(\{|<)yabb modalert(}|>)/$template_alertmod/gsm;
+        $posthandelblock =~ s/(\{|<)yabb quote(}|>)/$template_quote/gsm;
+        $posthandelblock =~ s/(\{|<)yabb modify(}|>)/$template_modify/gsm;
+        $posthandelblock =~ s/(\{|<)yabb split(}|>)/$template_split/gsm;
+        $posthandelblock =~ s/(\{|<)yabb delete(}|>)/$template_delete/gsm;
+        $posthandelblock =~ s/(\{|<)yabb admin(}|>)/$template_admin/gsm;
+        $posthandelblock =~ s/(\{|<)yabb print_post(}|>)/$template_print_post/gsm;
         $posthandelblock =~ s/\Q$menusep//ism;
         $outside_posttools = qq~{yabb quote}{yabb markquote}~;
         $posthandellist = qq~{yabb modalert}{yabb print_post}{yabb modify}{yabb split}{yabb delete}~;
@@ -1230,109 +1230,109 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
         </ul>
     </div>~;
         }
-        $contactblock =~ s/({|<)yabb email(}|>)/$template_email/gsm;
-        $contactblock =~ s/({|<)yabb profile(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb pm(}|>)/$template_pm/gsm;
-        $contactblock =~ s/({|<)yabb www(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb aim(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb yim(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb icq(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb gtalk(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb skype(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb myspace(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb facebook(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb twitter(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb youtube(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb addbuddy(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb email(}|>)/$template_email/gsm;
+        $contactblock =~ s/(\{|<)yabb profile(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb pm(}|>)/$template_pm/gsm;
+        $contactblock =~ s/(\{|<)yabb www(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb aim(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb yim(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb icq(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb gtalk(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb skype(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb myspace(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb facebook(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb twitter(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb youtube(}|>)//gsm;
+        $contactblock =~ s/(\{|<)yabb addbuddy(}|>)//gsm;
         $contactblock =~ s/\Q$menusep//ism;
 
-        $outblock =~ s/({|<)yabb images(}|>)/$tmpimagesdir/gsm;
-        $outblock =~ s/({|<)yabb messageoptions(}|>)//gsm;
-        $outblock =~ s/({|<)yabb memberinfo(}|>)/$memberinfo/gsm;
-        $outblock =~ s/({|<)yabb userlink(}|>)/$usernamelink/gsm;
-        $outblock =~ s/({|<)yabb stars(}|>)/$star/gsm;
-        $outblock =~ s/({|<)yabb subject(}|>)/$msub/gsm;
-        $outblock =~ s/({|<)yabb msgimg(}|>)/$msgimg/gsm;
-        $outblock =~ s/({|<)yabb msgdate(}|>)/$messdate/gsm;
-        $outblock =~ s/({|<)yabb replycount(}|>)/$counterwords/gsm;
-        $outblock =~ s/({|<)yabb count(}|>)//gsm;
-        $outblock =~ s/({|<)yabb att(}|>)//gsm;
-        $outblock =~ s/({|<)yabb css(}|>)/$css/gsm;
-        $outblock =~ s/({|<)yabb gender(}|>)//gsm;
-        $outblock =~ s/({|<)yabb zodiac(}|>)//gsm;
-        $outblock =~ s/({|<)yabb age(}|>)//gsm;
-        $outblock =~ s/({|<)yabb regdate(}|>)//gsm;
-        $outblock =~ s/({|<)yabb ext_prof(}|>)/$template_ext_prof/gsm;
-        $outblock =~ s/({|<)yabb location(}|>)//gsm;
-        $outblock =~ s/({|<)yabb isbuddy(}|>)//gsm;
-        $outblock =~ s/({|<)yabb useronline(}|>)/$online/gsm;
-        $outblock =~ s/({|<)yabb postinfo(}|>)/$template_postinfo/gsm;
-        $outblock =~ s/({|<)yabb usertext(}|>)/$template_usertext/gsm;
-        $outblock =~ s/({|<)yabb userpic(}|>)/$avatar/gsm;
-        $outblock =~ s/({|<)yabb message(}|>)/$message/gsm;
-        $outblock =~ s/({|<)yabb showatt(}|>)//gsm;
-        $outblock =~ s/({|<)yabb showatthr(}|>)//gsm;
-        $outblock =~ s/({|<)yabb modified(}|>)//gsm;
-        $outblock =~ s/({|<)yabb signature(}|>)//gsm;
-        $outblock =~ s/({|<)yabb signaturehr(}|>)//gsm;
-        $outblock =~ s/({|<)yabb ipimg(}|>)/$ipimg/gsm;
-        $outblock =~ s/({|<)yabb ip(}|>)//gsm;
-        $outblock =~ s/({|<)yabb permalink(}|>)//gsm;
-        $outblock =~ s/({|<)yabb posthandellist(}|>)/$posthandelblock/gsm;
-        $outblock =~ s/({|<)yabb outsideposttools(}|>)//gsm;
-        $outblock =~ s/({|<)yabb admin(}|>)//gsm;
-        $outblock =~ s/({|<)yabb contactlist(}|>)/$contactblock/gsm;
+        $outblock =~ s/(\{|<)yabb images(}|>)/$tmpimagesdir/gsm;
+        $outblock =~ s/(\{|<)yabb messageoptions(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb memberinfo(}|>)/$memberinfo/gsm;
+        $outblock =~ s/(\{|<)yabb userlink(}|>)/$usernamelink/gsm;
+        $outblock =~ s/(\{|<)yabb stars(}|>)/$star/gsm;
+        $outblock =~ s/(\{|<)yabb subject(}|>)/$msub/gsm;
+        $outblock =~ s/(\{|<)yabb msgimg(}|>)/$msgimg/gsm;
+        $outblock =~ s/(\{|<)yabb msgdate(}|>)/$messdate/gsm;
+        $outblock =~ s/(\{|<)yabb replycount(}|>)/$counterwords/gsm;
+        $outblock =~ s/(\{|<)yabb count(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb att(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb css(}|>)/$css/gsm;
+        $outblock =~ s/(\{|<)yabb gender(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb zodiac(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb age(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb regdate(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb ext_prof(}|>)/$template_ext_prof/gsm;
+        $outblock =~ s/(\{|<)yabb location(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb isbuddy(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb useronline(}|>)/$online/gsm;
+        $outblock =~ s/(\{|<)yabb postinfo(}|>)/$template_postinfo/gsm;
+        $outblock =~ s/(\{|<)yabb usertext(}|>)/$template_usertext/gsm;
+        $outblock =~ s/(\{|<)yabb userpic(}|>)/$avatar/gsm;
+        $outblock =~ s/(\{|<)yabb message(}|>)/$message/gsm;
+        $outblock =~ s/(\{|<)yabb showatt(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb showatthr(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb modified(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb signature(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb signaturehr(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb ipimg(}|>)/$ipimg/gsm;
+        $outblock =~ s/(\{|<)yabb ip(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb permalink(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb posthandellist(}|>)/$posthandelblock/gsm;
+        $outblock =~ s/(\{|<)yabb outsideposttools(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb admin(}|>)//gsm;
+        $outblock =~ s/(\{|<)yabb contactlist(}|>)/$contactblock/gsm;
 ## Mod Hook Outblock ##
 ## End Mod Hook Outblock ##
         $tempoutblock .= $outblock;
     }
     $threadhandellist     = $outside_threadtools . $threadhandellist;
-    $threadhandellist =~ s/({|<)yabb notify(}|>)/$notify/gsm;
-    $threadhandellist =~ s/({|<)yabb favorite(}|>)/$favorite/gsm;
-    $threadhandellist =~ s/({|<)yabb sendtopic(}|>)/$template_sendtopic/gsm;
-    $threadhandellist =~ s/({|<)yabb print(}|>)/$template_print/gsm;
-    $threadhandellist =~ s/({|<)yabb markunread(}|>)//gsm;
+    $threadhandellist =~ s/(\{|<)yabb notify(}|>)/$notify/gsm;
+    $threadhandellist =~ s/(\{|<)yabb favorite(}|>)/$favorite/gsm;
+    $threadhandellist =~ s/(\{|<)yabb sendtopic(}|>)/$template_sendtopic/gsm;
+    $threadhandellist =~ s/(\{|<)yabb print(}|>)/$template_print/gsm;
+    $threadhandellist =~ s/(\{|<)yabb markunread(}|>)//gsm;
     $threadhandellist =~ s/<td class="dividerbot" colspan="3" style="vertical-align:middle;">/<td class="dividerbot" colspan="2" style="vertical-align:middle;">/gsm;
     $threadhandellist =~ s/<td class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle">/<td class="center dividerbot" style="height: 2em; vertical-align:middle">/gsm;
     $threadhandellist =~ s/\Q$menusep//ism;
 
-    $adminhandellist =~ s/({|<)yabb remove(}|>)/$template_remove/gsm;
-    $adminhandellist =~ s/({|<)yabb splice(}|>)/$template_splice/gsm;
-    $adminhandellist =~ s/({|<)yabb lock(}|>)/$template_lock/gsm;
-    $adminhandellist =~ s/({|<)yabb hide(}|>)/$template_hide/gsm;
-    $adminhandellist =~ s/({|<)yabb sticky(}|>)/$template_sticky/gsm;
-    $adminhandellist =~ s/({|<)yabb multidelete(}|>)/$template_multidelete/gsm;
+    $adminhandellist =~ s/(\{|<)yabb remove(}|>)/$template_remove/gsm;
+    $adminhandellist =~ s/(\{|<)yabb splice(}|>)/$template_splice/gsm;
+    $adminhandellist =~ s/(\{|<)yabb lock(}|>)/$template_lock/gsm;
+    $adminhandellist =~ s/(\{|<)yabb hide(}|>)/$template_hide/gsm;
+    $adminhandellist =~ s/(\{|<)yabb sticky(}|>)/$template_sticky/gsm;
+    $adminhandellist =~ s/(\{|<)yabb multidelete(}|>)/$template_multidelete/gsm;
     $adminhandellist =~ s/\Q$menusep//ism;
 
-    $display_template =~ s/({|<)yabb pollmain(}|>)//gsm;
-    $display_template =~ s/({|<)yabb topicviewers(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb pollmain(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb topicviewers(}|>)//gsm;
 
-    $display_template =~ s/({|<)yabb home(}|>)/$template_home/gsm;
-    $display_template =~ s/({|<)yabb category(}|>)/$tempcatnm/gsm;
-    $display_template =~ s/({|<)yabb board(}|>)/$tempboardnm/gsm;
-    $display_template =~ s/({|<)yabb moderators(}|>)/$tempmodslink/gsm;
-    $display_template =~ s/({|<)yabb prev(}|>)/$template_prev/gsm;
-    $display_template =~ s/({|<)yabb next(}|>)/$template_next/gsm;
+    $display_template =~ s/(\{|<)yabb home(}|>)/$template_home/gsm;
+    $display_template =~ s/(\{|<)yabb category(}|>)/$tempcatnm/gsm;
+    $display_template =~ s/(\{|<)yabb board(}|>)/$tempboardnm/gsm;
+    $display_template =~ s/(\{|<)yabb moderators(}|>)/$tempmodslink/gsm;
+    $display_template =~ s/(\{|<)yabb prev(}|>)/$template_prev/gsm;
+    $display_template =~ s/(\{|<)yabb next(}|>)/$template_next/gsm;
     $display_template =~
-      s/({|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
-    $display_template =~ s/({|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
-    $display_template =~ s/({|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
-    $display_template =~ s/({|<)yabb bookmarks(}|>)//gsm; # Social Bookmarks
+      s/(\{|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
+    $display_template =~ s/(\{|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
+    $display_template =~ s/(\{|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
+    $display_template =~ s/(\{|<)yabb bookmarks(}|>)//gsm; # Social Bookmarks
     $display_template =~
-      s/({|<)yabb threadhandellist(}|>)/$threadhandellist/gsm;
+      s/(\{|<)yabb threadhandellist(}|>)/$threadhandellist/gsm;
     $display_template =~
-      s/({|<)yabb threadhandellist2(}|>)/$threadhandellist/gsm;
-    $display_template =~ s/({|<)yabb outsidethreadtools(}|>)//gsm;
-    $display_template =~ s/({|<)yabb threadimage(}|>)/$template_threadimage/gsm;
-    $display_template =~ s/({|<)yabb threadurl(}|>)/$threadurl/gsm;
-    $display_template =~ s/({|<)yabb views(}|>)/12/gsm;
-    $display_template =~ s/({|<)yabb multistart(}|>)//gsm;
-    $display_template =~ s/({|<)yabb multiend(}|>)//gsm;
-    $display_template =~ s/({|<)yabb postsblock(}|>)/$tempoutblock/gsm;
-    $display_template =~ s/({|<)yabb adminhandellist(}|>)/$adminhandellist/gsm;
-    $display_template =~ s/({|<)yabb forumselect(}|>)//gsm;
-    $display_template =~ s/({|<)yabb guestview(}|>)//gsm;
-    $display_template =~ s/({|<)yabb reason(}|>)//gsm;
+      s/(\{|<)yabb threadhandellist2(}|>)/$threadhandellist/gsm;
+    $display_template =~ s/(\{|<)yabb outsidethreadtools(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb threadimage(}|>)/$template_threadimage/gsm;
+    $display_template =~ s/(\{|<)yabb threadurl(}|>)/$threadurl/gsm;
+    $display_template =~ s/(\{|<)yabb views(}|>)/12/gsm;
+    $display_template =~ s/(\{|<)yabb multistart(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb multiend(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb postsblock(}|>)/$tempoutblock/gsm;
+    $display_template =~ s/(\{|<)yabb adminhandellist(}|>)/$adminhandellist/gsm;
+    $display_template =~ s/(\{|<)yabb forumselect(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb guestview(}|>)//gsm;
+    $display_template =~ s/(\{|<)yabb reason(}|>)//gsm;
     $display_template =~ s/<td class="dividerbot" style="vertical-align:middle;">/<td class="dividerbot" style="vertical-align:middle;" colspan="2">/gsm;
     $display_template =~ s/<td class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle">/<td class="center dividerbot" style="height: 2em; vertical-align:middle">/gsm;
     $display_template =~ s/class="post_tools center" style="width:100px"/class="right"/gsm;
@@ -2393,17 +2393,17 @@ $viewstyle .= qq~
     $viewstylestart =~ s/^\s+//gsm;
     $viewstylestart =~ s/\s+$//gsm;
     $viewstylestart =~ s/[\n\r]//gxsm;
-    $viewstylestart =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $viewstylestart =~ s/(\{|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
     ToHTML($viewstylestart);
     $stylestr =~ s/^\s+//gsm;
     $stylestr =~ s/\s+$//gsm;
     $stylestr =~ s/[\n\r]//gxsm;
-    $stylestr =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $stylestr =~ s/(\{|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
     ToHTML($stylestr);
     $viewstyle =~ s/^\s+//gsm;
     $viewstyle =~ s/\s+$//gsm;
     $viewstyle =~ s/[\n\r]//gxsm;
-    $viewstyle =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $viewstyle =~ s/(\{|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
     ToHTML($viewstyle);
 
     if($viewcss eq 'default') {
