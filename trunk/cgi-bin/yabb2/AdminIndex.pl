@@ -352,22 +352,22 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     print_output_header();
 
     my $yytitle = qq~$mbname $admin_txt{'208'}: $yytitle~;
-    $header =~ s/({|<)yabb\ title(}|>)/$yytitle/gxsm;
-    $header =~ s/({|<)yabb\ style(}|>)/$adminstyle/gxsm;
-    $header =~ s/({|<)yabb\ charset(}|>)/$yymycharset/gxsm;
-    $header =~ s/({|<)yabb\ javascript(}|>)/$yyjavascript/gxsm;
+    $header =~ s/(\{|<)yabb\ title(}|>)/$yytitle/gxsm;
+    $header =~ s/(\{|<)yabb\ style(}|>)/$adminstyle/gxsm;
+    $header =~ s/(\{|<)yabb\ charset(}|>)/$yymycharset/gxsm;
+    $header =~ s/(\{|<)yabb\ javascript(}|>)/$yyjavascript/gxsm;
 
-    $leftmenutop =~ s/({|<)yabb\ images(}|>)/$adminimages/gxsm;
-    $leftmenutop =~ s/({|<)yabb\ maintenance(}|>)/$yyadmin_alert/gxsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_one(}|>)/$topmenu_one/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_two(}|>)/$topmenu_two/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_tree(}|>)/$topmenu_tree/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_four(}|>)/$topmenu_four/xsm;
-    $topnav      =~ s/({|<)yabb\ brdname(}|>)/$mbname/xsm;
+    $leftmenutop =~ s/(\{|<)yabb\ images(}|>)/$adminimages/gxsm;
+    $leftmenutop =~ s/(\{|<)yabb\ maintenance(}|>)/$yyadmin_alert/gxsm;
+    $topnav      =~ s/(\{|<)yabb\ topmenu_one(}|>)/$topmenu_one/xsm;
+    $topnav      =~ s/(\{|<)yabb\ topmenu_two(}|>)/$topmenu_two/xsm;
+    $topnav      =~ s/(\{|<)yabb\ topmenu_tree(}|>)/$topmenu_tree/xsm;
+    $topnav      =~ s/(\{|<)yabb\ topmenu_four(}|>)/$topmenu_four/xsm;
+    $topnav      =~ s/(\{|<)yabb\ brdname(}|>)/$mbname/xsm;
 
     if ($debug) { Debug(); }
-    $mainbody =~ s/({|<)yabb\ main(}|>)/$yymain/gxsm;
-    $mainbody =~ s/({|<)yabb_admin\ debug(}|>)/$yydebug/gxsm;
+    $mainbody =~ s/(\{|<)yabb\ main(}|>)/$yymain/gxsm;
+    $mainbody =~ s/(\{|<)yabb_admin\ debug(}|>)/$yydebug/gxsm;
 
     $mainbody =~ s/img src\=\"$imagesdir\/(.+?)\"/AdmImgLoc($1)/eisgm;
     $mainbody =~
