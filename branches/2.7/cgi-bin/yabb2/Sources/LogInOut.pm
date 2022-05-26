@@ -381,7 +381,7 @@ sub reminder2 {
 
     my $userfound = 0;
 
-    $memberdir = clean_dir($memberdir);
+#    $memberdir = clean_dir($memberdir);
     if ( -e "$memberdir/forgotten.passes" ) {
         require "$memberdir/forgotten.passes";
     }
@@ -456,7 +456,7 @@ sub reminder3 {
     load_user($user);
 
     # update forgotten passwords database
-    $memberdir = clean_dir($memberdir);
+#    $memberdir = clean_dir($memberdir);
     require "$memberdir/forgotten.passes";
     if ( $pass{$user} && $pass{$user} ne $id ) { fatal_error('wrong_id'); }
     delete $pass{$user};

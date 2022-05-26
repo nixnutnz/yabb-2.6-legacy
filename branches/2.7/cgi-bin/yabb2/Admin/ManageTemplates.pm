@@ -939,8 +939,8 @@ sub board_templ {
     load_language('BoardIndex');
     my $tmpimagesdir = $imagesdir;
     $imagesdir    = qq~$x[1]~;
-    $templatesdir = clean_dir($templatesdir);
-    $x[0]         = clean_folder( $x[0] );
+#    $templatesdir = clean_dir($templatesdir);
+#    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/BoardIndex.template";
     my (
         $themostmembdate, $themostguestdate, $themostuserdate,
@@ -1163,8 +1163,8 @@ sub message_templ {
     load_language('MessageIndex');
     my $tmpimagesdir = $imagesdir;
     $imagesdir    = "$x[1]";
-    $templatesdir = clean_dir($templatesdir);
-    $x[0]         = clean_folder( $x[0] );
+#    $templatesdir = clean_dir($templatesdir);
+#    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/MessageIndex.template";
     my $tempcatnm   = $templ_txt{'72'};
     my $tempboardnm = $templ_txt{'73'};
@@ -1336,8 +1336,8 @@ sub display_templ {
     load_language('Display');
     my $tmpimagesdir = $imagesdir;
     $imagesdir    = $x[1];
-    $templatesdir = clean_dir($templatesdir);
-    $x[0]         = clean_folder( $x[0] );
+#    $templatesdir = clean_dir($templatesdir);
+#    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/Display.template";
     my (
         $title,     $stars,      $starpic,    $color,     $noshow,
@@ -1677,8 +1677,8 @@ sub mycenter_templ {
     load_language('MyCenter');
     my $tmpimagesdir = $imagesdir;
     $imagesdir    = $x[1];
-    $templatesdir = clean_dir($templatesdir);
-    $x[0]         = clean_folder( $x[0] );
+#    $templatesdir = clean_dir($templatesdir);
+#    $x[0]         = clean_folder( $x[0] );
     require "$templatesdir/$x[0]/MyCenter.template";
 
     my $tabsep  = q{};

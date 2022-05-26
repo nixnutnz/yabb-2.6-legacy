@@ -684,8 +684,8 @@ sub job_update {
 
 sub job_load {
     my ($updatethread) = @_;
-    $datadir      = clean_dir($datadir);
-    $updatethread = clean_folder($updatethread);
+#    $datadir      = clean_dir($datadir);
+#    $updatethread = clean_folder($updatethread);
     no strict qw(refs);
     if ( ${$updatethread}{'board'} ) {
         return;

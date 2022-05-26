@@ -560,7 +560,7 @@ sub delete_boards {
     my @x = @_;
     is_admin_or_gmod();
     our (%control);
-    $boardsdir = clean_dir($boardsdir);
+#    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
     my @oldcontrols = keys %control;
     foreach my $board (@x) {
@@ -1786,7 +1786,7 @@ qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=man
 
     require Admin::AdminSubs;
     write_forummaster();
-    $boardsdir = clean_dir($boardsdir);
+#    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
 
     # Update categories for subboards that got changed.
@@ -2178,7 +2178,7 @@ sub reorder_boards2 {
         }
         require Admin::AdminSubs;
         write_forummaster();
-        $boardsdir = clean_dir($boardsdir);
+#        $boardsdir = clean_dir($boardsdir);
         require "$boardsdir/forum.control";
 
         if ($moveitem) {

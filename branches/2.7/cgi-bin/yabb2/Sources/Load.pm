@@ -72,7 +72,7 @@ sub load_boardcontrol {
     our $binboard = q{};
     our $annboard = q{};
     our %control;
-    $boardsdir = clean_dir($boardsdir);
+#    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
     @allboards = keys %control;
     my @brdlist =
@@ -340,8 +340,8 @@ sub load_user {
     }
     else { $userextension = 'vars'; }
 
-    $memberdir = clean_dir($memberdir);
-    $usr = clean_usr($usr);
+#    $memberdir = clean_dir($memberdir);
+#    $usr = clean_usr($usr);
     if ( -e "$memberdir/$usr.$userextension" ) {
         require "$memberdir/$usr.$userextension";
         our ($LOADUSER);
@@ -451,7 +451,7 @@ sub kill_moderator {
     my ($killmod) = @_;
     my @boardcontrol = ();
     our %control;
-    $boardsdir = clean_dir($boardsdir);
+#    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
 
     {
@@ -477,7 +477,7 @@ sub kill_moderator_group {
     my ($killmod) = @_;
     my @boardcontrol = ();
     our %control;
-    $boardsdir = clean_dir($boardsdir);
+#    $boardsdir = clean_dir($boardsdir);
     require "$boardsdir/forum.control";
 
     {
@@ -1502,8 +1502,8 @@ sub update_ims {
 
 sub load_ims {
     my $builduser = shift;
-    $memberdir = clean_dir($memberdir);
-    $builduser = clean_folder($builduser);
+#    $memberdir = clean_dir($memberdir);
+#    $builduser = clean_folder($builduser);
     if ( -e "$memberdir/$builduser.ims" ) {
         require "$memberdir/$builduser.ims";
         {

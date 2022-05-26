@@ -55,13 +55,13 @@ our (
 
 load_language('HelpCentre');
 require Sources::Menu;
-$helpfile = clean_dir($helpfile);
+#$helpfile = clean_dir($helpfile);
 if ( -e "$helpfile/$language/HelpOrder.pm" ) {
-    $language = clean_folder($language);
+#    $language = clean_folder($language);
     require "$helpfile/$language/HelpOrder.pm";
 }
 elsif ( -e "$helpfile/$lang/HelpOrder.pm" ) {
-    $lang = clean_folder($lang);
+#    $lang = clean_folder($lang);
     require "$helpfile/$lang/HelpOrder.pm";
 }
 else { require "$helpfile/English/HelpOrder.pm"; }
@@ -196,16 +196,16 @@ sub get_helpfiles {
     chomp @helporderlist;
     my $contents  = q{};
     my $help_body = q{};
-    $helpfile  = clean_dir($helpfile);
-    $help_area = clean_folder($help_area);
+#    $helpfile  = clean_dir($helpfile);
+#    $help_area = clean_folder($help_area);
     foreach my $i (@helporderlist) {
         if ( -e "$helpfile/$language/$help_area/$i.help" ) {
-            $language = clean_folder($language);
-            $i        = clean_folder($i);
+#            $language = clean_folder($language);
+#            $i        = clean_folder($i);
             require "$helpfile/$language/$help_area/$i.help";
         }
         elsif ( -e "$helpfile/English/$help_area/$i.help" ) {
-            $i = clean_folder($i);
+#            $i = clean_folder($i);
             require "$helpfile/English/$help_area/$i.help";
         }
         else {

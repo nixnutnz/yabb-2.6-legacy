@@ -2579,14 +2579,14 @@ sub dereferer {
 sub load_language {
     my ($what_to_load) = @_;
     my $use_lang = $language ? $language : $lang;
-    $langdir      = clean_dir($langdir);
-    $what_to_load = clean_folder($what_to_load);
+#    $langdir      = clean_dir($langdir);
+#    $what_to_load = clean_folder($what_to_load);
     if ( -e "$langdir/$use_lang/$what_to_load.lng" ) {
-        $use_lang = clean_folder($use_lang);
+#        $use_lang = clean_folder($use_lang);
         require "$langdir/$use_lang/$what_to_load.lng";
     }
     elsif ( -e "$langdir/$lang/$what_to_load.lng" ) {
-        $lang = clean_folder($lang);
+#        $lang = clean_folder($lang);
         require "$langdir/$lang/$what_to_load.lng";
     }
     elsif ( -e "$langdir/English/$what_to_load.lng" ) {
@@ -3211,7 +3211,7 @@ sub checkuserpm_level {
 }
 
 sub get_forum_master {
-    $boardsdir = clean_dir($boardsdir);
+#    $boardsdir = clean_dir($boardsdir);
     if ( $mloaded != 1 ) {
         require "$boardsdir/forum.master";
     }
@@ -3219,8 +3219,8 @@ sub get_forum_master {
 }
 
 sub get_micon {
-    $templatesdir = clean_dir($templatesdir);
-    $usestyle     = clean_folder($usestyle);
+#    $templatesdir = clean_dir($templatesdir);
+#    $usestyle     = clean_folder($usestyle);
     my $micon_def = "$templatesdir/default/Micon.def";
     if ( -e "$templatesdir/$usestyle/Micon.def" ) {
         $micon_def    = "$templatesdir/$usestyle/Micon.def";
@@ -3231,11 +3231,11 @@ sub get_micon {
 
 sub get_template {
     my ( $templt, $atemplt ) = @_;
-    $templatesdir = clean_dir($templatesdir);
-    $templt       = clean_folder($templt);
+#    $templatesdir = clean_dir($templatesdir);
+#    $templt       = clean_folder($templt);
     my @templ_list = ( $useboard, $usemessage, $usedisplay, $usemycenter );
     if ($atemplt) {
-        $atemplt      = clean_folder($atemplt);
+#        $atemplt      = clean_folder($atemplt);
         if ( -e "$templatesdir/$atemplt/$templt.template" ) {
             require "$templatesdir/$atemplt/$templt.template";
             return;
@@ -3249,8 +3249,8 @@ sub get_template {
     my $ld_cn   = 0;
     foreach my $x ( 0 .. $#ld_list ) {
         if ( $templt eq $ld_list[$x] ) {
-            $templ_list[$x] = clean_folder( $templ_list[$x] );
-            $ld_list[$x]    = clean_folder( $ld_list[$x] );
+#            $templ_list[$x] = clean_folder( $templ_list[$x] );
+#            $ld_list[$x]    = clean_folder( $ld_list[$x] );
             require qq~$templatesdir/$templ_list[$x]/$ld_list[$x].template~;
             $ld_cn = 1;
         }
@@ -3684,9 +3684,9 @@ sub loadtranlist {
             push @lang, $langitems;
         }
     }
-    $langdir = clean_dir($langdir);
+#    $langdir = clean_dir($langdir);
     foreach my $langd (@lang) {
-        $langd   = clean_folder($langd);
+#        $langd   = clean_folder($langd);
         if ( -e "$langdir/$langd/att_chars.txt" ) {
             require "$langdir/$langd/att_chars.txt";
             foreach my $trl ( 0 .. $#uploadtranlist ) {

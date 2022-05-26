@@ -70,8 +70,8 @@ sub manageboardnotify {
     {
         %theboard = ();
         ## open board mail file
-        $boardsdir = clean_dir($boardsdir);
-        $theboard  = clean_folder($theboard);
+#        $boardsdir = clean_dir($boardsdir);
+#        $theboard  = clean_folder($theboard);
         if ( -e "$boardsdir/$theboard.mail" ) {
             require "$boardsdir/$theboard.mail";
         }

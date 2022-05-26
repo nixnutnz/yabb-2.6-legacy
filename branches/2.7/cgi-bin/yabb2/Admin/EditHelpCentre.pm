@@ -54,10 +54,10 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
     }
     our ($section_name);
     my $hlp_area = ucfirst $help_area;
-    $helpfile      = clean_dir($helpfile);
-    $help_language = clean_folder($help_language);
-    $hlp_area      = clean_folder($hlp_area);
-    $page          = clean_folder($page);
+#    $helpfile      = clean_dir($helpfile);
+#    $help_language = clean_folder($help_language);
+#    $hlp_area      = clean_folder($hlp_area);
+#    $page          = clean_folder($page);
     require "$helpfile/$help_language/$hlp_area/$page.help";
     my $txtrevision = lc $help_language . $help_area . '_' . $page . 'helpver';
     my $mytxtrevision = q{};

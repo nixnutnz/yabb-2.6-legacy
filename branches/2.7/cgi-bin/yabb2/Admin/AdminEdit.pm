@@ -445,8 +445,8 @@ sub modifyagreement2 {
 
     $FORM{'agreement'} =~ s/\n/<br \/>\n/gxsm;
     if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
-        $helpfile          = clean_dir($helpfile);
-        $agreementlanguage = clean_folder($agreementlanguage);
+#        $helpfile          = clean_dir($helpfile);
+#        $agreementlanguage = clean_folder($agreementlanguage);
         require "$helpfile/$agreementlanguage/User/user00_agreement.help";
         my $txtrevision =
           lc $agreementlanguage . 'user_user00_agreementhelpver';

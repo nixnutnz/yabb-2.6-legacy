@@ -350,7 +350,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 
 # determine the true last post on all the boards a user has access to (Admin has access to everything)
         our %totals;
-        $boardsdir = clean_dir($boardsdir);
+#        $boardsdir = clean_dir($boardsdir);
         require "$boardsdir/forum.totals";
         my %gettots = ();
         foreach my $i ( keys %totals ) {
