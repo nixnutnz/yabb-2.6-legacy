@@ -1,22 +1,23 @@
 MANIFEST
-checksum.txt   - 65503 bytes - updated Tue May  7 05:10:39 2019
+checksum.txt   - 65503 bytes - updated Thu May 26 05:50:04 2022
 readmeFIRST.txt   - 1941 bytes - updated Wed Oct 26 11:06:21 2016
 VERSION.txt   - 37 bytes - updated Wed Oct 26 11:07:08 2016
 cgi-bin/checksum.pl   - 3902 bytes - updated Fri Feb  2 08:58:09 2018
+cgi-bin/yabb27.zip   - 1332913 bytes - updated Wed Aug 19 06:34:16 2020
 cgi-bin/yabb_manifest.pl   - 4703 bytes - updated Sun Jan  3 10:53:56 2016
 Quick-Guide_27/Quick-Guide.html   - 855 bytes - updated Sun Jan  3 12:08:47 2016
 Quick-Guide_27/style.css   - 4655 bytes - updated Fri Oct  4 08:33:38 2013
 cgi-bin/yabb2/AdminIndex.pl   - 19442 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
-cgi-bin/yabb2/BackupFix.pl   - 6533 bytes - updated Fri Feb 16 07:48:59 2018
+cgi-bin/yabb2/BackupFix.pl   - 6721 bytes - updated Tue May 14 05:24:47 2019
 cgi-bin/yabb2/BoardConvert.pl   - 7974 bytes - updated Wed Nov 14 17:16:23 2018 'YaBB 2.7.00 Build 2040';
 cgi-bin/yabb2/Convert1x.pl   - 144363 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
-cgi-bin/yabb2/Convert2x.pl   - 133390 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
+cgi-bin/yabb2/Convert2x.pl   - 133421 bytes - updated Fri May 17 06:32:03 2019 'YaBB 2.7.00 Build 2066';
 cgi-bin/yabb2/ConvertLang.pl   - 63882 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
 cgi-bin/yabb2/Dobackup.pl   - 22693 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
 cgi-bin/yabb2/index.html   - 182 bytes - updated Fri Aug  5 06:40:34 2016
 cgi-bin/yabb2/license.txt   - 18673 bytes - updated Fri Mar  3 13:02:48 2017
 cgi-bin/yabb2/Paths.pm   - 938 bytes - updated Wed Nov 14 09:15:47 2018
-cgi-bin/yabb2/Setup.pl   - 107039 bytes - updated Tue May  7 05:10:22 2019 'YaBB 2.7.00 Build 2060';
+cgi-bin/yabb2/Setup.pl   - 107185 bytes - updated Sun May 12 12:16:51 2019 'YaBB 2.7.00 Build 2063';
 cgi-bin/yabb2/YaBB.pl   - 8282 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
 public_html/yabbfiles/ajax.js   - 27794 bytes - updated Fri Jan 26 06:39:08 2018
 public_html/yabbfiles/AJS.js   - 41906 bytes - updated Sat Aug 24 17:09:44 2013
@@ -40,8 +41,8 @@ Quick-Guide_27/images/shebang.gif   - 5388 bytes - updated Wed Jan 18 11:57:55 2
 Quick-Guide_27/images/yabb254.png   - 54841 bytes - updated Thu Oct  3 23:05:09 2013
 Quick-Guide_27/images/yabblogo_26.png   - 16827 bytes - updated Thu Aug 15 03:48:54 2013
 cgi-bin/yabb2/Admin/.htaccess   - 121 bytes - updated Sun Jan  3 11:39:46 2016
-cgi-bin/yabb2/Admin/Admin.pm   - 57857 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
-cgi-bin/yabb2/Admin/AdminEdit.pm   - 46091 bytes - updated Mon Mar 18 10:02:23 2019 'YaBB 2.7.00 Build 2048';
+cgi-bin/yabb2/Admin/Admin.pm   - 57858 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
+cgi-bin/yabb2/Admin/AdminEdit.pm   - 46093 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Admin/AdminSubList.pm   - 12184 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Admin/AdminSubs.pm   - 6145 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
 cgi-bin/yabb2/Admin/AntispamQuestions.pm   - 20258 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
@@ -49,24 +50,24 @@ cgi-bin/yabb2/Admin/Attachments.pm   - 68322 bytes - updated Tue Apr  2 05:28:40
 cgi-bin/yabb2/Admin/Backup.pm   - 47732 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Admin/Ban.pm   - 17101 bytes - updated Fri Feb 16 07:48:59 2018 'YaBB 2.7.00 Build 2000';
 cgi-bin/yabb2/Admin/Checkspace.pm   - 17570 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
-cgi-bin/yabb2/Admin/DetailedVersion.pm   - 50679 bytes - updated Sat Mar  9 10:15:44 2019 'YaBB 2.7.00 Build 1988';
+cgi-bin/yabb2/Admin/DetailedVersion.pm   - 50714 bytes - updated Thu May 26 05:38:08 2022 'YaBB 2.7.00 Build 1988';
 cgi-bin/yabb2/Admin/EditEmailTemplates.pm   - 8317 bytes - updated Tue Apr  2 05:28:40 2019 'YaBB 2.7.00 Build 2049';
-cgi-bin/yabb2/Admin/EditHelpCentre.pm   - 24063 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Admin/EditHelpCentre.pm   - 24067 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Admin/ErrorLog.pm   - 18653 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Admin/EventCalSet.pm   - 30211 bytes - updated Wed Feb  7 10:41:42 2018 'YaBB 2.7.00 Build 1988';
 cgi-bin/yabb2/Admin/GuardianAdmin.pm   - 21546 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Admin/HoneyPot.pm   - 12077 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Admin/index.html   - 188 bytes - updated Tue Jul 30 13:07:53 2013
 cgi-bin/yabb2/Admin/MailMembers.pm   - 28596 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
-cgi-bin/yabb2/Admin/Maintenance.pm   - 48707 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
-cgi-bin/yabb2/Admin/ManageBoards.pm   - 98522 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
+cgi-bin/yabb2/Admin/Maintenance.pm   - 48724 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
+cgi-bin/yabb2/Admin/ManageBoards.pm   - 98525 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Admin/ManageCats.pm   - 15189 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
 cgi-bin/yabb2/Admin/ManageStyles.pm   - 89264 bytes - updated Wed Feb  7 10:41:42 2018 'YaBB 2.7.00 Build 1988';
-cgi-bin/yabb2/Admin/ManageTemplates.pm   - 92834 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Admin/ManageTemplates.pm   - 92842 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Admin/MemberGroups.pm   - 37073 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Admin/ModList.pm   - 5244 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
-cgi-bin/yabb2/Admin/ModuleChecker.pm   - 5205 bytes - updated Mon Mar 11 11:50:23 2019 'YaBB 2.7.00 Build 2044';
-cgi-bin/yabb2/Admin/NewSettings.pm   - 79491 bytes - updated Thu Apr  4 07:14:54 2019 'YaBB 2.7.00 Build 2054';
+cgi-bin/yabb2/Admin/ModuleChecker.pm   - 5363 bytes - updated Wed May  8 06:28:18 2019 'YaBB 2.7.00 Build 2062';
+cgi-bin/yabb2/Admin/NewSettings.pm   - 79507 bytes - updated Mon Aug 17 13:44:15 2020 'YaBB 2.7.00 Build 2069';
 cgi-bin/yabb2/Admin/RegistrationLog.pm   - 30472 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Admin/RemoveOldTopics.pm   - 9642 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Admin/Settings_Advanced.pm   - 44180 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
@@ -112,8 +113,8 @@ cgi-bin/yabb2/Mods/index.html   - 164 bytes - updated Mon Oct 19 10:32:27 2015
 cgi-bin/yabb2/Modules/.htaccess   - 121 bytes - updated Sun Jan  3 11:39:32 2016
 cgi-bin/yabb2/Modules/index.html   - 157 bytes - updated Wed Aug 29 07:09:33 2012
 cgi-bin/yabb2/Sources/.htaccess   - 144 bytes - updated Fri Dec 18 16:32:15 2015
-cgi-bin/yabb2/Sources/AddModerators.pm   - 11358 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
-cgi-bin/yabb2/Sources/AdvancedTabs.pm   - 15942 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Sources/AddModerators.pm   - 11360 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
+cgi-bin/yabb2/Sources/AdvancedTabs.pm   - 15948 bytes - updated Thu May 26 05:49:05 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Sources/BoardIndex.pm   - 98461 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
 cgi-bin/yabb2/Sources/Captcha.pm   - 21303 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/ContextHelp.pm   - 7694 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
@@ -130,13 +131,13 @@ cgi-bin/yabb2/Sources/ExtendedProfiles.pm   - 44149 bytes - updated Wed Feb  7 1
 cgi-bin/yabb2/Sources/Favorites.pm   - 28522 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/Freespace.pm   - 5134 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/Guardian.pm   - 25347 bytes - updated Fri Feb 16 07:48:59 2018 'YaBB 2.7.00 Build 2000';
-cgi-bin/yabb2/Sources/HelpCentre.pm   - 13247 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Sources/HelpCentre.pm   - 13255 bytes - updated Thu May 26 05:49:06 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Sources/index.html   - 188 bytes - updated Tue Jul 30 13:07:53 2013
 cgi-bin/yabb2/Sources/InstantMessage.pm   - 111234 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Sources/IPLookup.pm   - 2891 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/LivePreview.pm   - 11204 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
-cgi-bin/yabb2/Sources/Load.pm   - 60204 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
-cgi-bin/yabb2/Sources/LogInOut.pm   - 17982 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Sources/Load.pm   - 60211 bytes - updated Thu May 26 05:49:06 2022 'YaBB 2.7.00 Build 2073';
+cgi-bin/yabb2/Sources/LogInOut.pm   - 17984 bytes - updated Thu May 26 05:49:06 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Sources/Mailer.pm   - 8444 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Sources/MediaCenter.pm   - 21132 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/Memberlist.pm   - 34632 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
@@ -145,11 +146,10 @@ cgi-bin/yabb2/Sources/MessageIndex.pm   - 96085 bytes - updated Mon Mar 11 11:50
 cgi-bin/yabb2/Sources/ModifyMessage.pm   - 42558 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Sources/MoveSplitSplice.pm   - 47624 bytes - updated Tue Apr  2 05:28:40 2019 'YaBB 2.7.00 Build 2049';
 cgi-bin/yabb2/Sources/MyCenter.pm   - 133728 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
-cgi-bin/yabb2/Sources/Notify.pm   - 28207 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Sources/Notify.pm   - 28209 bytes - updated Thu May 26 05:49:06 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Sources/Palette.pm   - 10915 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.6.12 Build 1975';
 cgi-bin/yabb2/Sources/Poll.pm   - 36845 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/Post.pm   - 129556 bytes - updated Tue Apr  2 05:28:40 2019 'YaBB 2.7.00 Build 2049';
-cgi-bin/yabb2/Sources/Post.pm.bak   - 129643 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2049'; - CHECK
 cgi-bin/yabb2/Sources/PostBox.pm   - 49948 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Sources/Printpage.pm   - 33111 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Sources/Profile.pm   - 167555 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
@@ -165,9 +165,8 @@ cgi-bin/yabb2/Sources/SetStatus.pm   - 3999 bytes - updated Fri Feb  2 08:42:59 
 cgi-bin/yabb2/Sources/Smtp.pm   - 11319 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
 cgi-bin/yabb2/Sources/SpamCheck.pm   - 3348 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/SubList.pm   - 10532 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
-cgi-bin/yabb2/Sources/Subs.pm   - 139968 bytes - updated Mon May  6 18:21:45 2019 'YaBB 2.7.00 Build 2059';
-cgi-bin/yabb2/Sources/Subs.pm.bak   - 141243 bytes - updated Mon Mar 18 10:02:23 2019 'YaBB 2.7.00 Build 2059'; - CHECK
-cgi-bin/yabb2/Sources/System.pm   - 27822 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
+cgi-bin/yabb2/Sources/Subs.pm   - 139982 bytes - updated Thu May 26 05:49:06 2022 'YaBB 2.7.00 Build 2073';
+cgi-bin/yabb2/Sources/System.pm   - 27824 bytes - updated Thu May 26 05:49:06 2022 'YaBB 2.7.00 Build 2073';
 cgi-bin/yabb2/Sources/TabMenu.pm   - 13890 bytes - updated Fri Feb  2 08:42:59 2018 'YaBB 2.7.00 Build 1975';
 cgi-bin/yabb2/Sources/UserSelect.pm   - 43146 bytes - updated Sun Mar  4 06:32:25 2018 'YaBB 2.7.00 Build 2015';
 cgi-bin/yabb2/Sources/YaBBC.pm   - 35269 bytes - updated Mon Mar 11 11:50:24 2019 'YaBB 2.7.00 Build 2044';
@@ -181,7 +180,7 @@ cgi-bin/yabb2/Variables/attachments.db   - 0 bytes - updated Mon Sep 18 07:25:00
 cgi-bin/yabb2/Variables/ban.log   - 0 bytes - updated Mon Sep 18 06:41:07 2017
 cgi-bin/yabb2/Variables/banlist.db   - 0 bytes - updated Mon Sep 18 06:41:07 2017
 cgi-bin/yabb2/Variables/BotsHosts.pm   - 2406 bytes - updated Wed Aug 10 08:11:30 2016
-cgi-bin/yabb2/Variables/checksum.txt   - 65503 bytes - updated Tue Apr  2 05:29:06 2019
+cgi-bin/yabb2/Variables/checksum.txt   - 65503 bytes - updated Tue May  7 05:10:39 2019
 cgi-bin/yabb2/Variables/clicklog.log   - 0 bytes - updated Mon Sep 18 06:41:07 2017
 cgi-bin/yabb2/Variables/cook.txt   - 66 bytes - updated Mon Feb 29 09:35:55 2016
 cgi-bin/yabb2/Variables/errorlog.log   - 0 bytes - updated Wed Sep 20 05:59:31 2017
@@ -407,7 +406,7 @@ cgi-bin/yabb2/Convert/Members/broadcast.messages   - 0 bytes - updated Wed Jan 2
 cgi-bin/yabb2/Convert/Messages/.htaccess   - 136 bytes - updated Tue Feb 12 14:26:51 2013
 cgi-bin/yabb2/Help/English/HelpOrder.pm   - 410 bytes - updated Thu Oct  6 16:10:59 2016
 cgi-bin/yabb2/Languages/English/AddModerators.lng   - 2465 bytes - updated Sun Dec 10 09:16:01 2017 'YaBB 2.7.00 Build 1938';
-cgi-bin/yabb2/Languages/English/Admin.lng   - 107815 bytes - updated Mon Mar 18 10:02:23 2019 'YaBB 2.7.00 Build 2048';
+cgi-bin/yabb2/Languages/English/Admin.lng   - 107963 bytes - updated Wed Aug 19 06:24:33 2020 'YaBB 2.7.00 Build 2070';
 cgi-bin/yabb2/Languages/English/agreement.txt   - 2878 bytes - updated Thu Sep 19 12:50:40 2013
 cgi-bin/yabb2/Languages/English/att_chars.txt   - 392 bytes - updated Sun Dec 20 07:37:36 2015
 cgi-bin/yabb2/Languages/English/Backup.lng   - 14915 bytes - updated Sun Feb  4 06:21:37 2018 'YaBB 2.7.00 Build 1980';
@@ -450,7 +449,7 @@ cgi-bin/yabb2/Languages/English/Register.lng   - 13463 bytes - updated Sun Dec 1
 cgi-bin/yabb2/Languages/English/Search.lng   - 3975 bytes - updated Sun Dec 10 09:16:01 2017 'YaBB 2.7.00 Build 1938';
 cgi-bin/yabb2/Languages/English/SendTopic.lng   - 3139 bytes - updated Sun Dec 10 09:16:01 2017 'YaBB 2.7.00 Build 1938';
 cgi-bin/yabb2/Languages/English/Sessions.lng   - 2713 bytes - updated Sun Dec 10 09:16:01 2017 'YaBB 2.7.00 Build 1938';
-cgi-bin/yabb2/Languages/English/Setup.lng   - 12892 bytes - updated Wed Nov 14 17:16:23 2018 'YaBB 2.7.00 Build 2040';
+cgi-bin/yabb2/Languages/English/Setup.lng   - 12887 bytes - updated Sun Jun  9 13:23:48 2019 'YaBB 2.7.00 Build 2067';
 cgi-bin/yabb2/Languages/English/Smtp.lng   - 3420 bytes - updated Sun Dec 10 09:16:01 2017 'YaBB 2.7.00 Build 1938';
 cgi-bin/yabb2/Languages/English/TabMenu.lng   - 2856 bytes - updated Sun Dec 10 09:16:01 2017 'YaBB 2.7.00 Build 1938';
 cgi-bin/yabb2/Languages/English/tabtext.txt   - 4 bytes - updated Fri Mar 18 15:02:37 2016
