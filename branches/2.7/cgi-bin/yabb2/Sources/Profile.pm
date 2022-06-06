@@ -559,10 +559,10 @@ s/\Q{yabb profile_txtstealthexplain}\E/$profile_txt{'stealthexplain'}/xsm;
 <form action="$scripturl?action=$script_action;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yymycharset">
 $myprofile_contact
 ~;
-    ${ $uid . $user }{'aim'} ||= q{};
-    ${ $uid . $user }{'aim'} =~ tr/+/ /;
-    ${ $uid . $user }{'yim'} ||= q{};
-    ${ $uid . $user }{'yim'} =~ tr/+/ /;
+#    ${ $uid . $user }{'aim'} ||= q{};
+#    ${ $uid . $user }{'aim'} =~ tr/+/ /;
+#    ${ $uid . $user }{'yim'} ||= q{};
+#    ${ $uid . $user }{'yim'} =~ tr/+/ /;
     ${ $uid . $user }{'icq'}      ||= q{};
     ${ $uid . $user }{'gtalk'}    ||= q{};
     ${ $uid . $user }{'skype'}    ||= q{};
@@ -574,8 +574,8 @@ $myprofile_contact
     $show_profile =~ s/\Q{yabb user_email}\E/${ $uid . $user }{'email'}/xsm;
     $show_profile =~ s/\Q{yabb my_hidemail}\E/$my_hidemail/xsm;
     $show_profile =~ s/\Q{yabb my_icq}\E/${ $uid . $user }{'icq'}/xsm;
-    $show_profile =~ s/\Q{yabb my_aim}\E/${ $uid . $user }{'aim'}/xsm;
-    $show_profile =~ s/\Q{yabb my_yim}\E/${ $uid . $user }{'yim'}/xsm;
+#    $show_profile =~ s/\Q{yabb my_aim}\E/${ $uid . $user }{'aim'}/xsm;
+#    $show_profile =~ s/\Q{yabb my_yim}\E/${ $uid . $user }{'yim'}/xsm;
     $show_profile =~ s/\Q{yabb my_gtalk}\E/${ $uid . $user }{'gtalk'}/xsm;
     $show_profile =~ s/\Q{yabb my_skype}\E/${ $uid . $user }{'skype'}/xsm;
     $show_profile =~ s/\Q{yabb my_myspace}\E/${ $uid . $user }{'myspace'}/xsm;
@@ -1399,14 +1399,14 @@ sub modify_profile_contacts2 {
     check_email();
 
     $member{'icq'} =~ s/[^\d]//gxsm;
-    $member{'aim'} =~ s/[ ]/+/gxsm;
-    $member{'yim'} =~ s/[ ]/+/gxsm;
+#    $member{'aim'} =~ s/[ ]/+/gxsm;
+#    $member{'yim'} =~ s/[ ]/+/gxsm;
 
     $member{'weburl'} ||= q{};
     $member{'email'}         = to_html( $member{'email'} );
     $member{'icq'}           = to_html( $member{'icq'} );
-    $member{'aim'}           = to_html( $member{'aim'} );
-    $member{'yim'}           = to_html( $member{'yim'} );
+#    $member{'aim'}           = to_html( $member{'aim'} );
+#    $member{'yim'}           = to_html( $member{'yim'} );
     $member{'gtalk'}         = to_html( $member{'gtalk'} );
     $member{'skype'}         = to_html( $member{'skype'} );
     $member{'myspace'}       = to_html( $member{'myspace'} );
@@ -1446,8 +1446,8 @@ sub modify_profile_contacts2 {
     ${ $uid . $user }{'email'}    = $member{'email'};
     ${ $uid . $user }{'hidemail'} = $member{'hideemail'} ? 1 : 0;
     ${ $uid . $user }{'icq'}      = $member{'icq'};
-    ${ $uid . $user }{'aim'}      = $member{'aim'};
-    ${ $uid . $user }{'yim'}      = $member{'yim'};
+#    ${ $uid . $user }{'aim'}      = $member{'aim'};
+#    ${ $uid . $user }{'yim'}      = $member{'yim'};
     ${ $uid . $user }{'gtalk'}    = $member{'gtalk'};
     ${ $uid . $user }{'skype'}    = $member{'skype'};
     ${ $uid . $user }{'myspace'}  = $member{'myspace'};
