@@ -874,7 +874,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
       s/(\{|<)yabb lastpostlink(}|>)/$templasttopiclink/gsm;
     $boardindex_template =~ s/(\{|<)yabb lastpostdate(}|>)/$templastpostdate/gsm;
     $boardindex_template =~ s/(\{|<)yabb recentposts(}|>)/$temprecentposts/gsm;
-    $boardindex_template =~ s/(\{|<){yabb recenttopics(}|>)//gsm;
+    $boardindex_template =~ s/(\{|<)yabb recenttopics(}|>)//gsm;
 
     $boardindex_template =~ s/(\{|<)yabb mostusers(}|>)/$themostuser/gsm;
     $boardindex_template =~ s/(\{|<)yabb mostmembers(}|>)/$themostmemb/gsm;
