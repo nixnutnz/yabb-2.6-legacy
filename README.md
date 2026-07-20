@@ -8,7 +8,7 @@ and now 25 years later it's still here and better than ever.
 
 Currently over 50,000 web communities using YaBB worldwide, and over 1 Million registered users througout these forums!
 
-Download from Trunk, chown the yabb folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
+Download from Release on the right, extract to a folder in your webroot, "chown -R" the new folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
 
 For help go to https://yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl or https://myforum.nz
 
