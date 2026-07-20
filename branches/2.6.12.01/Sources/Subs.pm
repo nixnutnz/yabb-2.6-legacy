@@ -1141,7 +1141,7 @@ qq~<br /><span class="under">$debug_txt{'postpairs'}:</span><br />~;
                 if ( $name =~ /^file(\d+|_avatar)$/xsm ) { next; }
 
         # files are directly called in Profile.pm, Post.pm and ModifyMessages.pl
-                @value = $CGI_query->param($name);
+                @value = $CGI_query->multi_param($name);
                 if ($debug) {
                     LoadLanguage('Debug');
                     $getpairs .=
