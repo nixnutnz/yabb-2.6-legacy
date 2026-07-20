@@ -80,8 +80,4 @@ $displaylngver = 'YaBB 2.6.12 $Revision: 1651 $';
 'google' => 'Google Hangout',
 );
 
-%zodiac_txt = (   #YaBB Zodiac
-'sign' => 'Zodiac sign',
-);
-
 1;

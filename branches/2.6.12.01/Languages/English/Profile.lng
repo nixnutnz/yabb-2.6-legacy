@@ -97,7 +97,6 @@ $profilelngver = 'YaBB 2.6.12 $Revision: 1651 $';
 '485' => "31. Jan 2001 at 13:15",
 '486' => 'Time Format',
 '486a' => 'Or Custom Time Format',
-'513' => 'ICQ',
 '519' => 'Enable automatic Daylight Savings Time change?',
 '520' => 'Enable dynamic clock at the top of the page?',
 '521' => 'Not available if you wrote your own time format.',
@@ -122,11 +121,6 @@ $profilelngver = 'YaBB 2.6.12 $Revision: 1651 $';
 '592' => 'your personal userpic url or picture name.',
 '598' => 'This must be included if you specify a URL below.',
 '599' => 'This must be a complete URL.',
-'600' => 'This is your ICQ number.',
-'601' => 'This is your AOL Instant Messenger nickname.',
-'602' => 'This is your Yahoo Instant Messenger nickname.',
-'603' => 'AIM',
-'604' => 'YIM',
 '606' => 'Signatures are displayed at the bottom of each post or Personal Message. YaBBC code can be used (ex: <b>[img]http:&thinsp;//&thinsp;www.mypage.com&thinsp;/&thinsp;mypic.gif[/img]</b>) to display an image in your signature.', # use &thinsp; (small space) or your layout may get messed up in IE and low monitor resolution
 '638' => 'You&#39;ve changed your e-mail address. You will receive a new password by e-mail.',
 '664' => "Max $MaxSigLen characters. Remaining characters: ",
@@ -289,22 +283,6 @@ $profilelngver = 'YaBB 2.6.12 $Revision: 1651 $';
 '01' => 'Return To',
 '02' => 'Select where you would like to return to after posting.',
 '03' => 'Select the default area you would like to return to after making a post.<br /><b>Note:</b> You can change this option at the time of posting.',
-);
-
-%zodiac_txt = (   #YaBB Zodiac
-'sign' => 'Zodiac sign',
-'Aquarius' => 'Aquarius',
-'Aries' => 'Aries',
-'Libra' => 'Libra',
-'Gemini' => 'Gemini',
-'Leo' => 'Leo',
-'Sagittarius' => 'Sagittarius',
-'Virgo' => 'Virgo',
-'Cancerian' => 'Cancer',
-'Capricorn' => 'Capricorn',
-'Scorpio' => 'Scorpio',
-'Pisces' => 'Pisces',
-'Taurus' => 'Taurus',
 );
 
 1;

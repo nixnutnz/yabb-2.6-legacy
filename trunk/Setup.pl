@@ -1294,14 +1294,14 @@ sub SetInstall2 {
         $mbname =~ s/\x22/\x27/gxsm;
         $forumstart            = timetostring( int time );
         $Cookie_Length         = 1;
-        $regtype               = 3;
+        $regtype               = 2;
         $RegAgree              = 1;
         $RegReasonSymbols      = 500;
         $preregspan            = 24;
         $emailpassword         = 0;
         $emailnewpass          = 0;
         $emailwelcome          = 0;
-        $name_cannot_be_userid = 1;
+        $name_cannot_be_userid = 0;
         $gender_on_reg         = 0;
         $lang                  = $FORM{'defaultlanguage'} || 'English';
         $default_template      = 'Forum default';
@@ -1313,7 +1313,7 @@ sub SetInstall2 {
         $webmaster_email = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
         $mailtype        = 0;
         $maintenancetext =
-'We are currently upgrading our forum again. Please check back shortly!';
+'We are currently upgrading our forum. Please check back shortly!';
         $MenuType               = 2;
         $profilebutton          = 1;
         $allow_hide_email       = 1;
@@ -1330,7 +1330,7 @@ sub SetInstall2 {
         $showyabbcbutt          = 1;
         $nestedquotes           = 1;
         $parseflash             = 0;
-        $enableclicklog         = 0;
+        $enableclicklog         = 1;
         $showimageinquote       = 0;
         $enable_ubbc            = 1;
         $enable_news            = 1;
@@ -1556,13 +1556,13 @@ sub SetInstall2 {
 \$showmodify = $showmodify;                         # Set to 1 to display "Last modified: Realname - Date" under each message
 \$ShowBDescrip = $ShowBDescrip;                     # Set to 1 to display board descriptions on the topic (message) index for each board
 \$showuserpic = $showuserpic;                       # Set to 1 to display each member's picture in the
-                                                    # message view (by the ICQ.. etc.)
+                                                    # message view
 \$showusertext = $showusertext;                     # Set to 1 to display each member's personal text
-                                                    # in the message view (by the ICQ.. etc.)
+                                                    # in the message view
 \$showtopicviewers = $showtopicviewers;             # Set to 1 to display members viewing a topic
 \$showtopicrepliers = $showtopicrepliers;           # Set to 1 to display members replying to a topic
 \$showgenderimage = $showgenderimage;               # Set to 1 to display each member's gender in the
-                                                    # message view (by the ICQ.. etc.)
+                                                    # message view
 \$showyabbcbutt = $showyabbcbutt;                   # Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;                     # Set to 1 to allow quotes within quotes
                                                     # (0 will filter out quotes within a quoted message)
@@ -1750,7 +1750,7 @@ sub SetInstall2 {
 \$showdate = $showdate;             # Show post date
 
 ########## New Member Notification Settings ##########
-\$new_member_notification = 0;                    # Set to 1 to enable the new member notification
+\$new_member_notification = 1;                    # Set to 1 to enable the new member notification
 \$new_member_notification_mail = "\Q$new_member_notification_mail\E";   # Your "New Member Notification"-email address.
 
 \$sendtopicmail = 2;                              # Set to 0 for send NO topic email to friend
@@ -1782,7 +1782,7 @@ sub SetInstall2 {
 
 \$showallgroups = 1;
 \$OnlineLogTime = 15;                             # Time in minutes before Users are removed from the Online Log
-\$lastonlineinlink = 0;                           # Show "Last online X days and XX:XX:XX hours ago." to all members == 1
+\$lastonlineinlink = 1;                           # Show "Last online X days and XX:XX:XX hours ago." to all members == 1
 
 ########## Polls ##########
 
@@ -1803,19 +1803,19 @@ sub SetInstall2 {
 \$numstore = 20;                                  # Number of maximum Messages in the Storage box
 \$numdraft = 20;                                  # Number of maximum Messages in the Draft box
 \$enable_imlimit = 0;                             # Set to 1 to enable limitation of incoming and outgoing im messages
-\$enable_storefolders = 0;                        # enable additonal store folders - in/out are default for all
+\$enable_storefolders = 5;                        # enable additonal store folders - in/out are default for all
                                                   # 0=no > 1 = number, max 25
-\$imtext = qq~Welcome to my boards~;
+\$imtext = qq~Thanks for joining~;
 \$sendname = admin;
-\$imsubject = "Hey Hey :)";
+\$imsubject = "Welcome";
 \$send_welcomeim = 1;
 \$PMenableBm_level = 3;                            # minimum level to send? 0 = off, 1 = mods, 2 = gmod, 3 = admin
 
 ########## Topic Summary Cutter ##########
 
 \$cutamount  = "15";                              # Number of posts to list in topic summary
-\$ttsreverse = 0;                                 # Reverse Topic Summaries in Topic (most recent becomes first)
-\$ttsureverse = 0;                                # Reverse Topic Summaries in Topic (most recent becomes first) allowed as user wishes? Yes == 1
+\$ttsreverse = 1;                                 # Reverse Topic Summaries in Topic (most recent becomes first)
+\$ttsureverse = 1;                                # Reverse Topic Summaries in Topic (most recent becomes first) allowed as user wishes? Yes == 1
 \$tsreverse = 1;                                  # Reverse Topic Summaries (So most recent is first
 
 ########## Time Lock ##########
@@ -1886,7 +1886,7 @@ sub SetInstall2 {
 # Security Settings (old SecSettings.txt)                                     #
 ###############################################################################
 
-\$regcheck = 0;                             # Set to 1 if you want to enable automatic flood protection enabled
+\$regcheck = 1;                             # Set to 1 if you want to enable automatic flood protection enabled
 \$codemaxchars = 6;                         # Set max length of validation code (15 is max)
 \$rgb_foreground = "\#0000EE";              # Set hex RGB value for validation image foreground color
 \$rgb_shade = "\#999999";                   # Set hex RGB value for validation image shade color

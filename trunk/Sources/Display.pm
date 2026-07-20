@@ -795,10 +795,10 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
     my $movedflag = q{};
     foreach (@messages) {
         my (
-            $userlocation,      $aimad,             $yimad,
+            $userlocation,
             $gtalkad,           $skypead,           $myspacead,
             $facebookad,        $twitterad,         $youtubead,
-            $icqad,             $buddyad,           $addbuddy,
+            $buddyad,           $addbuddy,
             $isbuddy,           $addbuddylink,      $userOnline,
             $signature_hr,      $lastmodified,      $memberinfo,
             $template_postinfo, $template_ext_prof, $template_profile,
@@ -1073,21 +1073,9 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
             }
             $memberinfo = "$memberinfo{$musername}$addmembergroup{$musername}";
 
-            $aimad =
-              ${ $uid . $musername }{'aim'}
-              ? qq~$menusep${$uid.$musername}{'aim'}~
-              : q{};
             $memailad =
               ${ $uid . $musername }{'email'}
               ? qq~${$uid.$musername}{'email'}~
-              : q{};
-            $icqad =
-              ${ $uid . $musername }{'icq'}
-              ? qq~$menusep${$uid.$musername}{'icq'}~
-              : q{};
-            $yimad =
-              ${ $uid . $musername }{'yim'}
-              ? qq~$menusep${$uid.$musername}{'yim'}~
               : q{};
             $gtalkad =
               ${ $uid . $musername }{'gtalk'}
@@ -1418,9 +1406,6 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $contactblock =~ s/{yabb profile}/$template_profile/gsm;
         $contactblock =~ s/{yabb pm}/$template_pm/gsm;
         $contactblock =~ s/{yabb www}/$template_www/gsm;
-        $contactblock =~ s/{yabb aim}/$aimad/gsm;
-        $contactblock =~ s/{yabb yim}/$yimad/gsm;
-        $contactblock =~ s/{yabb icq}/$icqad/gsm;
         $contactblock =~ s/{yabb gtalk}/$gtalkad/gsm;
         $contactblock =~ s/{yabb skype}/$skypead/gsm;
         $contactblock =~ s/{yabb myspace}/$myspacead/gsm;
@@ -1452,7 +1437,6 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         }
         $outblock =~ s/{yabb css}/$css/gsm;
         $outblock =~ s/{yabb gender}/${$uid.$musername}{'gender'}/gsm;
-        $outblock =~ s/{yabb zodiac}/${$uid.$musername}{'zodiac'}/gsm;
         $outblock =~ s/{yabb age}/$template_age/gsm;
         $outblock =~ s/{yabb regdate}/$template_regdate/gsm;
         $outblock =~ s/{yabb ext_prof}/$template_ext_prof/gsm;

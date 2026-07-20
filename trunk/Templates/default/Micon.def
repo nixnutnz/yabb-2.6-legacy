@@ -177,7 +177,6 @@ LoadLanguage('Micon');
 );
 
 %load_con = (
-'icqadd' => qq~<img src="$imagesdir/icqadd.gif" alt="{yabb usericq}" title="{yabb usericq}" />~,
 'gender' => qq~<img src="$imagesdir/{yabb gender}.png" alt="{yabb genderTitle}" title="{yabb genderTitle}" />~,
 'actionslock' => qq~<img src="$imagesdir/actionslock.png" alt="{yabb actionlock}" title="{yabb actionlock}" />~,
 );

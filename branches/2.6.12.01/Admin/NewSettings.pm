@@ -572,13 +572,12 @@ $member_groups
 \$Show_RecentBar = $Show_RecentBar;         # Set to 1 to display the Recent Post on Board Index
 \$showmodify = $showmodify;                 # Set to 1 to display "Last modified: Realname - Date" under each message
 \$ShowBDescrip = $ShowBDescrip;             # Set to 1 to display board descriptions on the topic (message) index for each board
-\$showuserpic = $showuserpic;               # Set to 1 to display each member's avatar in the message view (by the ICQ.. etc.)
-\$showusertext = $showusertext;             # Set to 1 to display each member's personal text in the message view (by the ICQ.. etc.)
+\$showuserpic = $showuserpic;               # Set to 1 to display each member's avatar in the message view
+\$showusertext = $showusertext;             # Set to 1 to display each member's personal text in the message view
 \$showtopicviewers = $showtopicviewers;     # Set to 1 to display members viewing a topic
 \$showtopicrepliers = $showtopicrepliers;   # Set to 1 to display members replying to a topic
 \$hide_signat_for_guests = $hide_signat_for_guests; # Set to 1 to hide all signatures for Guests (only Members can see them).
-\$showgenderimage = $showgenderimage;       # Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
-\$showzodiac = $showzodiac;                     # Set to 1 to display each member's zodiac sign in view profile and message view
+\$showgenderimage = $showgenderimage;       # Set to 1 to display each member's gender in the message view
 \$showuserage = $showuserage;               # Set to 1 to display each member's age in the message view
 \$showage = $showage;                       # Set to 1 to allow member to hide their age and birthyear (Except from the Administrator.)
 \$showregdate = $showregdate;               # Set to 1 to show date of registration.

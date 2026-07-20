@@ -155,18 +155,6 @@ $myprofile_contact = qq~<table class="bordercolor cs_thin pad_4px">
         </td>
     </tr>{yabb my_hidemail}
     <tr class="windowbg">
-        <td><label for="icq"><b>$profile_txt{'513'}: </b>
-            <br /><span class="small">$profile_txt{'600'}</span></label></td>
-        <td><input type="text" maxlength="10" name="icq" id="icq" size="40" value="{yabb my_icq}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="aim"><b>$profile_txt{'603'}: </b>
-            <br /><span class="small">$profile_txt{'601'}</span></label></td>
-        <td><input type="text" maxlength="30" name="aim" id="aim" size="40" value="{yabb my_aim}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="yim"><b>$profile_txt{'604'}: </b>
-            <br /><span class="small">$profile_txt{'602'}</span></label></td>
-        <td><input type="text" maxlength="30" name="yim" id="yim" size="40" value="{yabb my_yim}" /></td>
-    </tr><tr class="windowbg">
         <td><label for="gtalk"><b>$profile_txt{'825'}: </b>
             <br /><span class="small">$profile_txt{'826'}</span></label></td>
         <td><input type="text" maxlength="50" name="gtalk" id="gtalk" size="40" value="{yabb my_gtalk}" /></td>
@@ -672,15 +660,12 @@ $myshow_profile = qq~
 {yabb my_userlevel}
 {yabb row_email}
 {yabb row_website}
-{yabb row_aim}
 {yabb row_skype}
-{yabb row_yim}
 {yabb row_gtalk}
 {yabb row_myspace}
 {yabb row_facebook}
 {yabb row_twitter}
 {yabb row_youtube}
-{yabb row_icq}
         </td>
     </tr>
 {yabb row_signature}
@@ -727,7 +712,6 @@ $myshow_gender = q~    <tr>
         <td class="windowbg2 vtop">
             {yabb row_gender}
             {yabb row_age}
-            {yabb row_zodiac}
             {yabb row_location}
         </td>
     </tr>~;

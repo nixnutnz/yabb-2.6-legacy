@@ -55,12 +55,6 @@ $SectionBody4 = q~<p>If you would like other members of this YaBB community to b
 <p>This must be a valid e-mail address. It is used for system notifications such as a forgotten password, topic notifications, and forum e-mails.</p>
 <h4 class="help">Hide e-mail from Public</h4>
 <p>Check this box if you do not want other YaBB community members to view your e-mail address. <b>Note:</b> this does not hide it from Admins.</p>
-<h4 class="help">ICQ</h4>
-<p>If you have an ICQ account, you may enter your UIN here.</p>
-<h4 class="help">AIM</h4>
-<p>If you have AOL Instant Messenger (AIM), you may enter your user name here.</p>
-<h4 class="help">YIM</h4>
-<p>If you have Yahoo! Instant Messenger, you may enter your screen name here.</p>
 <h4 class="help">Google Talk</h4>
 <p>If you have Google Talk, you may enter your address here.</p>
 <h4 class="help">Skype or VoIP</h4>

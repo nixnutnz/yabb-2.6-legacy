@@ -491,31 +491,12 @@ sub LoadUserDisplay {
 
     get_micon();
 
-    $yimimg      = SetImage( 'yim',      $UseMenuType );
-    $aimimg      = SetImage( 'aim',      $UseMenuType );
     $skypeimg    = SetImage( 'skype',    $UseMenuType );
     $myspaceimg  = SetImage( 'myspace',  $UseMenuType );
     $facebookimg = SetImage( 'facebook', $UseMenuType );
     $gtalkimg    = SetImage( 'gtalk',    $UseMenuType );
-    $icqimg      = SetImage( 'icq',      $UseMenuType );
     $twitterimg  = SetImage( 'twitter',  $UseMenuType );
     $youtubeimg  = SetImage( 'youtube',  $UseMenuType );
-
-    $icqad{$user} =
-      $icqad{$user}
-      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" target="_blank">$load_con{'icqadd'}</a>~
-      : q{};
-    $icqad{$user} =~ s/{yabb usericq}/${$uid.$user}{'icq'}/gsm;
-
-    ${ $uid . $user }{'icq'} =
-      ${ $uid . $user }{'icq'}
-      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">$icqimg</a>~
-      : q{};
-
-    ${ $uid . $user }{'aim'} =
-      ${ $uid . $user }{'aim'}
-      ? qq~<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi.+Are+you+there?">$aimimg</a>~
-      : q{};
 
     ${ $uid . $user }{'skype'} =
       ${ $uid . $user }{'skype'}
@@ -551,11 +532,6 @@ sub LoadUserDisplay {
       ? qq~<img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="" />~
       : q{};
 
-    ${ $uid . $user }{'yim'} =
-      ${ $uid . $user }{'yim'}
-      ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank">$yimimg</a>~
-      : q{};
-
     if ( $showgenderimage && ${ $uid . $user }{'gender'} ) {
         ${ $uid . $user }{'gender'} =
           ${ $uid . $user }{'gender'} =~ m/Female/ixsm ? 'female' : 'male';
@@ -570,16 +546,6 @@ sub LoadUserDisplay {
     }
     else {
         ${ $uid . $user }{'gender'} = q{};
-    }
-
-    if ($showzodiac && ${ $uid . $user }{'bday'}) {
-        require Sources::EventCalBirthdays;
-        my ($user_bdmon, $user_bdday, undef ) = split /\//xsm, ${ $uid . $user }{'bday'} ;
-        $zodiac = starsign($user_bdday, $user_bdmon);
-        ${ $uid . $user }{'zodiac'} = qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br />~;
-    }
-    else {
-        ${ $uid . $user }{'zodiac'} = q{};
     }
 
     if ( $showusertext && ${ $uid . $user }{'usertext'} )

@@ -1234,10 +1234,7 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
         $contactblock =~ s/(\{|<)yabb profile(}|>)//gsm;
         $contactblock =~ s/(\{|<)yabb pm(}|>)/$template_pm/gsm;
         $contactblock =~ s/(\{|<)yabb www(}|>)//gsm;
-        $contactblock =~ s/(\{|<)yabb aim(}|>)//gsm;
-        $contactblock =~ s/(\{|<)yabb yim(}|>)//gsm;
-        $contactblock =~ s/(\{|<)yabb icq(}|>)//gsm;
-        $contactblock =~ s/(\{|<)yabb gtalk(}|>)//gsm;
+         $contactblock =~ s/(\{|<)yabb gtalk(}|>)//gsm;
         $contactblock =~ s/(\{|<)yabb skype(}|>)//gsm;
         $contactblock =~ s/(\{|<)yabb myspace(}|>)//gsm;
         $contactblock =~ s/(\{|<)yabb facebook(}|>)//gsm;
@@ -1259,7 +1256,6 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
         $outblock =~ s/(\{|<)yabb att(}|>)//gsm;
         $outblock =~ s/(\{|<)yabb css(}|>)/$css/gsm;
         $outblock =~ s/(\{|<)yabb gender(}|>)//gsm;
-        $outblock =~ s/(\{|<)yabb zodiac(}|>)//gsm;
         $outblock =~ s/(\{|<)yabb age(}|>)//gsm;
         $outblock =~ s/(\{|<)yabb regdate(}|>)//gsm;
         $outblock =~ s/(\{|<)yabb ext_prof(}|>)/$template_ext_prof/gsm;

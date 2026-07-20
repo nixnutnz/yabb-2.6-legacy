@@ -1550,13 +1550,6 @@ input[name*="msgCL"],input[name="txtsize"] { background-color: transparent !impo
 
 select[name="fontface"],select[name="fontsize"] { padding: 0 !important; }
 
-.zodiac {
-    font-size: 18px;
-    text-align: center;
-    margin-bottom: 3px;
-    cursor: pointer;
-}
-
 .tabmenu span.tabstyle {
     font-size: 12px;
     white-space: nowrap;

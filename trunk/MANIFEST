@@ -540,7 +540,6 @@ public_html/yabbfiles/Templates/Forum/default/admin_move.gif   - 613 bytes - upd
 public_html/yabbfiles/Templates/Forum/default/admin_move_split_splice.png   - 557 bytes - updated Thu Mar 21 09:37:09 2013 - MD5 checksum = 1729fd6a8ae210f798bfcef1fe5b2ce1
 public_html/yabbfiles/Templates/Forum/default/admin_rem.gif   - 378 bytes - updated Thu Mar 14 00:26:56 2013 - MD5 checksum = 06c4a9160e1754452a27de9392d335d9
 public_html/yabbfiles/Templates/Forum/default/admin_split.png   - 551 bytes - updated Thu Mar 21 09:36:54 2013 - MD5 checksum = 9a2fd6d729ed415366b55c2185d8ec0d
-public_html/yabbfiles/Templates/Forum/default/aim.gif   - 97 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = 28af17be5c75c1f5cd90cd8c51b15dd6
 public_html/yabbfiles/Templates/Forum/default/alert.png   - 448 bytes - updated Fri Aug  9 07:25:24 2013 - MD5 checksum = 70e962cc93b6bba29bddb8e76679109f
 public_html/yabbfiles/Templates/Forum/default/alertmod.gif   - 612 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = 680430bdf6bde76b6bb5e4f44792943c
 public_html/yabbfiles/Templates/Forum/default/angry.gif   - 805 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = dda44ebcebfd3c38e8eb544a4177f0eb
@@ -548,8 +547,6 @@ public_html/yabbfiles/Templates/Forum/default/ann.png   - 2050 bytes - updated S
 public_html/yabbfiles/Templates/Forum/default/announcement.gif   - 627 bytes - updated Thu Mar 14 00:20:06 2013 - MD5 checksum = 20de7dbd299acf587f96aac6a5dd10be
 public_html/yabbfiles/Templates/Forum/default/announcementlock.gif   - 649 bytes - updated Thu Mar 14 00:20:10 2013 - MD5 checksum = f1f827c67c9ddca40819d7e4a9c7aa2d
 public_html/yabbfiles/Templates/Forum/default/answered.gif   - 248 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = 5c4154a3d942177ce116821504ffe3e3
-public_html/yabbfiles/Templates/Forum/default/aquarius.png   - 322 bytes - updated Sat Sep 14 14:46:52 2013 - MD5 checksum = f4b14e8b3ddaff354f6086c78174a5af
-public_html/yabbfiles/Templates/Forum/default/aries.png   - 260 bytes - updated Sat Sep 14 14:46:40 2013 - MD5 checksum = 3d1380cb9ac88469d8ce32f5b04eb928
 public_html/yabbfiles/Templates/Forum/default/arrow.gif   - 865 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = fcb4f7510a2bcd8d3ffe788cc66bf866
 public_html/yabbfiles/Templates/Forum/default/arrowup.gif   - 58 bytes - updated Thu Apr 12 07:03:16 2012 - MD5 checksum = 2072fb9ae20eefbb5a10ff0fc9219e73
 public_html/yabbfiles/Templates/Forum/default/arrow_down.gif   - 89 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = c516ab418b9141b9946fbe06fe0eaca9
@@ -587,8 +584,6 @@ public_html/yabbfiles/Templates/Forum/default/bull-redcheck.gif   - 1620 bytes -
 public_html/yabbfiles/Templates/Forum/default/bull-redpin.gif   - 1630 bytes - updated Wed Aug 29 07:10:10 2012 - MD5 checksum = d639f2a104cfef041d9e9c4d4af46849
 public_html/yabbfiles/Templates/Forum/default/bull-redsq.gif   - 853 bytes - updated Wed Aug 29 07:10:00 2012 - MD5 checksum = 3ee8109887cd686dd9077e0f9f8c925c
 public_html/yabbfiles/Templates/Forum/default/buttonsep.png   - 112 bytes - updated Sat Sep 14 14:45:30 2013 - MD5 checksum = 8e56c057142da0c1b92a8c0cc98609cc
-public_html/yabbfiles/Templates/Forum/default/cancer.png   - 356 bytes - updated Sat Sep 14 14:45:14 2013 - MD5 checksum = 3bda187ed3b429f210995ae8d9d962fb
-public_html/yabbfiles/Templates/Forum/default/capricorn.png   - 312 bytes - updated Sat Sep 14 14:45:02 2013 - MD5 checksum = e4204f625fe8a1e94ca8f5fca3b100fd
 public_html/yabbfiles/Templates/Forum/default/catbg.jpg   - 758 bytes - updated Wed Apr 15 22:12:54 2009
 public_html/yabbfiles/Templates/Forum/default/catbg.png   - 126 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = 655b4af297a22ced21d90a50d435e041
 public_html/yabbfiles/Templates/Forum/default/cat_collall.gif   - 953 bytes - updated Wed Apr 15 22:12:54 2009 - MD5 checksum = f124a1a4048e7acc3c2a55a260e3cdcd
@@ -641,7 +636,6 @@ public_html/yabbfiles/Templates/Forum/default/fill.gif   - 51 bytes - updated We
 public_html/yabbfiles/Templates/Forum/default/forward.gif   - 597 bytes - updated Wed Mar 20 20:13:03 2013 - MD5 checksum = 53d1662653bf2dada41d86775a7ff9bc
 public_html/yabbfiles/Templates/Forum/default/fruitcheck.png   - 732 bytes - updated Sat Sep 14 14:39:50 2013 - MD5 checksum = 10ebde7d5a38a66c8a9cc8065996a98f
 public_html/yabbfiles/Templates/Forum/default/fruits.png   - 32482 bytes - updated Fri Jul 20 07:08:46 2012 - MD5 checksum = 3f4d5c43cbf1993e85dcb69159d4d49f
-public_html/yabbfiles/Templates/Forum/default/gemini.png   - 258 bytes - updated Sat Sep 14 14:26:58 2013 - MD5 checksum = 71877de11376786970a682308ca3f610
 public_html/yabbfiles/Templates/Forum/default/gender.gif   - 257 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = 43badf8871eb69ff3732c2ed18af431b
 public_html/yabbfiles/Templates/Forum/default/gif.gif   - 247 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = 70190b82ec624f24aa97ff33e6eddeef
 public_html/yabbfiles/Templates/Forum/default/grad_bottom.jpg   - 757 bytes - updated Wed Apr 15 22:12:56 2009
@@ -665,8 +659,6 @@ public_html/yabbfiles/Templates/Forum/default/hidestickylock.gif   - 645 bytes -
 public_html/yabbfiles/Templates/Forum/default/home.gif   - 344 bytes - updated Sun Dec 12 05:28:40 2010 - MD5 checksum = fbfc20cf4553f37c3f926a3f8c634c9b
 public_html/yabbfiles/Templates/Forum/default/hotthread.gif   - 633 bytes - updated Thu Mar 14 00:20:14 2013 - MD5 checksum = 992c70bf825fed09c0cac4a7e8e1e979
 public_html/yabbfiles/Templates/Forum/default/huh.gif   - 741 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = c58624fc4956b6ab29bb1d585fd459eb
-public_html/yabbfiles/Templates/Forum/default/icqadd.gif   - 189 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = b6dfbf31f6077a2da164482aca3019d9
-public_html/yabbfiles/Templates/Forum/default/icqflow.gif   - 194 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = 3ff28c58b7c4a8ffb264dfab126245f3
 public_html/yabbfiles/Templates/Forum/default/imcallback.gif   - 204 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = 4938199f5a3bc479879dd811ff816aa4
 public_html/yabbfiles/Templates/Forum/default/imcallback2.gif   - 166 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = 4ddc04599c8ab2839c0960ed99d62277
 public_html/yabbfiles/Templates/Forum/default/imcallback3.gif   - 166 bytes - updated Wed Apr 15 22:12:56 2009 - MD5 checksum = 4ddc04599c8ab2839c0960ed99d62277
@@ -706,8 +698,6 @@ public_html/yabbfiles/Templates/Forum/default/lamp.gif   - 537 bytes - updated W
 public_html/yabbfiles/Templates/Forum/default/larger.gif   - 847 bytes - updated Wed Apr 15 22:12:58 2009 - MD5 checksum = 45b34c44fa9d8ecf8bce179c605c1c3b
 public_html/yabbfiles/Templates/Forum/default/lastpost.gif   - 313 bytes - updated Wed Apr 15 22:12:58 2009 - MD5 checksum = f14561bc400934d30f393dec7450ef70
 public_html/yabbfiles/Templates/Forum/default/laugh.gif   - 470 bytes - updated Wed Apr 15 22:12:58 2009 - MD5 checksum = 25083adad305db7437d641ba80903d1f
-public_html/yabbfiles/Templates/Forum/default/leo.png   - 364 bytes - updated Sat Sep 14 14:22:18 2013 - MD5 checksum = 096bd123fd6e982929bbe0a2ad23ed23
-public_html/yabbfiles/Templates/Forum/default/libra.png   - 269 bytes - updated Sat Sep 14 14:22:04 2013 - MD5 checksum = 8e694d7b15669ab8d252b0cb183a0da1
 public_html/yabbfiles/Templates/Forum/default/lipsrsealed.gif   - 725 bytes - updated Wed Apr 15 22:12:58 2009 - MD5 checksum = bfb2d98324cd0e03b51e29d0f5d7368a
 public_html/yabbfiles/Templates/Forum/default/loadbar.gif   - 10819 bytes - updated Thu Apr 12 07:03:16 2012 - MD5 checksum = cc4115c04e14080154d2bc121c46147f
 public_html/yabbfiles/Templates/Forum/default/lockclose15x22.png   - 915 bytes - updated Fri Jun  7 16:49:47 2013 - MD5 checksum = 65b19510fad0ca8b5cb7cf7b9291ac07
@@ -761,7 +751,6 @@ public_html/yabbfiles/Templates/Forum/default/paperclip.gif   - 875 bytes - upda
 public_html/yabbfiles/Templates/Forum/default/pdf.gif   - 386 bytes - updated Wed Apr 15 22:13:00 2009 - MD5 checksum = 8bea3b631d52dc8addb846f0f94f58c8
 public_html/yabbfiles/Templates/Forum/default/perl.gif   - 1111 bytes - updated Wed Apr 15 22:13:00 2009 - MD5 checksum = 707e61a2cd5114941377cc2609648b6a
 public_html/yabbfiles/Templates/Forum/default/pie.png   - 3391 bytes - updated Thu Aug 21 13:51:50 2014 - MD5 checksum = 740daa8829e63bcc26ec915fe71f8d48
-public_html/yabbfiles/Templates/Forum/default/pisces.png   - 316 bytes - updated Sat Sep 14 14:14:10 2013 - MD5 checksum = 9d61a638082a9356bac3344ef93b0988
 public_html/yabbfiles/Templates/Forum/default/pmadmin.gif   - 608 bytes - updated Wed Apr 15 22:13:00 2009 - MD5 checksum = 93eebce1682b6bc8ed58aa24a3b373c4
 public_html/yabbfiles/Templates/Forum/default/png.gif   - 275 bytes - updated Wed Apr 15 22:13:00 2009 - MD5 checksum = 4cf949dd5e0eed5b1df2ba840e71e095
 public_html/yabbfiles/Templates/Forum/default/poll_animated.gif   - 415 bytes - updated Wed Apr 15 22:13:00 2009 - MD5 checksum = 442c189d471c359e2e1081028106dc65
@@ -813,8 +802,6 @@ public_html/yabbfiles/Templates/Forum/default/rolleyes.gif   - 1690 bytes - upda
 public_html/yabbfiles/Templates/Forum/default/Rotate.gif   - 13987 bytes - updated Wed Jul 24 18:59:30 2013 - MD5 checksum = 218ebc8d1a7971e78d8e89645a486a9f
 public_html/yabbfiles/Templates/Forum/default/rss.png   - 1231 bytes - updated Thu Mar 14 00:14:44 2013 - MD5 checksum = c195dcb054282d3f942eb05f2b7cfdb3
 public_html/yabbfiles/Templates/Forum/default/sad.gif   - 852 bytes - updated Wed Apr 15 22:13:02 2009 - MD5 checksum = 2d1dcecf4d8ea32d5638cd75ecea5071
-public_html/yabbfiles/Templates/Forum/default/sagittarius.png   - 290 bytes - updated Sat Sep 14 14:10:32 2013 - MD5 checksum = 908f98ee7831d820f719c54f8c1315e0
-public_html/yabbfiles/Templates/Forum/default/scorpio.png   - 342 bytes - updated Sat Sep 14 14:10:14 2013 - MD5 checksum = d3aaaacf77811c4ff6faf2682e917f3e
 public_html/yabbfiles/Templates/Forum/default/search.png   - 343 bytes - updated Sat Sep 14 14:09:52 2013 - MD5 checksum = 767853222a48746ab6bbd6f6bc626dba
 public_html/yabbfiles/Templates/Forum/default/search_gray.png   - 485 bytes - updated Sat Sep 14 14:09:30 2013 - MD5 checksum = 14871778161ff6ae20f3c05ad6ccac93
 public_html/yabbfiles/Templates/Forum/default/sendtopic.png   - 543 bytes - updated Sat Sep 14 14:09:06 2013 - MD5 checksum = 2d55782580baf1d99b55991b10b888ce
@@ -859,7 +846,6 @@ public_html/yabbfiles/Templates/Forum/default/tabtitle.png   - 665 bytes - updat
 public_html/yabbfiles/Templates/Forum/default/tab_selected.gif   - 891 bytes - updated Wed Apr 15 22:13:02 2009 - MD5 checksum = 398b31b70185da3cd1a52d5a4ec748a6
 public_html/yabbfiles/Templates/Forum/default/tar.gif   - 982 bytes - updated Wed Apr 15 22:13:02 2009 - MD5 checksum = ea63c5846f01938b202f8b3a85ad51e4
 public_html/yabbfiles/Templates/Forum/default/tar.gz.gif   - 982 bytes - updated Wed Apr 15 22:13:02 2009 - MD5 checksum = ea63c5846f01938b202f8b3a85ad51e4
-public_html/yabbfiles/Templates/Forum/default/taurus.png   - 329 bytes - updated Sat Sep 14 14:03:32 2013 - MD5 checksum = da4069860c3df9ee1c5ddae640defa02
 public_html/yabbfiles/Templates/Forum/default/thread.gif   - 600 bytes - updated Thu Mar 14 00:19:24 2013 - MD5 checksum = dba562366af056965cb6b0a0298faa52
 public_html/yabbfiles/Templates/Forum/default/thumbdown.gif   - 164 bytes - updated Wed Jul 10 06:19:32 2013 - MD5 checksum = 39b1dafe130fbb5831e0194db26276d2
 public_html/yabbfiles/Templates/Forum/default/thumbup.gif   - 170 bytes - updated Wed Jul 10 06:19:09 2013 - MD5 checksum = 558ad6031a0ab2137dde7f22f5739283
@@ -886,7 +872,6 @@ public_html/yabbfiles/Templates/Forum/default/valid-xhtml10.gif   - 2345 bytes -
 public_html/yabbfiles/Templates/Forum/default/vcss.gif   - 1547 bytes - updated Wed Apr 15 22:13:04 2009 - MD5 checksum = 64c15fdbab0ccaa5f79875381ffccf86
 public_html/yabbfiles/Templates/Forum/default/veryhotthread.gif   - 631 bytes - updated Thu Mar 14 00:20:18 2013 - MD5 checksum = 991a8a38c5d59327e59e2f4e7a176560
 public_html/yabbfiles/Templates/Forum/default/viewthread.gif   - 207 bytes - updated Tue Oct  5 14:16:07 2010 - MD5 checksum = 35b0ba335312889fbf2bbec465b277cb
-public_html/yabbfiles/Templates/Forum/default/virgo.png   - 360 bytes - updated Sat Sep 14 13:59:22 2013 - MD5 checksum = 28e366cfe7c030b2e63058b5f0f3b519
 public_html/yabbfiles/Templates/Forum/default/wink.gif   - 944 bytes - updated Wed Apr 15 22:13:04 2009 - MD5 checksum = 63aadc14facb3b9db3d3ddac4205ffa3
 public_html/yabbfiles/Templates/Forum/default/www.png   - 854 bytes - updated Sat Sep 14 13:58:54 2013 - MD5 checksum = e9eb6799d5f89af6ce762004aa8efe03
 public_html/yabbfiles/Templates/Forum/default/xhtml.gif   - 221 bytes - updated Wed Apr 15 22:13:04 2009 - MD5 checksum = 2346caef4ca12ea5037b6543efbd5e87
@@ -894,7 +879,6 @@ public_html/yabbfiles/Templates/Forum/default/xls.gif   - 135 bytes - updated We
 public_html/yabbfiles/Templates/Forum/default/xx.gif   - 377 bytes - updated Wed Apr 15 22:13:04 2009 - MD5 checksum = e58e4f0be981b29c51be1845aea4c197
 public_html/yabbfiles/Templates/Forum/default/yabbchelp.swf   - 32159 bytes - updated Wed Apr 15 22:13:04 2009
 public_html/yabbfiles/Templates/Forum/default/yabblogo_26.png   - 16827 bytes - updated Thu Aug 15 03:48:54 2013 - MD5 checksum = 5c05168471096a5abd0a90d41b530794
-public_html/yabbfiles/Templates/Forum/default/yim.gif   - 144 bytes - updated Fri Dec 17 00:13:46 2010 - MD5 checksum = 60200999caf40c340997396b8aa817db
 public_html/yabbfiles/Templates/Forum/default/youtube.gif   - 325 bytes - updated Fri Jan 25 18:23:38 2013 - MD5 checksum = 14bfa9f6ebdd9d9ec0d2830c345ae72d
 public_html/yabbfiles/Templates/Forum/default/youtube.png   - 659 bytes - updated Sat Sep 14 13:58:02 2013 - MD5 checksum = 4e4cf6d81e93ce529cbbc047f5543524
 public_html/yabbfiles/Templates/Forum/default/zip.gif   - 605 bytes - updated Wed Apr 15 22:13:04 2009 - MD5 checksum = b020258dc87e707555632338bc94012d

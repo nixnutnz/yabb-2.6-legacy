@@ -12,7 +12,6 @@ admin_rem,admin_rem|img_txt|54|||imgwindowbg|gif|tmp
 admin_splice,admin_splice|img_txt|621|img_txt|621a|imgwindowbg|gif|tmp
 admin_split,admin_split|img_txt|620|img_txt|620|imgwindowbg|png|tmp
 admin_sticky,sticky|img_txt|781|||imgwindowbg|gif|tmp
-aim,aim|img_txt|aim|||imgwindowbg|gif|tmp
 alertmod,alert|img_txt|alertmodtext|img_txt|alertmod|imgwindowbg|png|tmp
 birthdaylist,birthdaylist|img_text|birthdaylist|||imgwindowbg||tmp
 closepoll,poll_lock|img_polltxt|21|||imgcatbg|gif|tmp
@@ -33,7 +32,6 @@ gtalk,gtalk2|img_txt|gtalk|||imgwindowbg|gif|tmp
 help,help|img_txt|119|||imgmenu|gif|tmp
 hide,hide|img_txt|622|||imgwindowbg|gif|tmp
 home,home|img_txt|103|||imgmenu|gif|tmp
-icq,icqflow|img_txt|icq|||imgwindowbg|gif|tmp
 im_inbox,im_inbox|img_txt|316|||imgwindowbg|gif|tmp
 im_new,im_new|img_txt|321|||imgwindowbg|gif|tmp
 im_outbox,im_outbox|img_txt|320|||imgwindowbg|gif|tmp
@@ -86,5 +84,4 @@ viewthread,index_togl|img_polltxt|33a|||imgwindowbg|png|tmp
 viewvotes,poll_vvotes-1|img_polltxt|33|||imgwindowbg|png|tmp
 website,www|img_txt|515|||imgwindowbg|png|tmp
 website_sm,www|img_txt|515|||imgwindowbg|png|tmp
-yim,yim|img_txt|yim|||imgwindowbg|gif|tmp
 youtube,youtube|img_txt|youtube|||imgwindowbg|gif|tmp

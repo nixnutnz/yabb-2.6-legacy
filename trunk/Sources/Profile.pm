@@ -504,8 +504,6 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $yynavigation = qq~&rsaquo; $profiletitle~;
     }
 
-    ${ $uid . $user }{'aim'} =~ tr/+/ /;
-    ${ $uid . $user }{'yim'} =~ tr/+/ /;
     if ($allow_hide_email) {
         my $checked = q{};
         if ( ${ $uid . $user }{'hidemail'} ) {
@@ -584,9 +582,6 @@ $myprofile_contact
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
     $showProfile =~ s/{yabb user_email}/${$uid.$user}{'email'}/sm;
     $showProfile =~ s/{yabb my_hidemail}/$my_hidemail/sm;
-    $showProfile =~ s/{yabb my_icq}/${$uid.$user}{'icq'}/sm;
-    $showProfile =~ s/{yabb my_aim}/${$uid.$user}{'aim'}/sm;
-    $showProfile =~ s/{yabb my_yim}/${$uid.$user}{'yim'}/sm;
     $showProfile =~ s/{yabb my_gtalk}/${$uid.$user}{'gtalk'}/sm;
     $showProfile =~ s/{yabb my_skype}/${$uid.$user}{'skype'}/sm;
     $showProfile =~ s/{yabb my_myspace}/${$uid.$user}{'myspace'}/sm;
@@ -1941,14 +1936,7 @@ sub ModifyProfileContacts2 {
         fatal_error( 'censor2', CheckCensor("$member{'email'}") );
     }
 
-    $member{'icq'} =~ s/[^0-9]//gxsm;
-    $member{'aim'} =~ s/ /\+/gsm;
-    $member{'yim'} =~ s/ /\+/gsm;
-
     ToHTML( $member{'email'} );
-    ToHTML( $member{'icq'} );
-    ToHTML( $member{'aim'} );
-    ToHTML( $member{'yim'} );
     ToHTML( $member{'gtalk'} );
     ToHTML( $member{'skype'} );
     ToHTML( $member{'myspace'} );
@@ -2006,9 +1994,6 @@ sub ModifyProfileContacts2 {
     # Time to print the changes to the username.vars file
     ${ $uid . $user }{'email'}    = $member{'email'};
     ${ $uid . $user }{'hidemail'} = $member{'hideemail'} ? 1 : 0;
-    ${ $uid . $user }{'icq'}      = $member{'icq'};
-    ${ $uid . $user }{'aim'}      = $member{'aim'};
-    ${ $uid . $user }{'yim'}      = $member{'yim'};
     ${ $uid . $user }{'gtalk'}    = $member{'gtalk'};
     ${ $uid . $user }{'skype'}    = $member{'skype'};
     ${ $uid . $user }{'myspace'}  = $member{'myspace'};
@@ -2709,21 +2694,14 @@ sub ViewProfile {
     my ( $modify, $gender );
     my (
         $pic_row,      $buddybutton,   $row_addgrp,  $row_gender,
-        $row_age,      $row_location,  $row_icq,     $row_aim,
-        $row_yim,      $row_gtalk,     $row_skype,   $row_myspace,
+        $row_age,      $row_location,  $row_gtalk,     $row_skype,   $row_myspace,
         $row_facebook, $row_twitter,   $row_youtube, $row_email,
         $row_website,  $row_signature, $showusertext
     );
-    my ($row_zodiac);
 
     # Convert forum start date to string, if there is no date set,
     # Defaults to 1st Jan, 2005
     $forumstart = $forumstart ? stringtotime($forumstart) : '1104537600';
-
-    $memsettingsd[9] = ${ $uid . $user }{'aim'};
-    $memsettingsd[9] =~ tr/+/ /;
-    $memsettingsd[10] = ${ $uid . $user }{'yim'};
-    $memsettingsd[10] =~ tr/+/ /;
 
     if ( ${ $uid . $user }{'regtime'} ) {
         $dr = timeformat( ${ $uid . $user }{'regtime'},0,0,0,1 );
@@ -2818,18 +2796,6 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         <div class="contactright">
                         $age$isbday
                         </div>~;
-            if ($showzodiac) {
-            require Sources::EventCalBirthdays;
-            my ($user_bdmon, $user_bdday, undef ) = split /\//xsm, ${ $uid . $user }{'bday'} ;
-            $memberzodiac = starsign($user_bdday, $user_bdmon, 'text' );
-            $row_zodiac = qq~
-                        <div class="contactleft">
-                        <b>$zodiac_txt{'sign'}:</b>
-                        </div>
-                        <div class="contactright">
-                        $memberzodiac
-                        </div>~;
-        }
     }
     if ( ${ $uid . $user }{'location'} ) {
         $row_location = qq~
@@ -2838,36 +2804,6 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         </div>
                         <div class="contactright">
                         ${$uid.$user}{'location'}
-                        </div>~;
-    }
-    if ( ${ $uid . $user }{'icq'} && ${ $uid . $user }{'icq'} !~ m{\D}xsm ) {
-        $row_icq .= qq~
-                        <div class="contactleft">
-                        <b>$profile_txt{'513'}:</b>
-                        </div>
-                        <div class="contactright">
-                        <a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">
-                        <img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" /> ${$uid.$user}{'icq'}</a>
-                        </div>~;
-    }
-    if ( ${ $uid . $user }{'aim'} ) {
-        $row_aim = qq~
-                        <div class="contactleft">
-                        <b>$profile_txt{'603'}: </b>
-                        </div>
-                        <div class="contactright">
-                        <a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?">
-                        <img src="$imagesdir/$my_aim" alt="${$uid.$user}{'aim'}" /> $memsettingsd[9]</a>
-                        </div>~;
-    }
-    if ( ${ $uid . $user }{'yim'} ) {
-        $row_yim = qq~
-                        <div class="contactleft">
-                        <b>$profile_txt{'604'}: </b>
-                        </div>
-                        <div class="contactright">
-                        <img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="${$uid.$user}{'yim'}" />
-                        <a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"> $memsettingsd[10]</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'gtalk'} ) {
@@ -3121,7 +3057,6 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         $my_gender = $myshow_gender;
         $my_gender =~ s/{yabb row_gender}/$row_gender/sm;
         $my_gender =~ s/{yabb row_age}/$row_age/sm;
-        $my_gender =~ s/{yabb row_zodiac}/$row_zodiac/sm;
         $my_gender =~ s/{yabb row_location}/$row_location/sm;
     }
     if ($extendedprofiles) {
@@ -3331,15 +3266,12 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
     $showProfile =~ s/{yabb my_userlevel}/$my_userlevel/sm;
     $showProfile =~ s/{yabb row_email}/$row_email/sm;
     $showProfile =~ s/{yabb row_website}/$row_website/sm;
-    $showProfile =~ s/{yabb row_aim}/$row_aim/sm;
     $showProfile =~ s/{yabb row_skype}/$row_skype/sm;
-    $showProfile =~ s/{yabb row_yim}/$row_yim/sm;
     $showProfile =~ s/{yabb row_gtalk}/$row_gtalk/sm;
     $showProfile =~ s/{yabb row_myspace}/$row_myspace/sm;
     $showProfile =~ s/{yabb row_facebook}/$row_facebook/sm;
     $showProfile =~ s/{yabb row_twitter}/$row_twitter/sm;
     $showProfile =~ s/{yabb row_youtube}/$row_youtube/sm;
-    $showProfile =~ s/{yabb row_icq}/$row_icq/sm;
     $showProfile =~ s/{yabb row_signature}/$row_signature/sm;
     $showProfile =~ s/{yabb lastonline}/$lastonline/sm;
     $showProfile =~ s/{yabb userlastlogin}/$userlastlogin/sm;

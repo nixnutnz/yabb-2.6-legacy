@@ -165,7 +165,7 @@ else {
 }
 
 $contactlist = qq~
-    {yabb profile}{yabb email}{yabb pm}{yabb www}{yabb gtalk}{yabb skype}{yabb myspace}{yabb facebook}{yabb twitter}{yabb youtube}{yabb icq}{yabb yim}{yabb aim}{yabb addbuddy}
+    {yabb profile}{yabb email}{yabb pm}{yabb www}{yabb gtalk}{yabb skype}{yabb myspace}{yabb facebook}{yabb twitter}{yabb youtube}{yabb addbuddy}
 ~;
 
 $messageclass = 'message';
@@ -197,7 +197,6 @@ $messageblock = qq~
                         {yabb age}
                         {yabb regdate}
                         {yabb gender}
-                        {yabb zodiac}
                         {yabb ext_prof}
                         {yabb isbuddy}
                     </div>

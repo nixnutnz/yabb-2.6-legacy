@@ -784,18 +784,6 @@ qq~$menusep<a href="mailto:${$uid.$usrname}{'email'}">$img{'email_sm'}</a>~;
               ${ $uid . $usrname }{'youtube'}
               ? $menusep . ${ $uid . $usrname }{'youtube'}
               : q{};
-            $membAdInfo .=
-              ${ $uid . $usrname }{'icq'}
-              ? $menusep . ${ $uid . $usrname }{'icq'}
-              : q{};
-            $membAdInfo .=
-              ${ $uid . $usrname }{'yim'}
-              ? $menusep . ${ $uid . $usrname }{'yim'}
-              : q{};
-            $membAdInfo .=
-              ${ $uid . $usrname }{'aim'}
-              ? $menusep . ${ $uid . $usrname }{'aim'}
-              : q{};
         }
         $usernamelink = $link{$usrname};
         if ( $musername eq $username ) {
@@ -1525,7 +1513,6 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
         $myprofileblock =~ s/{yabb location}/$userlocation/gsm;
         $myprofileblock =~
           s/{yabb gender}/${$uid.$username}{'gender'}/gsm;
-        $myprofileblock =~ s/{yabb zodiac}/${$uid.$username}{'zodiac'}/gsm;
         $myprofileblock =~ s/{yabb age}/$template_age/gsm;
         $myprofileblock =~ s/{yabb regdate}/$template_regdate/gsm;
 
