@@ -1,0 +1,129 @@
+$SectionName = "Advanced_Settings";
+
+### Section 1
+#############################################
+$SectionSub1 = "Setting_up_Permalinks_and_RSS";
+$SectionBody1 = q~<p>YaBB gives you the ability to set up permalinks (search engine friendly and bookmark friendly URIs) as well as RSS feeds from your entire forum, specific Categories and specific Boards. In order to set up these functions, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;Forum Configuration&#8221;. Click on &#8220;Advanced Settings&#8221;.</p>
+<ul>
+    <li><b>Permalinks</b>
+        <br />To use permalinks, your forum must be on a server that allows "FollowSymLinks" and "RedirectMatch" or "RewriteEngine" in either an .htaccess file or as a server setting. Check with your hosting service to see if these server level functions are available to you.
+        <br />If those functions are available: <a href="http://www.yabbforumsoftware.com/codex/YaBB.pl?num=1191988956" target="_blank">Setting up Permalinks</a> has instructions on how to set up that part of permalinks.
+        <br />Once the server level settings are set, you can activate Permalinks within YaBB and tell <strong>it</strong> how to create the new permalink URIs by inputting the name of the 'virtual URI' folder that's in the "RedirectMatch" or "RewriteRule" in the .htaccess file.
+    </li>
+    <li><b>RSS</b>
+        <br />Before you activate RSS on the Forum, Category, or Board level, make sure it is not <strong>disabled</strong> in &#8220;Advanced Settings&#8221;. Then set the number of topics that will be shown in the feed (the default is 10). Also choose whether or not Posting dates will be shown and what order the Topic items will be shown in the feed.
+        <br />Select whether or not author screen names and e-mail addresses will be shown (assuming the author has chosen not to hide this information).
+        <br />The RSS specification requires that authors have e-mail addresses. Input the default e-mail address what will be shown in the RSS feed if the author's e-mail is hidden or "Show the author's screen name and e-mail address (if not hidden)?" is unchecked. If this field is left empty, the default e-mail address will be the "Webmaster E-mail Address" from &#8220;Advanced Settings -> E-Mail&#8221;.
+        <br /><span class="help_attn"><b><span class="underline">Administrator Tip:</span></b> To keep the Webmaster E-mail Address from being overrun with spam, create a separate RSS default e-mail address like 'noreply@yourforum.com'. This doesn't need to be real address as nobody is going to be checking it anyway.</span>
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 2
+#############################################
+$SectionSub2 = "E-Mail_Settings";
+$SectionBody2 = q~<p>Setup how YaBB sends e-mails.</p>
+<ul>
+    <li><b>E-Mail</b>
+        <br />YaBB gives you multiple ways for YaBB to send e-mails to members. If your forum is on a BSD/*nix system, sendmail is usually the best option. If sendmail is available from your host, get its location and put that information in the text box below the dropdown selection. (This location is often '/usr/sbin/sendmail'.) If sendmail is not available, choose one of the other options from the dropdown selection.
+            <ul>
+                <li><strong>SMTP-Server</strong>: the <em>URL</em> of the SMTP server you will be using. On many hosts this is on the order of 'smtp.yourdomain.com' or 'mail.yourdomain.com'.</li>
+                <li><strong>SMTP Server Authorization</strong>: this has multiple parts: Authorization type (usually Auto), SMTP user name and password.</li>
+            </ul>
+        <span class="help_attn"><b><span class="underline">Administrator Tip:</span></b> If you have an e-mail address set up using your host's SMTP Server, the authorization type, user name, and password have probably been saved in your personal e-mail program e-mail settings.</span>
+    </li>
+    <li><b>Settings for New Member Notification E-mail</b>
+        <br />Select whether or not a 'newmember notification' is sent to the designated e-mail address.
+    </li>
+    <li><b>Topic E-mail Setting</b>
+        <br />Select if/how 'Topic Notification' e-mails are sent.
+    </li>
+</ul>
+~;
+
+#############################################
+### Section 3
+#############################################
+$SectionSub3 = "File_Attachments";
+$SectionBody3 = q~<p>Check the permissions on the Attachment and PMAttachment folders and set user permissions, file types, and other parameters.</p>
+<ul>
+    <li><b>Post Attachments</b>
+        <br />Check folder path and permissions (server permissions)
+        <br />Set number of attachments allowed in posts. (Whether or not attachments are allowed in posts on a particular board is set for each board in "Manage Boards".)
+        <ul>
+            <li><strong>Display Picture Attachments in Posts?</strong>: if checked, attachments that are pictures will also be displayed in the attachments section of the post (The size of this displayed picture is set under &#8220;Advanced Settings -> Smart Image Resize -> Attachment images&#8221;.)</li>
+            <li><strong>File Extensions</strong>: turn on the Enable File Extension Check and choose which type of files will be permitted.
+                <br /><span class="help_attn important"><span class="underline"><b>NOTE:</b></span> turning off the File Extension Check could allow files with malicious content to be run on your server. If you want to allow the upload of such things as html files, javascript files or executable files, require them to be packaged and uploaded as a zip or tar file.</span>
+            </li>
+            <li><strong>File and Directory size</strong>: Set the maximum size of attached files and the size of the Attachment folder. Set both of these limits to something reasonable for your forum.</li>
+            <li><strong>File Rename/Overwrite</strong>: Choose how YaBB will handle attachment files that have the same name as already existing files.</li>
+        </ul>
+    </li>
+    <li><b>PM Attachments</b>
+        <br />Check folder path and permissions (server permissions)
+        <br />Set number of attachments allowed in Personal messages.
+        <ul>
+            <li><strong>Display Picture Attachments in PMs?</strong>: if checked, attachments that are pictures will also be displayed in the attachments section of the message (The size of this displayed picture is set under &#8220;Advanced Settings -> Smart Image Resize -> Attachment images&#8221;.)</li>
+            <li><strong>File Extensions</strong>: turn on the Enable File Extension Check and choose which type of files will be permitted.
+            <br /><span class="help_attn important"><span class="underline"><b>NOTE:</b></span> turning off the File Extension Check could allow files with malicious content to be run on your server. If you want to allow the upload of such things as html files, javascript files or executable files, require them to be packaged and uploaded as a zip or tar file.</span>
+            </li>
+            <li><strong>File and Directory size</strong>: Set the maximum size of attached files and the size of the PM Attachment folder. Set both of these limits to something reasonable for your forum.</li>
+            <li><strong>File Rename/Overwrite</strong>: Choose how YaBB will handle attachment files that have the same name as already existing files.</li>
+        </ul>
+    </li>
+</ul>
+~;
+
+#############################################
+### Section 4
+#############################################
+$SectionSub4 = "Smart_Image_Resize";
+$SectionBody4 = q~<p>Set the parameters for resizing Avatars, Post images, Signature images, Attachment images, and Board/Category images</p>
+<ul>
+    <li><b>For each type of image</b>
+        <br />You can choose the maximum height and width of each type of image in pixels or disable resizing of the image type altogether. Larger images will &quot;shrink&quot; to fit within the maximum set limits.
+        <br /><span class="help_attn"><span class="underline"><b>NOTE:</b></span> An image taller than it is wide will be limited by the maximum height and will adjust the width proportionally, which will be less than the maximum width. An image wider than taller will be limited by the maximum width and will adjust the height proportionally, which will be less than the maximum height.</span>
+    </li>
+    <li><strong>Greybox</strong>
+        <br />Attached images and images inside posts can be shown on a slightly translucent surface instead in a new window. The Admin can select between a single view and a gallery style view for attached images.
+    </li>
+</ul>
+~;
+### Section 5
+#############################################
+$SectionSub5 = "Advanced";
+$SectionBody5 = q~<p>Here you can set up the various the parameters for the various user/click/error logs and other items.</p>
+<ul>
+    <li><b>Output Compression</b>
+        <br />Output compression compresses the data going to the browser, saving bandwidth. YaBB will detect what type of output compression is available on your server.
+        <br />You can also choose whether or not YaBB checks to see if the user's browser supports output compression. It's recommended that YaBB do this check as some older and minority browsers do not support output compression and will be unable to render your forum's pages if those are sent compressed.
+    </li>
+    <li><strong>Browser Cache Behavior</strong>
+        <br />This setting puts a 'meta tag' in the forum pages telling the user's browser whether or not it should store items/data (such as stylesheets and images) that do not change over time.
+        <br /><span class="help_attn"><span class="underline"><b>NOTE:</b></span> Although most browsers do follow cache instructions found in individual documents, this is a deprecated feature in HTML 5.</span>
+    </li>
+    <li><strong>Click Log (Forum Access Log)</strong>
+        <br />When activated, YaBB logs the user ID and IP address as well as what pages were visited (and how many times they were visited) within the number of minutes set in 'Time in minutes to log each click in your forum'.
+    </li>
+    <li><strong>Error Logger</strong>
+        <br />Enable the Error Log, set whether or not old errors are deleted as new ones are logged and how many errors will appear in the Error Log.
+        <br /><span class="help_attn"><span class="underline"><b>NOTE:</b></span> Disabling the Error Log means you have no way of checking what errors are occurring on your forum - this includes such things as members having trouble logging in, attempts by search engines to get into areas not permitted to guests, other problems on your forum. Setting the number of errors shown to a very small number means you may not see important error messages as they will be over-written by newer ones. (Misbehaving search engines and failed registration/login attempts can fill up an error log really fast.)</span>
+    </li>
+    <li><strong>Debug</strong>
+        <br />For use in the event your forum is having issues with files not opening and/or closing properly or you need to trace what files are being used in a particular section so you can trouble shoot a problem.
+        <br />You can choose whether just the Admin sees the output, everyone sees the full output, everyone sees how long it takes for a page to load (useful if trying to track down whether slow page loads are a server issue or an Internet issue), or debugging is turned off.
+    </li>
+    <li><strong>Files</strong>
+        <br />Choose which type of file-locking (if any) YaBB should use, depending on what OS your forum's host is running.
+        <br /><span class="help_attn"><span class="underline"><b>NOTE:</b></span> As of 2015, it is unlikely that your host is running a server that needs Windows 9x file-locking.</span>
+    </li>
+    <li><strong>Free Disk Space Options</strong>
+        <br />Turning this on gives you a link to access the various free disk space checks that are available on some Unix/Linux/BSD servers.
+        <br />If your forum is on a multiple user host system, "Free Disk Space Functions" may report larger available space than is actually available to you.
+        <br /><span class="help_attn"><span class="underline"><b>NOTE:</b></span> If the "Free Disk Space Functions" page fails to load or if a function on the "Free Disk Space Functions" page is grayed out or cannot be checked, your server does not support these functions. If the page fails to load, uncheck the "Free Disk Space Options" check box.</span>
+    </li>
+</ul>
+~;
+
+1;
