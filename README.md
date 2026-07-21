@@ -4,19 +4,19 @@ YaBB (Yet Another Bulletin Board) first came on the scene in 2000, when teenager
 
 It was notable as one of the very first open-source internet forum packages written in Perl.
 
-and now 25 years later it's still here and better than ever.
+and now 25 years later it's still here, still FREE and better than ever.
 
 Currently over 50,000 web communities using YaBB worldwide, and over 1 Million registered users througout these forums!
 
 Download the yabb release zip from Releases on the right (below if you're on a mobile device), extract to a new folder in your webroot, "chown -R" the new folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
 
-For help go to https://yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl or https://myforum.nz
+There are language files in branches/lang.
+
+For help go to https://yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl or https://yabbforum.nz
 
 To contribute to development or help in any way use the contacts on the sites above.
 
-looking for help with template stylesheets and icons for more choice in style.
+Looking for help from experts in graphics, proof reading, beta testing, perl coding, stylesheets & ideas people, all working to bring this fantastic software to perfection.
 
-testers, perl coders, ideas people, all working to bring this fantastic software to perfection.
-
-https://securehost.nz offers hassle free hosting for YaBB
+https://securehost.nz offers hassle free hosting for YaBB, can be preinstalled for you.
 
