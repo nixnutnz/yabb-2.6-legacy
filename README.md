@@ -12,7 +12,7 @@ Download the yabb release zip from Releases on the right (below if you're on a m
 
 For help go to https://yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl or https://myforum.nz
 
-To contribute to developement or help in any way use the contacts on the sites above.
+To contribute to development or help in any way use the contacts on the sites above.\n
 looking for help with template stylesheets and icons for more choice in style.
 testers, perl coders, ideas people, all working to bring this fantastic software to perfection.
 
