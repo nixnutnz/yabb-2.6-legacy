@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+<!-- YaBB 2.6 $Revision: 1416 $ -->
+<title>YaBB Quick Start Guide - Installation: Step 3 - File Permissions (Alternative Settings)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+</head>
+<body>
+<div id="header"><a href="http://www.yabbforumsoftware.com/YaBB.pl" title="Support Forum" target="_blank">Support Forums</a> | <a href="http://www.yabbforumsoftware.com/contribute.php" title="Help keep YaBB going strong!" target="_blank">Donate to YaBB</a></div>
+<div id="content">
+        <div class="shead">
+        <div class="lang">
+            <span><a href="../../English/index.html" title="Switch to English Guide"><img src="../../images/English.gif" alt="Switch to English Guide" title="Switch to English Guide" /></a></span>
+        </div>
+        <div class="logo"><img src="../../images/yabblogo_26.png" alt="YaBB - Yet another Bulletin Board!" title="YaBB - Yet another Bulletin Board!" /></div>
+        <div class="title"><span class="qguide"><i>YaBB Quick Start Guide</i></span></div>
+        <div class="spc"></div>
+    </div>
+    <div class="subs">
+        <div class="menu">
+            <ul>
+                <li><a href="../index.html">Introduction</a></li>
+                <li><span>Installation</span></li>
+                <li><a href="../install/before.html">Before Installing</a></li>
+                <li><a href="../install/1.html">Step 1 - Editing</a></li>
+                <li><a href="../install/2.html">Step 2 - Uploading</a></li>
+                <li><a href="../install/3.html">Step 3 - CHMOD</a></li>
+                <li><a href="../install/setup.html">Step 4 - Setting Up</a></li>
+                <li><span><a href="../extras/index.html">Converting</a></span></li>
+                <li><a href="../extras/upgradeY1.html">Upgrading YaBB 1</a></li>
+                <li><a href="../extras/upgradeY2.html">Upgrading YaBB 2.x</a></li>
+                <li><a href="../extras/troubleshooting.html">Troubleshooting</a></li>
+                <li><span>Other</span></li>
+                <li><a href="../info/license.html">License</a></li>
+                <li><a href="../info/credits.html">Credits</a></li>
+            </ul>
+        </div>
+        <div class="body">
+            <h3>Step 3 - (CHMOD) Setting File Permissions (Alternative Settings)</h3>
+            <p><img src="../../images/chmod.gif" alt="An example 755 CHMOD setting in CuteFTP 7.0 Professional" title="An example 755 CHMOD setting in CuteFTP 7.0 Professional" class="chmod" />After you have completed the section of this guide titled &quot;Step 2 - Uploading,&quot; you must now set the file permissions on the files listed in the table below. Since this is a Linux/*nix function, Windows server users will not be able to do this. On a Windows Server, running IIS, you will need to give the data folders (those specified to be CHMOD 755) full read/write permissions. Code folders will need Read, Execution Permissions - Scripts Only. On Windows/IIS servers, you will probably need to contact your web host's support department and request that these permissions be set for you. There is one exception to Inheritance on IIS - Paths.pm must be set to Write. Windows/Apache servers do not use file permissions in this sense, you will not need to try to set them. Windows/Apache is driven by Apache directives/.htaccess. </p>
+            <p>Note: on *nix servers, if you find that these settings are the ones that work, you should notify your host - CHMOD 777 &amp; 666 are highly insecure and <b>not</b> recommended. It also indicates there may be a misconfiguration of your web server which should be investigated.</p>
+            <p>Return to the page with the <a href="../install/3.html">Default CHMOD Settings</a>.</p>
+            <p>------- NON cgi-bin section ---------</p>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII) </span> yabbfiles/*.js</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>) </span> yabbfiles/*.swf</li>
+                </ul>
+
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> yabbfiles/Attachments</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> yabbfiles/avatars</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>) </span> yabbfiles/avatars/* (all files)</li>
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> yabbfiles/avatars/UserAvatars</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>) </span> yabbfiles/avatars/UserAvatars/* (all other files if exist)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Bookmarks</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Buttons</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/EventIcons</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/googiespell</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> yabbfiles/googiespell/* (6 graphic files:  5 .gif, 1 .png)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span>  yabbfiles/googiespell/* (3 .js files, 1 .css file and the GPL.txt)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/greybox</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> yabbfiles/greybox/* (6 graphic files:  6 .gif)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span>  yabbfiles/greybox/* (1 .js file, 1 .html file and 1 .css file)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/ModImages</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/shjs</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span><span class="ascii"> (in ASCII)</span>  yabbfiles/shjs/* (10 .js files)</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span> yabbfiles/shjs/styles/* (1 .css file)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Smilies</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> yabbfiles/Smilies/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Templates</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Templates/Admin</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span> yabbfiles/Templates/Admin/default.css</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Templates/Admin/default</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> yabbfiles/Templates/Admin/default/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Templates/Forum</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span> yabbfiles/Templates/Forum/default.css</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/Templates/Forum/default</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> yabbfiles/Templates/Forum/default/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> yabbfiles/UBBCbuttons</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/UBBCbuttons/* (all files)</li>
+            </ul>
+            <p><b> ------- CGI-BIN section (Transfer all files in ASCII) ---------</b></p>
+            <p><b>All index.html and .htaccess files in the following folders<br />can be set to -rw-r--r-- (CHMOD 644) for security reasons!</b></p>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> the container folder</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> AdminIndex.pl</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> Convert.pl</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> FixFile.pl</li>
+                <li><span class="chmod">-rwxrwxrwx (CHMOD 777)</span> Paths.pm</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> Setup.pl</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> index.pl</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Admin</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Admin/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> Backups</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Backups/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> Boards</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Boards/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Convert</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Convert/Boards</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Convert/Members</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Convert/Messages</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Convert/Variables</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Help/English/Admin</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Help/English/Admin/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Help/English/Gmod</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Help/English/Gmod/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Help/English/Moderator</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Help/English/Moderator/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Help/English/User</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Help/English/User/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Languages/English</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Languages/English/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> Members</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Members/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> Messages</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Messages/* (all files)</li>
+            </ul>
+            <ul class="st3">
+               <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules</li>
+               <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/* (all files)</li>
+            </ul>
+            <ul class="st3">
+               <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/Archive</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/Archive/* (all files)</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/Archive/Tar</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/Archive/Tar/* (all files)</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/Archive/Zip</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/Archive/Zip/* (all files)</li>
+                </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/Digest</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/Digest/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/Email</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/Email/Date</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/Email/Date/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Modules/MIME</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Modules/MIME/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Sources</li>
+                <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> Sources/SpellChecker.pl</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> Sources/* (all other files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Templates</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> Templates/default</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Templates/default/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> Variables</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> Variables/* (all files)</li>
+            </ul>
+        </div>
+        <div class="clr"></div>
+    </div>
+</div>
+<div id="footer"></div>
+</body>
+</html>
