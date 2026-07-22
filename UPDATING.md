@@ -8,6 +8,7 @@ You can get help at  https://yabbforum.nz/support
 
 
 #######################
+
 To contribute to development or help in any way use the contacts on the sites above.
 
 Looking for help from experts in graphics, proof reading, beta testing, Perl coding, style sheets & ideas people, all working to bring this fantastic software to perfection.
