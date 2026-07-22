@@ -191,6 +191,7 @@ thus forming a work based on the Package, and copy and distribute such
 modifications or work under the terms of Section 1 above, provided that you also
 meet all of these conditions: 
 ```
+```
      a) You must cause the modified files to carry prominent notices stating
 that you changed the files and the date of any change.
 ```
