@@ -8,7 +8,7 @@ and now 25 years later it's still here, still FREE and better than ever.
 
 Currently over 50,000 web communities using YaBB worldwide, and over 1 Million registered users througout these forums!
 
-Download the yabb release zip from Releases on the right (below if you're on a mobile device), extract to a new folder in your webroot, "chown -R" the new folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
+Download the yabb release zip from Releases on the right (below if you're on a mobile device), extract to a new folder in your webroot, "chown -hR" the new folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
 
 There are language files in branches/lang.
 
