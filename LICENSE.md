@@ -8,11 +8,8 @@ all times on all pages. If you wish to break the following license or remove the
 copyright, you may make an inquiry by visiting the following URL: http://www.yabbforumsoftwar
 e.com/licenses.php.
 ```
-
 ```
-
 ```
-
 ```
     Version 1.0, Adopted On April 17, 2001
     Version 2.0, Adopted On April 13, 2004
@@ -31,7 +28,10 @@ e.com/licenses.php.
     Version 2.6.1, Adopted On September 1, 2014
     Version 2.6.11, Adopted On December 2, 2014
     Version 2.6.12, Adopted On January 5, 2016
+    Version 2.6.12.01, Adopted On July 18, 2026
+    Version 2.6.12.02, Adopted On July 21, 2026
 
+    
 Definitions
 You:  This is you, if you are considering distributing, modifying or
 using this Package.

@@ -25,7 +25,7 @@ our $VERSION = '2.6.12';
 $YaBBversion     = 'YaBB 2.6.12';
 $adminindexplver = 'YaBB 2.6.12 $Revision: 2057 $';
 
-$yyexec      = 'YaBB';
+$yyexec      = 'index';
 $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};

@@ -2133,7 +2133,7 @@ sub WriteLog {
 
     # comment out (#) the next line if you have problems with
     # 'Reverse DNS lookup timeout causes slow page loads'
-    # (http://www.yabbforumsoftware.com/cgi-bin/yabb2/YaBB.plYaBB.pl?num=1199991357)
+    # (http://www.yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl?num=1199991357)
     # Search Engine identification and display will be turned off
 
     my $user_host =

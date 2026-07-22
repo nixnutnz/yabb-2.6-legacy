@@ -345,7 +345,7 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
     }
 
     $mybdlist_alpha_a =
-      qq~<a href="$boardurl/YaBB.pl?action=birthdaylist;sort=sortuser;letter=~;
+      qq~<a href="$boardurl/index.pl?action=birthdaylist;sort=sortuser;letter=~;
     my $my_alpha_a = q{};
     for my $i ( 'a' .. 'z' ) {
         $my_alpha_a .=

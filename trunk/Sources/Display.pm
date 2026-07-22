@@ -610,7 +610,7 @@ qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
     if ( $username ne 'Guest' ) {
         my ( %viewer, @tmprepliers, $isrep );
         foreach (@logentries)
-        {    # @logentries already loaded in YaBB.pl => &WriteLog;
+        {    # @logentries already loaded in index.pl => &WriteLog;
             $viewer{ ( split /\|/xsm, $_, 2 )[0] } = 1;
         }
 

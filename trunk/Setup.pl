@@ -64,7 +64,7 @@ if ( !$lastsaved ) {
     $vardir    = "$cwd/Variables";
 }
 
-if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
+if   ( -e 'index.cgi' ) { $yyext = 'cgi'; }
 else                   { $yyext = 'pl'; }
 if   ($boardurl) { $set_cgi = "$boardurl/Setup.$yyext"; }
 else             { $set_cgi = "Setup.$yyext"; }
@@ -2343,7 +2343,7 @@ qq~$firstmstime|Welcome to your New YaBB 2.6 Forum!|Administrator|$webmaster_ema
 
         $yymain .= qq~<tr>
             <td class="catbg center" colspan="2">
-            <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
+            <form action="$set_cgi?action=ready;nextstep=index" method="post" style="display: inline;">
             <input type="submit" value="Continue" />
             </form>
             <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center</p>
@@ -2610,7 +2610,7 @@ s/(.+;)[ \t]+(\x23.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) .
 
 sub FoundSetupLock {
     tempstarter();
-    $scripturl = "$boardurl/YaBB.$yyext";
+    $scripturl = "$boardurl/index.$yyext";
 
     if ( -e "$vardir/Converter.lock" ) {
         $conv = q{};
@@ -2664,7 +2664,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
             </td>
         </tr><tr>
             <td class="catbg center"  style="padding: 4px" colspan="2">
-                <form action="$boardurl/YaBB.$yyext" method="post" style="display: inline;">
+                <form action="$boardurl/index.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to your Forum" />
                 </form>
                 $conv

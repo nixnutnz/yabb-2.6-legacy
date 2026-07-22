@@ -1,22 +1,23 @@
-The original Forum software most other message boards are based on!
+	
+	The original Forum software most other message boards are based on!
 
-YaBB (Yet Another Bulletin Board) first came on the scene in 2000, when teenager Zef Hemel and a team of collaborators released YaBB 1.0  
+	YaBB (Yet Another Bulletin Board) first came on the scene in 2000, when teenager Zef Hemel and a team of collaborators released YaBB 1.0  
 
-It was notable as one of the very first open-source internet forum packages written in Perl.
+	It was notable as one of the very first open-source internet forum packages written in Perl.
 
-and now 25 years later it's still here, still FREE and better than ever.
+	and now 25 years later it's still here, still FREE and better than ever.
 
-Currently over 50,000 web communities using YaBB worldwide, and over 1 Million registered users througout these forums!
+	Currently over 50,000 web communities using YaBB worldwide, and over 1 Million registered users throughout these forums!
 
-Download the yabb release zip from Releases on the right (below if you're on a mobile device), extract to a new folder in your webroot, "chown -hR" the new folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
+	Download the YaBB release zip from Releases on the right (below if you're on a mobile device), extract to a new folder in your webroot, "chown -hR" the new folder to apache:yourusername for EL or www-data:yourusername for Debian then run Setup.pl
 
-There are language files in branches/lang.
+	There are language files in branches/Lang.
 
-For help go to https://yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl or https://yabbforum.nz
+	For help go to https://yabbforumsoftware.com/cgi-bin/yabb2/YaBB.pl or https://yabbforum.nz
 
-To contribute to development or help in any way use the contacts on the sites above.
+	To contribute to development or help in any way use the contacts on the sites above.
 
-Looking for help from experts in graphics, proof reading, beta testing, perl coding, stylesheets & ideas people, all working to bring this fantastic software to perfection.
+	Looking for help from experts in graphics, proof reading, beta testing, Perl coding, style sheets & ideas people, all working to bring this fantastic software to perfection.
 
-https://securehost.nz offers hassle free hosting for YaBB, can be preinstalled for you.
+	https://securehost.nz offers hassle free hosting for YaBB, can be preinstalled for you.
 
